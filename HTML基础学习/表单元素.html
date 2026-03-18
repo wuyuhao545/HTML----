@@ -10,14 +10,14 @@
 <div class="container">
     <div class="header">
         <h1>📝 表单 HTML标签大全</h1>
-        <p>每个卡片展示一组相关标签的代码 + 实际渲染效果。包括各种输入控件、选择、按钮、数据列表等</p>
+        <p>每个卡片展示一组相关标签的代码 + 实际渲染效果。分为输入控件、下拉列表、按钮三大板块</p>
     </div>
 
-    <!-- ==================== 表单部分 ==================== -->
+    <!-- ========= 板块1：输入控件 (input, textarea, fieldset 等) ========= -->
     <section class="section">
-        <div class="section-title">📝 表单标签 <span>&lt;form&gt; &lt;input&gt; &lt;label&gt; &lt;select&gt; &lt;textarea&gt; &lt;button&gt; &lt;fieldset&gt; &lt;datalist&gt; 等</span></div>
+        <div class="section-title">⌨️ 输入控件 <span>&lt;input&gt; &lt;textarea&gt; &lt;fieldset&gt; 等</span></div>
         <div class="card-grid">
-            <!-- 卡片1：文本输入 input text / email / password / number -->
+            <!-- 原有卡片1：文本输入 input text / email / password / number -->
             <div class="card">
                 <div class="card-header"><code>&lt;input&gt; 文本类</code><span class="card-title">text, email, password, number</span></div>
                 <div class="card-code">&lt;label&gt;姓名:&lt;/label&gt; &lt;input type="text" value="张三"&gt;<br>&lt;label&gt;邮箱:&lt;/label&gt; &lt;input type="email" placeholder="name@ex.com"&gt;<br>&lt;label&gt;密码:&lt;/label&gt; &lt;input type="password" value="123456"&gt;<br>&lt;label&gt;数量:&lt;/label&gt; &lt;input type="number" value="5" min="1"&gt;</div>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <!-- 卡片2：单选/复选框 + label -->
+            <!-- 原有卡片2：单选/复选框 + label -->
             <div class="card">
                 <div class="card-header"><code>&lt;input type="radio/checkbox"&gt; + &lt;label&gt;</code><span class="card-title">选项控件</span></div>
                 <div class="card-code">&lt;label&gt;<br>  &lt;input type="checkbox" checked&gt; 记住我<br>&lt;/label&gt;<br><br>性别:<br>&lt;label&gt;&lt;input type="radio" name="gender" checked&gt; 男&lt;/label&gt;<br>&lt;label&gt;&lt;input type="radio" name="gender"&gt; 女&lt;/label&gt;</div>
@@ -43,7 +43,92 @@
                 </div>
             </div>
 
-            <!-- 卡片3：下拉列表 select, option, optgroup -->
+            <!-- 原有卡片4：文本域 textarea -->
+            <div class="card">
+                <div class="card-header"><code>&lt;textarea&gt;</code><span class="card-title">多行文本</span></div>
+                <div class="card-code">&lt;textarea rows="3" cols="25" placeholder="写点什么..."&gt;预设内容&lt;/textarea&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <textarea rows="2" cols="25" placeholder="写点什么..." style="width:100%;">预设内容</textarea>
+                </div>
+            </div>
+
+            <!-- 原有卡片6：fieldset / legend 分组（适用于输入控件分组） -->
+            <div class="card">
+                <div class="card-header"><code>&lt;fieldset&gt; + &lt;legend&gt;</code><span class="card-title">表单分组</span></div>
+                <div class="card-code">&lt;fieldset&gt;<br>  &lt;legend&gt;个人信息&lt;/legend&gt;<br>  &lt;label&gt;姓名: &lt;input&gt;&lt;/label&gt;&lt;br&gt;<br>  &lt;label&gt;年龄: &lt;input type="number"&gt;&lt;/label&gt;<br>&lt;/fieldset&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <fieldset>
+                        <legend>个人信息</legend>
+                        <label>姓名: <input></label><br>
+                        <label>年龄: <input type="number" style="width:80px;"></label>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- 新增卡片：文件上传 input type=file -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="file"&gt;</code><span class="card-title">文件上传</span></div>
+                <div class="card-code">&lt;input type="file" accept="image/*" multiple&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <input type="file" accept="image/*" multiple>
+                    <p class="note" style="margin-top:0.5rem;">accept="image/*" 限制图片类型，multiple 允许选择多文件</p>
+                </div>
+            </div>
+
+            <!-- 新增卡片：颜色选择器 input type=color -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="color"&gt;</code><span class="card-title">颜色选择</span></div>
+                <div class="card-code">&lt;input type="color" value="#3b82f6"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <input type="color" value="#3b82f6">
+                </div>
+            </div>
+
+            <!-- 新增卡片：日期时间输入 (date, datetime-local, month, week, time) -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="date / time / ..."&gt;</code><span class="card-title">日期时间</span></div>
+                <div class="card-code">&lt;input type="date" value="2025-03-18"&gt;<br>&lt;input type="time" value="14:30"&gt;<br>&lt;input type="datetime-local"&gt;<br>&lt;input type="month"&gt;<br>&lt;input type="week"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <input type="date" value="2025-03-18"><br>
+                    <input type="time" value="14:30"><br>
+                    <input type="datetime-local"><br>
+                    <input type="month"><br>
+                    <input type="week">
+                </div>
+            </div>
+
+            <!-- 新增卡片：范围滑块 input type=range -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="range"&gt;</code><span class="card-title">滑块</span></div>
+                <div class="card-code">&lt;input type="range" min="0" max="100" value="40" step="5"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <input type="range" min="0" max="100" value="40" step="5">
+                </div>
+            </div>
+
+            <!-- 新增卡片：隐藏输入 input type=hidden (不可见，仅说明) -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="hidden"&gt;</code><span class="card-title">隐藏字段</span></div>
+                <div class="card-code">&lt;input type="hidden" name="token" value="abc123"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">说明</div>
+                    <p>隐藏字段不会在页面上显示，但会在表单提交时发送。通常用于传递固定参数。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 板块2：下拉列表 (select, datalist) ========= -->
+    <section class="section">
+        <div class="section-title">📋 下拉列表 <span>&lt;select&gt; &lt;datalist&gt; &lt;option&gt; &lt;optgroup&gt;</span></div>
+        <div class="card-grid">
+            <!-- 原有卡片3：下拉列表 select + optgroup -->
             <div class="card">
                 <div class="card-header"><code>&lt;select&gt; &lt;option&gt; &lt;optgroup&gt;</code><span class="card-title">下拉选择</span></div>
                 <div class="card-code">&lt;select&gt;<br>  &lt;optgroup label="水果"&gt;<br>    &lt;option&gt;苹果&lt;/option&gt;<br>    &lt;option selected&gt;香蕉&lt;/option&gt;<br>  &lt;/optgroup&gt;<br>  &lt;optgroup label="蔬菜"&gt;<br>    &lt;option&gt;白菜&lt;/option&gt;<br>    &lt;option&gt;萝卜&lt;/option&gt;<br>  &lt;/optgroup&gt;<br>&lt;/select&gt;</div>
@@ -62,43 +147,7 @@
                 </div>
             </div>
 
-            <!-- 卡片4：文本域 textarea -->
-            <div class="card">
-                <div class="card-header"><code>&lt;textarea&gt;</code><span class="card-title">多行文本</span></div>
-                <div class="card-code">&lt;textarea rows="3" cols="25" placeholder="写点什么..."&gt;预设内容&lt;/textarea&gt;</div>
-                <div class="card-effect">
-                    <div class="card-effect-label">渲染效果</div>
-                    <textarea rows="2" cols="25" placeholder="写点什么..." style="width:100%;">预设内容</textarea>
-                </div>
-            </div>
-
-            <!-- 卡片5：按钮 button / input button -->
-            <div class="card">
-                <div class="card-header"><code>&lt;button&gt; &lt;input type="button"&gt;</code><span class="card-title">按钮</span></div>
-                <div class="card-code">&lt;button type="button"&gt;普通按钮&lt;/button&gt;<br>&lt;input type="button" value="输入型按钮"&gt;<br>&lt;button type="submit"&gt;提交&lt;/button&gt; (在form中触发)</div>
-                <div class="card-effect">
-                    <div class="card-effect-label">渲染效果</div>
-                    <button type="button">普通按钮</button>
-                    <input type="button" value="输入型按钮">
-                    <button type="submit">提交</button> (无form不生效)
-                </div>
-            </div>
-
-            <!-- 卡片6：fieldset / legend 分组 -->
-            <div class="card">
-                <div class="card-header"><code>&lt;fieldset&gt; + &lt;legend&gt;</code><span class="card-title">表单分组</span></div>
-                <div class="card-code">&lt;fieldset&gt;<br>  &lt;legend&gt;个人信息&lt;/legend&gt;<br>  &lt;label&gt;姓名: &lt;input&gt;&lt;/label&gt;&lt;br&gt;<br>  &lt;label&gt;年龄: &lt;input type="number"&gt;&lt;/label&gt;<br>&lt;/fieldset&gt;</div>
-                <div class="card-effect">
-                    <div class="card-effect-label">渲染效果</div>
-                    <fieldset>
-                        <legend>个人信息</legend>
-                        <label>姓名: <input></label><br>
-                        <label>年龄: <input type="number" style="width:80px;"></label>
-                    </fieldset>
-                </div>
-            </div>
-
-            <!-- 卡片7：datalist 预定义选项 + output -->
+            <!-- 原有卡片7：datalist 预定义选项 + output（将output移至按钮板块更合适？但datalist属于此处，保留） -->
             <div class="card">
                 <div class="card-header"><code>&lt;datalist&gt; &lt;output&gt;</code><span class="card-title">数据列表与输出</span></div>
                 <div class="card-code">&lt;input list="browsers" placeholder="浏览器"&gt;<br>&lt;datalist id="browsers"&gt;<br>  &lt;option value="Chrome"&gt;<br>  &lt;option value="Firefox"&gt;<br>&lt;/datalist&gt;<br><br>&lt;form oninput="res.value=parseInt(a.value)+parseInt(b.value)"&gt;<br>  &lt;input type="range" id="a" value="50"&gt; +<br>  &lt;input type="number" id="b" value="20"&gt; =<br>  &lt;output name="res" for="a b"&gt;70&lt;/output&gt;<br>&lt;/form&gt;</div>
@@ -119,24 +168,148 @@
                 </div>
             </div>
 
-            <!-- 卡片8：搜索表单 -->
+            <!-- 新增卡片：select multiple 多选列表 -->
             <div class="card">
-                <div class="card-header"><code>&lt;form&gt;</code><span class="card-title">🔍 搜索表单form</span></div>
+                <div class="card-header"><code>&lt;select multiple&gt;</code><span class="card-title">多选下拉</span></div>
+                <div class="card-code">&lt;select multiple size="4"&gt;<br>  &lt;option&gt;选项1&lt;/option&gt;<br>  &lt;option selected&gt;选项2&lt;/option&gt;<br>  &lt;option selected&gt;选项3&lt;/option&gt;<br>  &lt;option&gt;选项4&lt;/option&gt;<br>&lt;/select&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（按住Ctrl多选）</div>
+                    <select multiple size="4" style="width:200px;">
+                        <option>选项1</option>
+                        <option selected>选项2</option>
+                        <option selected>选项3</option>
+                        <option>选项4</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 新增卡片：select size 指定可见行数 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;select size&gt;</code><span class="card-title">固定高度列表</span></div>
+                <div class="card-code">&lt;select size="3"&gt;<br>  &lt;option&gt;北京&lt;/option&gt;<br>  &lt;option&gt;上海&lt;/option&gt;<br>  &lt;option&gt;广州&lt;/option&gt;<br>  &lt;option&gt;深圳&lt;/option&gt;<br>&lt;/select&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（size=3）</div>
+                    <select size="3">
+                        <option>北京</option>
+                        <option>上海</option>
+                        <option>广州</option>
+                        <option>深圳</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 新增卡片：datalist 与不同输入类型配合 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;datalist&gt; 扩展</code><span class="card-title">datalist + 多种input</span></div>
+                <div class="card-code">&lt;input list="colors" placeholder="颜色"&gt;<br>&lt;datalist id="colors"&gt;<br>  &lt;option value="红"&gt;<br>  &lt;option value="绿"&gt;<br>  &lt;option value="蓝"&gt;<br>&lt;/datalist&gt;<br><br>&lt;input list="numbers" type="range"&gt; (不支持)</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <input list="colorsDemo" placeholder="颜色">
+                    <datalist id="colorsDemo">
+                        <option value="红">
+                        <option value="绿">
+                        <option value="蓝">
+                    </datalist>
+                    <p class="note">datalist 通常与 text/search 等配合，不适用于 range</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 板块3：按钮 (button, input button, 表单提交等) ========= -->
+    <section class="section">
+        <div class="section-title">🔘 按钮 <span>&lt;button&gt; &lt;input type="button/submit/reset/image"&gt;</span></div>
+        <div class="card-grid">
+            <!-- 原有卡片5：按钮 button / input button -->
+            <div class="card">
+                <div class="card-header"><code>&lt;button&gt; &lt;input type="button"&gt;</code><span class="card-title">普通按钮</span></div>
+                <div class="card-code">&lt;button type="button"&gt;普通按钮&lt;/button&gt;<br>&lt;input type="button" value="输入型按钮"&gt;<br>&lt;button type="submit"&gt;提交&lt;/button&gt; (在form中触发)</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <button type="button">普通按钮</button>
+                    <input type="button" value="输入型按钮">
+                    <button type="submit">提交</button> (无form不生效)
+                </div>
+            </div>
+
+            <!-- 原有卡片8：搜索表单（包含提交按钮） -->
+            <div class="card">
+                <div class="card-header"><code>&lt;form&gt; + 提交按钮</code><span class="card-title">🔍 搜索表单</span></div>
                 <div class="card-code">
                     &lt;form action="/search" method="get" role="search"&gt;<br>
-                    &nbsp;&nbsp;&lt;input type="search" name="q" <br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder="搜索..." <br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aria-label="搜索关键词"&gt;<br>
-                    &nbsp;&nbsp;&lt;button type="submit" aria-label="提交搜索"&gt;搜索&lt;/button&gt;<br>
+                    &nbsp;&nbsp;&lt;input type="search" name="q" placeholder="搜索..."&gt;<br>
+                    &nbsp;&nbsp;&lt;button type="submit"&gt;搜索&lt;/button&gt;<br>
                     &lt;/form&gt;
                 </div>
                 <div class="card-effect">
                     <div class="card-effect-label">实际效果（不会真的提交）</div>
-                    <form action="#" method="get" role="search" onsubmit="event.preventDefault(); alert('演示模式：表单本应提交到 /search?q=...');" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                        <input type="search" name="q" placeholder="搜索..." aria-label="搜索关键词" style="flex:1; min-width:150px; padding:0.3rem 0.8rem; border:1px solid #ccc; border-radius:20px;">
-                        <button type="submit" aria-label="提交搜索" style="background:#3b82f6; color:white; border:none; border-radius:30px; padding:0.3rem 1.2rem; cursor:pointer;">搜索</button>
+                    <form action="#" method="get" role="search" onsubmit="event.preventDefault(); alert('演示模式');" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <input type="search" name="q" placeholder="搜索..." style="flex:1; min-width:150px; padding:0.3rem 0.8rem; border:1px solid #ccc; border-radius:20px;">
+                        <button type="submit" style="background:#3b82f6; color:white; border:none; border-radius:30px; padding:0.3rem 1.2rem; cursor:pointer;">搜索</button>
                     </form>
-                    <p class="note" style="margin-top:0.5rem;">✅ 使用&lt;form&gt;包裹，设置action/method，输入框有name、placeholder、aria-label，按钮type="submit"。</p>
+                </div>
+            </div>
+
+            <!-- 新增卡片：按钮的 disabled 状态 -->
+            <div class="card">
+                <div class="card-header"><code>disabled 属性</code><span class="card-title">禁用按钮</span></div>
+                <div class="card-code">&lt;button type="button" disabled&gt;禁用按钮&lt;/button&gt;<br>&lt;input type="button" value="禁用" disabled&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <button type="button" disabled>禁用按钮</button>
+                    <input type="button" value="禁用" disabled>
+                </div>
+            </div>
+
+            <!-- 新增卡片：图片按钮 input type=image -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="image"&gt;</code><span class="card-title">图片按钮</span></div>
+                <div class="card-code">&lt;input type="image" src="data:image/svg+xml,%3Csvg...%3E" alt="提交" width="40" height="40"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（点击提交表单）</div>
+                    <input type="image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%233b82f6' stroke='%231e3c72' stroke-width='2'/%3E%3Ctext x='10' y='28' fill='white' font-size='16'%3E✓%3C/text%3E%3C/svg%3E" alt="提交" width="40" height="40">
+                </div>
+            </div>
+
+            <!-- 新增卡片：重置按钮 input type=reset -->
+            <div class="card">
+                <div class="card-header"><code>&lt;input type="reset"&gt;</code><span class="card-title">重置按钮</span></div>
+                <div class="card-code">&lt;form&gt;<br>  &lt;input type="text" value="初始值"&gt;<br>  &lt;input type="reset" value="重置"&gt;<br>&lt;/form&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（点击重置恢复初始值）</div>
+                    <form onreset="return false;"> <!-- 阻止实际重置以便演示，真实情况会重置 -->
+                        <input type="text" value="初始值" style="width:150px;">
+                        <input type="reset" value="重置">
+                    </form>
+                    <p class="note">注：此处阻止了实际重置，仅展示按钮样式</p>
+                </div>
+            </div>
+
+            <!-- 新增卡片：按钮组使用 fieldset 分组 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;fieldset&gt; 分组按钮</code><span class="card-title">按钮组</span></div>
+                <div class="card-code">&lt;fieldset&gt;<br>  &lt;legend&gt;操作&lt;/legend&gt;<br>  &lt;button type="button"&gt;保存&lt;/button&gt;<br>  &lt;button type="button"&gt;取消&lt;/button&gt;<br>&lt;/fieldset&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <fieldset style="width:fit-content;">
+                        <legend>操作</legend>
+                        <button type="button">保存</button>
+                        <button type="button">取消</button>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- 新增卡片：不同type的按钮对比 -->
+            <div class="card">
+                <div class="card-header"><code>button / submit / reset</code><span class="card-title">三种类型对比</span></div>
+                <div class="card-code">&lt;button type="button"&gt;普通&lt;/button&gt;<br>&lt;button type="submit"&gt;提交&lt;/button&gt;<br>&lt;button type="reset"&gt;重置&lt;/button&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（需在form中观察行为）</div>
+                    <form onsubmit="event.preventDefault(); alert('提交演示');" onreset="alert('重置演示')">
+                        <button type="button" onclick="alert('普通按钮')">普通</button>
+                        <button type="submit">提交</button>
+                        <button type="reset">重置</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -144,7 +317,7 @@
 
     <footer>
         ⚡ 完整展示 HTML 表单 (input/select/textarea/button/fieldset/datalist) 标签。<br>
-        ⭐ 每个卡片都包含代码片段 + 实际渲染效果。
+        ⭐ 每个卡片都包含代码片段 + 实际渲染效果。已按输入控件、下拉列表、按钮三大板块重新组织，并补充了常用示例。
     </footer>
 </div>
 </body>

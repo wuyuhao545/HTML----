@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 数组 · 完全笔记 (优化排版)</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        /* 针对陷阱区域单独优化 */
+        .trap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 700px) {
+            .trap-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🗂️ JavaScript 数组·完全笔记 (示例+输出)</h1>
+            <p>代码在上 · 结果在下 · 附带 typeof 陷阱</p>
+        </header>
+
+        <!-- 基础：创建与访问 -->
+        <section class="section">
+            <div class="section-title">
+                <span>基础</span> 创建 & 访问
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>[] 字面量</code></div>
+                    <div class="card-title">数组字面量</div>
+                    <div class="card-description">最常用、最简洁的创建方式。</div>
+                    <pre class="card-code"><code>let arr = [1, 'a', true];
+let empty = [];</code></pre>
+                    <div class="card-example">[1, "a", true]  ;  []</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>Array() 构造器</code></div>
+                    <div class="card-title">Array 构造函数</div>
+                    <div class="card-description">单个数字参数表示长度，多个参数表示元素。</div>
+                    <pre class="card-code"><code>let arr1 = new Array(3);
+let arr2 = new Array(1,2,3);</code></pre>
+                    <div class="card-example">[空 × 3]  ;  [1,2,3]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>Array.of() / from()</code></div>
+                    <div class="card-title">ES6 创建方式</div>
+                    <div class="card-description">of 避免单数字歧义；from 从类数组创建。</div>
+                    <pre class="card-code"><code>Array.of(3);        // [3]
+Array.from('hi');   // ['h','i']</code></pre>
+                    <div class="card-example">[3]  ;  ["h","i"]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>.length</code></div>
+                    <div class="card-title">数组长度</div>
+                    <div class="card-description">可读可写，修改 length 可截断或扩展数组。</div>
+                    <pre class="card-code"><code>let arr = [1,2,3];
+arr.length = 2;
+arr.length = 4;</code></pre>
+                    <div class="card-example">[1,2]  ;  [1,2,空×2]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 专门讲 typeof 数组的问题 (优化为双卡片布局) -->
+        <section class="section">
+            <div class="section-title">
+                <span>陷阱</span> typeof 与数组判断
+            </div>
+            <div class="trap-grid">
+                <!-- 卡片1: typeof 问题 -->
+                <div class="card full-width-card" style="max-width: 100%;">
+                    <div class="card-header"><code>typeof []</code></div>
+                    <div class="card-title">typeof 的“谎言”</div>
+                    <div class="card-description">
+                        在 JavaScript 中，<code>typeof</code> 将数组视为 <strong>"object"</strong>，因为数组是特殊的对象。这常常导致判断失误。
+                    </div>
+                    <pre class="card-code"><code>console.log(typeof [1,2,3]); // "object"
+console.log(typeof {});       // "object"
+console.log(typeof null);     // "object"</code></pre>
+                    <div class="card-example">控制台输出: "object"  ;  "object"  ;  "object"</div>
+                    <div class="note" style="margin-top: 1rem;">
+                        ✅ 正确判断数组：<code>Array.isArray([])</code> → true<br>
+                        ✅ <code>[] instanceof Array</code> → true (但跨 frame 可能有问题)<br>
+                        ✅ <code>Object.prototype.toString.call([])</code> → "[object Array]"
+                    </div>
+                </div>
+                <!-- 卡片2: Array.isArray (原本单独放置，现并入陷阱区) -->
+                <div class="card">
+                    <div class="card-header"><code>Array.isArray()</code> <span style="background: #2563eb20; padding:0.2rem 0.8rem; border-radius:40px; font-size:0.8rem;">正确方法</span></div>
+                    <div class="card-title">判断数组</div>
+                    <div class="card-description">静态方法，专门用于检查变量是否为数组，返回布尔值。</div>
+                    <pre class="card-code"><code>Array.isArray([]);    // true
+Array.isArray({});    // false
+Array.isArray('hello');// false</code></pre>
+                    <div class="card-example">true  ;  false  ;  false</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 添加 / 删除元素 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 添加 & 删除 (栈/队列)
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>push() / pop()</code></div>
+                    <div class="card-title">末尾操作</div>
+                    <div class="card-description">push 尾部添加，返回新长度；pop 移除最后一项，返回该项。</div>
+                    <pre class="card-code"><code>let arr = [1,2];
+arr.push(3,4);
+arr.pop();</code></pre>
+                    <div class="card-example">push后→[1,2,3,4] ; pop后→[1,2,3] 弹出4</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>unshift() / shift()</code></div>
+                    <div class="card-title">开头操作</div>
+                    <div class="card-description">unshift 头部添加，shift 移除第一项并返回。</div>
+                    <pre class="card-code"><code>let arr = [2,3];
+arr.unshift(0,1);
+arr.shift();</code></pre>
+                    <div class="card-example">unshift后→[0,1,2,3] ; shift后→[1,2,3] 弹出0</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>splice()</code></div>
+                    <div class="card-title">万能修改</div>
+                    <div class="card-description">删除/插入/替换任意位置，直接修改原数组。</div>
+                    <pre class="card-code"><code>let arr = [1,2,3,4];
+arr.splice(1,2,'x','y');</code></pre>
+                    <div class="card-example">结果 arr: [1,'x','y',4]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>delete</code></div>
+                    <div class="card-title">delete 操作符</div>
+                    <div class="card-description">移除元素但保留空位，长度不变（不推荐）。</div>
+                    <pre class="card-code"><code>let arr = [1,2,3];
+delete arr[1];</code></pre>
+                    <div class="card-example">[1, 空, 3] (长度仍为3)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 遍历 & 迭代 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 遍历 & 迭代 (高阶函数)
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>forEach()</code></div>
+                    <div class="card-title">简单遍历</div>
+                    <div class="card-description">对每个元素执行回调，无返回值。</div>
+                    <pre class="card-code"><code>[1,2,3].forEach(v => console.log(v*2));</code></pre>
+                    <div class="card-example">控制台打印: 2, 4, 6</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>map()</code></div>
+                    <div class="card-title">映射新数组</div>
+                    <div class="card-description">每个元素经过回调，返回新数组。</div>
+                    <pre class="card-code"><code>let doubled = [1,2,3].map(x => x*2);</code></pre>
+                    <div class="card-example">doubled = [2,4,6]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>filter()</code></div>
+                    <div class="card-title">过滤元素</div>
+                    <div class="card-description">返回满足条件的新数组。</div>
+                    <pre class="card-code"><code>let evens = [1,2,3,4].filter(x => x%2===0);</code></pre>
+                    <div class="card-example">evens = [2,4]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>reduce()</code></div>
+                    <div class="card-title">累积归并</div>
+                    <div class="card-description">逐次迭代，累积为单个值。</div>
+                    <pre class="card-code"><code>let sum = [1,2,3].reduce((acc, v) => acc+v, 0);</code></pre>
+                    <div class="card-example">sum = 6</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 查找 & 判断 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 查找 & 判断
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>indexOf() / lastIndexOf()</code></div>
+                    <div class="card-title">查找索引</div>
+                    <div class="card-description">返回首次/末次索引，-1表示未找到。</div>
+                    <pre class="card-code"><code>[1,2,3,2].indexOf(2);
+[1,2,3,2].lastIndexOf(2);</code></pre>
+                    <div class="card-example">1  ;  3</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>includes()</code></div>
+                    <div class="card-title">是否包含</div>
+                    <div class="card-description">返回布尔值，能识别NaN。</div>
+                    <pre class="card-code"><code>[1,2,NaN].includes(NaN);</code></pre>
+                    <div class="card-example">true</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>find() / findIndex()</code></div>
+                    <div class="card-title">条件查找</div>
+                    <div class="card-description">返回第一个满足条件的元素/索引。</div>
+                    <pre class="card-code"><code>[5,12,8].find(x => x>10);
+[5,12,8].findIndex(x=>x>10);</code></pre>
+                    <div class="card-example">12  ;  1</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>some() / every()</code></div>
+                    <div class="card-title">存在性/全性判断</div>
+                    <div class="card-description">some 至少一个满足；every 全部满足。</div>
+                    <pre class="card-code"><code>[2,4,6].some(x=>x>5);
+[2,4,6].every(x=>x%2===0);</code></pre>
+                    <div class="card-example">true  ;  true</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 合并、切片、扁平 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 合并 & 切片 & 扁平
+            </div>
+            <div class="compare-row">
+                <div class="compare-col">
+                    <h4>concat() <span class="html5-badge">合并</span></h4>
+                    <p>连接多个数组/值，返回新数组。</p>
+                    <pre><code>[1,2].concat([3,4], 5);</code></pre>
+                    <div class="card-example" style="margin-top:0.5rem;">[1,2,3,4,5]</div>
+                </div>
+                <div class="compare-col">
+                    <h4>slice() <span class="html5-badge">切片</span></h4>
+                    <p>返回数组的一部分，原数组不变。支持负索引。</p>
+                    <pre><code>[1,2,3,4].slice(1,3);</code></pre>
+                    <div class="card-example" style="margin-top:0.5rem;">[2,3]</div>
+                </div>
+                <div class="compare-col">
+                    <h4>flat() / flatMap() <span class="html5-badge">扁平</span></h4>
+                    <p>拉平嵌套数组；flatMap 先 map 再 flat(1)。</p>
+                    <pre><code>[[1],[2,3]].flat();</code></pre>
+                    <div class="card-example" style="margin-top:0.5rem;">[1,2,3]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 排序 & 反转 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 排序 & 反转
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>sort()</code></div>
+                    <div class="card-title">数组排序</div>
+                    <div class="card-description">默认按字符串排序，可传入比较函数。</div>
+                    <pre class="card-code"><code>[3,1,10].sort();
+[3,1,10].sort((a,b)=>a-b);</code></pre>
+                    <div class="card-example">默认: [1,10,3] ; 比较函数: [1,3,10]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>reverse()</code></div>
+                    <div class="card-title">反转数组</div>
+                    <div class="card-description">颠倒元素顺序，直接修改原数组。</div>
+                    <pre class="card-code"><code>[1,2,3].reverse();</code></pre>
+                    <div class="card-example">[3,2,1]</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>toSorted() / toReversed()</code></div>
+                    <div class="card-title">ES2023 新方法</div>
+                    <div class="card-description">返回新数组，不修改原数组。</div>
+                    <pre class="card-code"><code>let orig = [3,1,2];
+let sorted = orig.toSorted();</code></pre>
+                    <div class="card-example">sorted = [1,2,3] ; orig 不变</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 其他常用方法 -->
+        <section class="section">
+            <div class="section-title">
+                <span>实用</span> 转换 & 填充 & 静态方法
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>join()</code></div>
+                    <div class="card-title">数组转字符串</div>
+                    <div class="card-description">用分隔符连接元素，默认逗号。</div>
+                    <pre class="card-code"><code>['a','b','c'].join('-');</code></pre>
+                    <div class="card-example">"a-b-c"</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>toString()</code></div>
+                    <div class="card-title">转字符串</div>
+                    <div class="card-description">效果等同于 join(',')。</div>
+                    <pre class="card-code"><code>[1,2,3].toString();</code></pre>
+                    <div class="card-example">"1,2,3"</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>fill()</code></div>
+                    <div class="card-title">填充数组</div>
+                    <div class="card-description">用固定值填充指定范围，修改原数组。</div>
+                    <pre class="card-code"><code>[1,2,3].fill(0,1,2);</code></pre>
+                    <div class="card-example">[1,0,3]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 重要对比：改变原数组 vs 返回新数组 -->
+        <section class="section">
+            <div class="section-title">
+                <span>对比</span> 修改原数组 vs 返回新数组
+            </div>
+            <div class="compare-row">
+                <div class="compare-col">
+                    <h4>🔧 修改原数组 <span class="html4-badge">破坏性</span></h4>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><code>push() / pop()</code></li>
+                        <li><code>unshift() / shift()</code></li>
+                        <li><code>splice()</code></li>
+                        <li><code>sort() / reverse()</code></li>
+                        <li><code>fill()</code></li>
+                        <li><code>copyWithin()</code></li>
+                    </ul>
+                </div>
+                <div class="compare-col">
+                    <h4>✨ 返回新数组 <span class="html5-badge">非破坏性</span></h4>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><code>map() / filter()</code></li>
+                        <li><code>concat() / slice()</code></li>
+                        <li><code>flat() / flatMap()</code></li>
+                        <li><code>toSorted() / toReversed()</code></li>
+                        <li><code>reduce()  (返回累积值)</code></li>
+                    </ul>
+                </div>
+                <div class="compare-col">
+                    <h4>⚡ 扩展运算符 (ES6)</h4>
+                    <p>优雅复制/合并数组，返回新数组。</p>
+                    <pre><code>let a = [1,2];
+let b = [...a, 3,4];</code></pre>
+                    <div class="card-example" style="margin-top:0.5rem;">b = [1,2,3,4]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合演示：数组去重 -->
+        <div class="demo-box">
+            <h3 style="margin-bottom: 0.8rem; color: #1e3a5f;">🧪 综合示例：数组去重 (多种方法)</h3>
+            <pre><code>const arr = [1,2,2,3,4,4,5];
+
+// 方法1: Set + 扩展符
+const unique1 = [...new Set(arr)];
+
+// 方法2: filter + indexOf
+const unique2 = arr.filter((v,i,a) => a.indexOf(v) === i);
+
+// 方法3: reduce
+const unique3 = arr.reduce((acc, v) => acc.includes(v) ? acc : [...acc, v], []);</code></pre>
+            <p><strong>输出:</strong> 三种方法均得到 [1,2,3,4,5]</p>
+        </div>
+
+        <footer>
+            <p>📖 JavaScript 数组方法大全 · 代码在上 · 输出在下 · 避开 typeof 陷阱 <br> <span style="opacity:0.7;">改变数组 · 遍历 · 查找 · 归并</span></p>
+        </footer>
+    </div>
+</body>
+</html>

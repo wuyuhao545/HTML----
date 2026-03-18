@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态内容 · CSS选择器适配</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #f8fafc;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.02);
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .subtitle {
+            color: #334155;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 0.5rem 0 2rem;
+            font-size: 1.1rem;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .demo-panel {
+            background: #f1f5f9;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            background: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #334155;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .demo-area {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 2px dashed #94a3b8;
+            min-height: 200px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        button {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: 1px solid #2563eb;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button.outline {
+            background: transparent;
+            color: #1e293b;
+            border: 1px solid #94a3b8;
+        }
+        button.outline:hover {
+            background: #f1f5f9;
+        }
+        .legend {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+        }
+        .dot-incorrect { background: #fecaca; border: 1px solid #ef4444; }
+        .dot-correct { background: #bbf7d0; border: 1px solid #22c55e; }
+        .note {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 0.8rem 1rem;
+            border-radius: 0.8rem;
+            font-size: 0.9rem;
+            margin: 1.5rem 0 0;
+        }
+        footer {
+            margin-top: 2rem;
+            color: #64748b;
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🎯 动态内容 · 选择器适配</h1>
+    <div class="subtitle">当 JavaScript 动态加载 HTML 后，DOM 结构可能变化，原有 CSS 选择器需要同步调整</div>
+
+    <div class="legend">
+        <div class="legend-item"><span class="color-dot dot-incorrect"></span> 错误选择器：<code>.main > ul</code>（只匹配直接子元素）</div>
+        <div class="legend-item"><span class="color-dot dot-correct"></span> 正确选择器：<code>.main #nav-container ul</code>（匹配新结构）</div>
+    </div>
+
+    <!-- 对比区域 -->
+    <div class="comparison">
+        <!-- 左侧：旧结构 + 错误选择器 -->
+        <div class="demo-panel">
+            <div class="panel-title">
+                <span>❌ 未适配选择器</span>
+                <span class="badge">样式失效</span>
+            </div>
+            <p>原本使用 <code>.main > ul</code>，但动态加载后 <code>ul</code> 外面包了一层 <code>#nav-container</code>，导致样式丢失。</p>
+            <div class="code-block">
+/* 错误：仍使用子选择器 */
+.main > ul {
+    background: #fecaca;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    font-weight: 500;
+    border: 2px solid #ef4444;
+}
+            </div>
+            <div class="demo-area" id="wrong-demo">
+                <!-- 动态内容将插入到这里 -->
+                <div style="color: #64748b; text-align: center;">等待动态加载…</div>
+            </div>
+            <div class="btn-group">
+                <button onclick="loadWrong()">🔄 加载内容（旧结构）</button>
+                <button class="outline" onclick="resetWrong()">↩️ 重置</button>
+            </div>
+            <p style="font-size:0.9rem; margin-top:0.5rem;">加载后观察：<strong>红色边框+浅红背景</strong> 应为 <code>.main > ul</code> 的效果，但由于 <code>ul</code> 被 <code>div</code> 包裹，样式<strong>不生效</strong>（背景为白色）。</p>
+        </div>
+
+        <!-- 右侧：新结构 + 正确选择器 -->
+        <div class="demo-panel">
+            <div class="panel-title">
+                <span>✅ 已适配选择器</span>
+                <span class="badge">样式生效</span>
+            </div>
+            <p>调整选择器为 <code>.main #nav-container ul</code>，精确匹配新结构。</p>
+            <div class="code-block">
+/* 正确：适配新结构 */
+.main #nav-container ul {
+    background: #bbf7d0;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    font-weight: 500;
+    border: 2px solid #22c55e;
+}
+            </div>
+            <div class="demo-area" id="correct-demo">
+                <div style="color: #64748b; text-align: center;">等待动态加载…</div>
+            </div>
+            <div class="btn-group">
+                <button onclick="loadCorrect()">🔄 加载内容（新结构）</button>
+                <button class="outline" onclick="resetCorrect()">↩️ 重置</button>
+            </div>
+            <p style="font-size:0.9rem; margin-top:0.5rem;">加载后观察：<strong>绿色边框+浅绿背景</strong> 正确应用，因为选择器匹配了 <code>#nav-container</code> 内的 <code>ul</code>。</p>
+        </div>
+    </div>
+
+    <!-- 解释说明 -->
+    <div class="note">
+        <strong>📌 核心原则：</strong> 当使用 JavaScript 动态插入 HTML 片段（如 <code>fetch</code> 加载公共组件）时，DOM 结构可能从 <code>.main > ul</code> 变为 <code>.main > div > ul</code> 或 <code>.main > 某个容器 > ul</code>。<br>
+        此时如果 CSS 仍使用旧的选择器（尤其是子选择器 <code>></code> 或依赖特定层级的选择器），样式就会丢失。<br>
+        解决方法：<strong>审查最终生成的 DOM 树</strong>，然后调整选择器以匹配实际结构，例如从 <code>.main > ul</code> 改为 <code>.main .nav-container ul</code> 或 <code>.main #nav-container ul</code>。
+    </div>
+
+    <!-- 公共样式定义 (放置在这里方便演示) -->
+    <style>
+        /* 这些规则仅作用于 .main 内部，避免干扰 */
+        .main {
+            /* 容器无特殊样式 */
+        }
+        /* 错误规则：.main > ul  (只选中直接子元素) */
+        .main > ul {
+            background: #fecaca !important;
+            padding: 1rem 2rem !important;
+            border-radius: 50px !important;
+            list-style: none !important;
+            display: flex !important;
+            gap: 1.5rem !important;
+            font-weight: 500 !important;
+            border: 2px solid #ef4444 !important;
+        }
+        /* 正确规则：.main #nav-container ul (选中 #nav-container 内的 ul) */
+        .main #nav-container ul {
+            background: #bbf7d0 !important;
+            padding: 1rem 2rem !important;
+            border-radius: 50px !important;
+            list-style: none !important;
+            display: flex !important;
+            gap: 1.5rem !important;
+            font-weight: 500 !important;
+            border: 2px solid #22c55e !important;
+        }
+        /* 为了让两个区域独立，给 demo-area 内的元素加上 main 类（模拟 .main 容器） */
+        .demo-area.main {
+            /* 确保内部元素受上面规则影响 */
+        }
+    </style>
+
+    <footer>
+        ⚡ 动态内容加载后，请使用浏览器开发者工具检查实际 DOM 结构，并相应更新 CSS 选择器。
+    </footer>
+</div>
+
+<script>
+    // 辅助函数：获取左侧和右侧的演示区域，并为其添加 .main 类以便CSS生效
+    const wrongArea = document.getElementById('wrong-demo');
+    const correctArea = document.getElementById('correct-demo');
+    wrongArea.classList.add('main');
+    correctArea.classList.add('main');
+
+    // 左侧加载内容（旧结构：直接插入 ul 作为 .main 的直接子元素）
+    function loadWrong() {
+        wrongArea.innerHTML = `
+            <ul>
+                <li><a href="#">🏠 首页</a></li>
+                <li><a href="#">📁 产品</a></li>
+                <li><a href="#">📞 联系</a></li>
+                <li><a href="#">ℹ️ 关于</a></li>
+            </ul>
+        `;
+        // 注意：这里 ul 是 .main 的直接子元素，所以 .main > ul 会选中它，背景应变为浅红+红框。
+        // 但因为我们想演示“未适配”场景，我们需要在右侧故意不直接插入 ul，而是插入容器。
+        // 本函数是左侧的旧结构，实际上这里应该展示的是“原本正确但现在错误”的对比？等一下重新梳理：
+        // 我们的目标是：左侧演示“错误选择器失效”，即左侧我们也要插入新结构（带div），这样 .main > ul 才不会选中。
+        // 然而左侧的标题是“未适配选择器”，意思是仍然使用旧的选择器，但实际加载的是新结构，导致样式不生效。
+        // 所以左侧应该加载新结构（带#nav-container），而右侧加载新结构并应用正确选择器。
+        // 因此需要修改：左侧也要加载带有容器的结构，使得 .main > ul 失效。
+        // 调整逻辑：
+        // 左侧（错误选择器区域）加载内容时，插入 <div id="nav-container"><ul>...</ul></div>
+        // 右侧（正确选择器区域）加载内容时，插入 <div id="nav-container"><ul>...</ul></div>
+        // 这样两边结构完全相同，但左侧的CSS规则是 .main > ul（不匹配），右侧的规则是 .main #nav-container ul（匹配）。
+        // 之前的loadWrong需要重写。
+        // 修改如下：
+    }
+
+    // 重新定义函数：左侧加载新结构（带nav-container），右侧也加载新结构。
+    function loadWrong() {
+        wrongArea.innerHTML = `
+            <div id="nav-container">
+                <ul>
+                    <li><a href="#">🏠 首页</a></li>
+                    <li><a href="#">📁 产品</a></li>
+                    <li><a href="#">📞 联系</a></li>
+                    <li><a href="#">ℹ️ 关于</a></li>
+                </ul>
+            </div>
+        `;
+        // 此时 .main > ul 不匹配，因为ul外面有div，所以样式不会生效（背景保持白色）
+    }
+
+    function loadCorrect() {
+        correctArea.innerHTML = `
+            <div id="nav-container">
+                <ul>
+                    <li><a href="#">🏠 首页</a></li>
+                    <li><a href="#">📁 产品</a></li>
+                    <li><a href="#">📞 联系</a></li>
+                    <li><a href="#">ℹ️ 关于</a></li>
+                </ul>
+            </div>
+        `;
+        // 此时 .main #nav-container ul 匹配，样式生效（绿色背景）
+    }
+
+    // 重置函数
+    function resetWrong() {
+        wrongArea.innerHTML = '<div style="color: #64748b; text-align: center;">等待动态加载…</div>';
+    }
+    function resetCorrect() {
+        correctArea.innerHTML = '<div style="color: #64748b; text-align: center;">等待动态加载…</div>';
+    }
+
+    // 默认加载一次内容，让用户一打开就看到对比
+    window.addEventListener('load', function() {
+        loadWrong();
+        loadCorrect();
+    });
+</script>
+
+<!-- 为链接添加基本样式，避免干扰 -->
+<style>
+    .demo-area a {
+        text-decoration: none;
+        color: #0f172a;
+    }
+    .demo-area li {
+        list-style: none;
+    }
+    .demo-area ul {
+        margin: 0;
+        padding: 0;
+    }
+    /* 确保没有额外样式覆盖演示效果 */
+    .demo-area {
+        transition: all 0.2s;
+    }
+</style>
+</body>
+</html>

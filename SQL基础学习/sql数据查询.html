@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL · 数据查询 (DQL)</title>
+    <link rel="stylesheet" href="sql.css">
+   
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="nav-home">🏠 返回主页</a>
+    <h1>🔍 数据查询语言 (DQL)</h1>
+    <p class="example-note" style="margin-top: 0.5rem;">核心语句：SELECT · 过滤 · 分组 · 排序</p>
+
+    <h2>基本 SELECT</h2>
+    <pre><code>-- 检索所有列
+SELECT * FROM 表名;
+
+-- 特定列 + 别名
+SELECT 列1 AS 别名1, 列2 别名2 FROM 表名;
+
+-- 去重
+SELECT DISTINCT 列名 FROM 表名;</code></pre>
+
+    <h2>WHERE 过滤</h2>
+    <pre><code>SELECT 列1, 列2
+FROM 表名
+WHERE 条件;
+
+-- 示例：工资大于6000 且 部门为 2 或 3
+SELECT name, salary
+FROM employees
+WHERE salary > 6000 AND dept_id IN (2, 3);</code></pre>
+
+    <h2>聚合函数</h2>
+    <pre><code>COUNT(*), SUM(列), AVG(列), MAX(列), MIN(列)</code></pre>
+    <pre><code>-- 统计员工总数、平均工资
+SELECT COUNT(*) AS 员工数, AVG(salary) AS 平均工资 FROM employees;</code></pre>
+
+    <h2>GROUP BY / HAVING</h2>
+    <pre><code>SELECT 列A, 聚合函数(列B)
+FROM 表名
+GROUP BY 列A
+HAVING 分组后条件;   -- 例如平均工资 > 8000</code></pre>
+
+    <h2>ORDER BY 排序</h2>
+    <pre><code>SELECT ... FROM ...
+ORDER BY 列1 DESC, 列2 ASC;</code></pre>
+
+    <div class="back2top"><a href="#">⬆ 回到顶部</a></div>
+    <footer>← 返回主页可切换其他模块</footer>
+</div>
+</body>
+</html>

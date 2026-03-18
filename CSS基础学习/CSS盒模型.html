@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 盒模型 · 元素分解与效果</title>
+    <!-- 外部样式 (若不存在, 内联后备样式已覆盖) -->
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <style>
+        /* ===== 全局布局后备样式 (增强独立显示) ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.25rem;
+            color: #0f172a;
+        }
+        .header p {
+            font-size: 1.2rem;
+            color: #475569;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            border-left: 6px solid #3b82f6;
+            padding-left: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1.2rem;
+            box-shadow: 0 15px 25px -8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #e9eef2;
+            transition: transform 0.1s ease;
+        }
+        .card:hover {
+            box-shadow: 0 20px 30px -10px rgba(0,60,130,0.15);
+        }
+        .card-header {
+            background: #f8fafc;
+            padding: 0.9rem 1.2rem;
+            border-bottom: 1px solid #dee4eb;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1rem;
+        }
+        .card-code {
+            background: #0b1a2e;
+            color: #e2e8f0;
+            padding: 1rem 1.2rem;
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-bottom: 1px solid #334155;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .card-effect {
+            padding: 1.5rem;
+            background: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .note {
+            background: #fff8e7;
+            border-left: 5px solid #f59e0b;
+            padding: 0.75rem 1.2rem;
+            border-radius: 0.8rem;
+            margin-top: 1.2rem;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+        footer {
+            margin-top: 3rem;
+            padding: 1.8rem;
+            text-align: center;
+            background: linear-gradient(145deg, #f1f5f9, #ffffff);
+            border-radius: 2rem;
+            font-weight: 500;
+            color: #1e293b;
+            border: 1px solid #d1d9e6;
+        }
+
+        /* ===== 盒模型元素独立示例专用类 (content-box 默认) ===== */
+        .content-only {
+            width: 200px;
+            height: 80px;
+            background: #7dd3fc;
+            text-align: center;
+            line-height: 80px;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+            color: #0c4a6e;
+            border-radius: 6px;
+        }
+
+        .padding-only {
+            width: 200px;
+            padding: 20px;
+            background: #b7c9fe;
+            border: none;
+            margin: 0;
+            text-align: center;
+            font-weight: 500;
+            color: #1e3a8a;
+            border-radius: 6px;
+            box-sizing: content-box;  /* 明确为标准盒模型 */
+        }
+
+        .border-only {
+            width: 200px;
+            border: 10px solid #f97316;
+            background: #fed7aa;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            line-height: 60px;        /* 方便查看内容区域 */
+            height: 60px;              /* 固定内容高度，配合边框 */
+            font-weight: 500;
+            color: #7b341e;
+            border-radius: 6px;
+            box-sizing: content-box;
+        }
+
+        .margin-parent {
+            background: #acb8c7;        /* 父背景显露 margin 区域 */
+            overflow: hidden;            /* 创建BFC包含margin，同时露出背景 */
+            border-radius: 12px;
+            width: 100%;
+        }
+        .margin-child {
+            margin: 30px;
+            background: #bbf7d0;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-weight: 500;
+            color: #14532d;
+            border: none;
+            padding: 0;
+            border-radius: 6px;
+        }
+
+        /* 原有演示类保留，增强稳定性 */
+        .box-demo {
+            background: #dbeafe;
+            border: 5px solid #2563eb;
+            padding: 20px;
+            margin: 20px;
+            width: 200px;
+            text-align: center;
+        }
+        .box-border-box {
+            box-sizing: border-box;
+            background: #fef9c3;
+            border: 5px solid #eab308;
+            padding: 20px;
+            margin: 20px;
+            width: 200px;
+            text-align: center;
+        }
+        .margin-collapse-demo {
+            background: #bbf7d0;
+            margin: 20px 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* ===== 新增 vw / vh 演示样式 ===== */
+        .vw-demo {
+            width: 50vw;
+            height: 80px;
+            background: #a5f3fc;
+            line-height: 80px;
+            text-align: center;
+            font-weight: 500;
+            border-radius: 6px;
+            color: #0369a1;
+        }
+        .vh-demo {
+            height: 30vh;
+            width: 200px;
+            background: #bef264;
+            line-height: 30vh;
+            text-align: center;
+            font-weight: 500;
+            border-radius: 6px;
+            color: #3f6212;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- 页眉 -->
+    <div class="header">
+        <h1>📦 CSS 盒模型 · 元素分解</h1>
+        <p>content · padding · border · margin · 每一部分单独可视</p>
+    </div>
+
+    <!-- 第一部分：标准盒模型 (保留原示例) -->
+    <section class="section">
+        <h2 class="section-title">🧱 标准盒模型 <span style="font-size:0.9rem; color:#475569;">(content-box)</span></h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>width:200px; padding:20px; border:5px;</code></div>
+                <div class="card-code">.box-demo {
+    width: 200px;
+    padding: 20px;
+    border: 5px solid #2563eb;
+    margin: 20px;
+    background: #dbeafe;
+}</div>
+                <div class="card-effect">
+                    <div class="box-demo">总宽 = 200+40+10 = 250px</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第二部分：怪异盒模型 (保留原示例) -->
+    <section class="section">
+        <h2 class="section-title">🔁 怪异盒模型 <span style="font-size:0.9rem; color:#475569;">(border-box)</span></h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>box-sizing: border-box;</code></div>
+                <div class="card-code">.box-border-box {
+    width: 200px;
+    padding: 20px;
+    border: 5px solid #eab308;
+    box-sizing: border-box;
+}</div>
+                <div class="card-effect">
+                    <div class="box-border-box">总宽200px (内容压缩)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第三部分：盒模型四元素独立示例 (新增核心部分) -->
+    <section class="section">
+        <h2 class="section-title">🔍 拆解 · 内容 / 内边距 / 边框 / 外边距</h2>
+        <div class="card-grid">
+
+            <!-- 卡片1: 仅 content -->
+            <div class="card">
+                <div class="card-header">📄 内容区域 · content-only</div>
+                <div class="card-code">.content-only {
+    width: 200px;
+    height: 80px;
+    background: #7dd3fc;
+    /* 无 padding, border, margin */
+}</div>
+                <div class="card-effect">
+                    <div class="content-only">content 200x80</div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">只定义内容区，无内边距/边框/外边距</p>
+                </div>
+            </div>
+
+            <!-- 卡片2: 仅 padding -->
+            <div class="card">
+                <div class="card-header">🧽 内边距 · padding-only</div>
+                <div class="card-code">.padding-only {
+    width: 200px;
+    padding: 20px;
+    background: #b7c9fe;
+    /* border:0; margin:0;  content-box */
+}</div>
+                <div class="card-effect">
+                    <div class="padding-only">padding 20px 四周<br>内容宽仍为200px</div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">总宽度 = 200 + 40 = 240px (背景延伸至padding)</p>
+                </div>
+            </div>
+
+            <!-- 卡片3: 仅 border -->
+            <div class="card">
+                <div class="card-header">🖼️ 边框 · border-only</div>
+                <div class="card-code">.border-only {
+    width: 200px;
+    border: 10px solid #f97316;
+    background: #fed7aa;
+    line-height: 60px; height: 60px;
+}</div>
+                <div class="card-effect">
+                    <div class="border-only">边框10px 内容200x60</div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">总宽 = 200 + 20 = 220px，边框外扩</p>
+                </div>
+            </div>
+
+            <!-- 卡片4: 仅 margin (通过父背景显露透明区域) -->
+            <div class="card">
+                <div class="card-header">↔️ 外边距 · margin-only</div>
+                <div class="card-code">.margin-parent { background:#acb8c7; overflow:hidden; }<br>.margin-child { margin:30px; height:60px; background:#bbf7d0; }</div>
+                <div class="card-effect">
+                    <div class="margin-parent">
+                        <div class="margin-child">margin 30px</div>
+                    </div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">灰色区域为父背景，显露透明margin。元素本身无padding/border</p>
+                </div>
+            </div>
+        </div>
+        <div class="note">
+            ⚡ 以上示例均采用默认 <code>box-sizing: content-box</code> (边框和内边距向外扩展)。怪异盒模型效果请参考上一节。
+        </div>
+    </section>
+
+    <!-- 第四部分：外边距折叠 (保留原示例) -->
+    <section class="section">
+        <h2 class="section-title">📏 外边距折叠 (Margin Collapse)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>上下相邻margin合并</code></div>
+                <div class="card-code">.margin-collapse-demo { margin: 20px 0; }</div>
+                <div class="card-effect">
+                    <div class="margin-collapse-demo">第一个div margin=20</div>
+                    <div class="margin-collapse-demo">第二个div margin=20，实际间距20而非40</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第五部分：计算公式 (增强理解) -->
+    <section class="section">
+        <h2 class="section-title">📐 盒模型总尺寸计算公式</h2>
+        <div style="background:#f1f5f9; border-radius:1.2rem; padding:1.5rem;">
+            <pre style="background:#1e293b; color:#f8fafc; padding:1rem; border-radius:16px; font-size:1rem; overflow-x:auto;">总宽度 = width + padding-left + padding-right + border-left + border-right
+总高度 = height + padding-top + padding-bottom + border-top + border-bottom
+
+👉 若使用 box-sizing: border-box; 则 width 包含 padding 和 border
+内容区宽度会被压缩：内容宽度 = width − 左右padding − 左右border</pre>
+            <p class="note" style="margin-top:1rem;">⭐ 外边距(margin)不影响元素实际占位尺寸，但影响布局间距，且可能发生折叠。</p>
+        </div>
+    </section>
+
+    <!-- 第六部分：视口单位 vw / vh (新增) -->
+    <section class="section">
+        <h2 class="section-title">📏 视口单位 (vw / vh)</h2>
+        <div class="card-grid">
+            <!-- vw 示例 -->
+            <div class="card">
+                <div class="card-header">🌐 宽度 50vw (视口宽度的50%)</div>
+                <div class="card-code">.vw-demo {
+    width: 50vw;
+    height: 80px;
+    background: #a5f3fc;
+    line-height: 80px;
+    text-align: center;
+    font-weight: 500;
+}</div>
+                <div class="card-effect">
+                    <div class="vw-demo">宽度 = 50vw</div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">调整浏览器窗口水平大小，观察蓝色条宽度变化。</p>
+                </div>
+            </div>
+            <!-- vh 示例 -->
+            <div class="card">
+                <div class="card-header">📐 高度 30vh (视口高度的30%)</div>
+                <div class="card-code">.vh-demo {
+    height: 30vh;
+    width: 200px;
+    background: #bef264;
+    line-height: 30vh;   /* 垂直居中 */
+    text-align: center;
+    font-weight: 500;
+}</div>
+                <div class="card-effect">
+                    <div class="vh-demo">高度 = 30vh</div>
+                    <p style="margin-top:0.8rem; font-size:0.9rem; color:#334155;">调整浏览器窗口垂直大小，观察绿色块高度变化。</p>
+                </div>
+            </div>
+        </div>
+        <div class="note">
+            💡 vw 和 vh 是相对于视口宽度和高度的百分比单位。<br>
+            • 1vw = 视口宽度的1% &nbsp; • 1vh = 视口高度的1% <br>
+            利用它们可以创建随视口缩放的响应式元素。
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        ⚡ 盒模型是CSS布局的基石 —— 理解 content、padding、border、margin 各自的作用，才能精准控制元素尺寸与间距。
+    </footer>
+</div>
+</body>
+</html>

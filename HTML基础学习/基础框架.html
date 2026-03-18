@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📐 HTML 基础框架标签大全 · 代码与效果展示</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 页眉 -->
+        <div class="header">
+            <h1>🧱 HTML 基础框架标签</h1>
+            <p>文档声明 · 根元素 · 头部元数据 · 页面主体 · 每个标签都有代码与效果示例</p>
+            <div style="margin-top: 0.8rem; color: #285e9b; background: #e9f0fc; padding: 0.3rem 1rem; border-radius: 40px; display: inline-block;">
+                ⚡ 当前文档本身即是一个完整的HTML框架示例
+            </div>
+        </div>
+
+        <!-- ========= 分组1：文档基础结构 ========= -->
+        <section class="section">
+            <div class="section-title">📄 文档基础 <span>&lt;!DOCTYPE&gt; &lt;html&gt; &lt;head&gt; &lt;body&gt;</span></div>
+            <div class="card-grid">
+                <!-- DOCTYPE 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;!DOCTYPE html&gt;</code><span class="card-title">文档类型声明</span></div>
+                    <div class="card-code">&lt;!DOCTYPE html&gt;  <!-- 必须是HTML第一行 --></div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">作用说明</div>
+                        <div class="meta-demo">告知浏览器采用HTML5标准渲染页面。本页面第一行即为此声明，确保现代标准模式。</div>
+                    </div>
+                </div>
+                <!-- <html> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;html&gt;</code><span class="card-title">HTML根元素</span></div>
+                    <div class="card-code">&lt;html lang="zh"&gt; ... &lt;/html&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <div>整个页面内容都被包含在&lt;html&gt;中，lang="zh" 有助于屏幕阅读器和搜索引擎。当前页面即如此。</div>
+                    </div>
+                </div>
+                <!-- <head> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;head&gt;</code><span class="card-title">文档头部</span></div>
+                    <div class="card-code">&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;页面标题&lt;/title&gt;
+  ...
+&lt;/head&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <div>头部内容不会直接显示，但定义了元数据、样式、脚本等。当前页面的样式就是在&lt;head&gt;中定义的。</div>
+                    </div>
+                </div>
+                <!-- <body> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;body&gt;</code><span class="card-title">文档主体</span></div>
+                    <div class="card-code">&lt;body&gt;
+  所有可见内容...
+&lt;/body&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <div>你现在看到的所有卡片、文字、按钮都在&lt;body&gt;内。每个页面只有一个&lt;body&gt;。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= 分组2：头部元数据 ========= -->
+        <section class="section">
+            <div class="section-title">🏷️ 头部元数据 <span>&lt;title&gt; &lt;meta&gt; &lt;link&gt; &lt;style&gt; &lt;script&gt; &lt;base&gt; &lt;noscript&gt;</span></div>
+            <div class="card-grid">
+                <!-- <title> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;title&gt;</code><span class="card-title">页面标题</span></div>
+                    <div class="card-code">&lt;title&gt;页面标题示例&lt;/title&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <div>当前浏览器标签页/窗口标题为：<strong id="doc-title-demo"></strong> (由&lt;title&gt;设置)</div>
+                        <script>document.getElementById('doc-title-demo') && (document.getElementById('doc-title-demo').innerText = document.title);</script>
+                    </div>
+                </div>
+                <!-- <meta charset> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;meta charset&gt;</code><span class="card-title">字符编码</span></div>
+                    <div class="card-code">&lt;meta charset="UTF-8"&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">效果说明</div>
+                        <div>声明文档使用UTF-8编码，确保中文、特殊符号正常显示。当前页面头部已设置，所有文字均正确渲染。</div>
+                    </div>
+                </div>
+                <!-- <meta viewport> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;meta name="viewport"&gt;</code><span class="card-title">视口设置</span></div>
+                    <div class="card-code">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">效果说明</div>
+                        <div>使页面在移动端合理缩放，width=device-width 适配设备宽度。当前页面已设置，可尝试在手机查看。</div>
+                    </div>
+                </div>
+                <!-- 其他常见 meta (description, keywords, author) 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;meta&gt; 描述/关键词/作者</code><span class="card-title">SEO 元数据</span></div>
+                    <div class="card-code">&lt;meta name="description" content="HTML基础框架演示"&gt;
+&lt;meta name="keywords" content="HTML, 框架, 标签"&gt;
+&lt;meta name="author" content="示例"&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">效果说明</div>
+                        <div>这些meta提供页面描述、关键词和作者信息，供搜索引擎和浏览器使用。当前页面实际包含以下meta：</div>
+                        <ul style="margin-top:0.5rem; font-size:0.9rem;">
+                            <li>描述: <code>HTML基础框架标签大全 · 代码与效果展示</code> (本页)</li>
+                            <li>视口: 已设置</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- <link> 卡片 (外部样式) -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;link&gt;</code><span class="card-title">链接外部资源</span></div>
+                    <div class="card-code">&lt;link rel="stylesheet" href="style.css"&gt;
+&lt;link rel="icon" href="favicon.ico"&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">模拟效果</div>
+                        <div>下方小方块背景色通过内部样式模拟：实际link可加载CSS、图标等。</div>
+                        <div style="width:50px; height:50px; background:#2b6eb0; border-radius:12px; margin-top:8px;"></div>
+                        <div style="font-size:0.8rem;">⬅️ 此颜色由&lt;style&gt;定义，但&lt;link&gt;也能做到。</div>
+                    </div>
+                </div>
+                <!-- <style> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;style&gt;</code><span class="card-title">内嵌样式</span></div>
+                    <div class="card-code">&lt;style&gt;
+  .demo { color: #2563eb; }
+&lt;/style&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <div class="demo-box" style="background: #d1e0ff;">这段文字的背景和边框由&lt;style&gt;定义（位于head内）。整个页面样式均由&lt;style&gt;控制。</div>
+                    </div>
+                </div>
+                <!-- <script> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;script&gt;</code><span class="card-title">脚本</span></div>
+                    <div class="card-code">&lt;script&gt;
+  console.log("Hello");
+  // 或定义函数
+&lt;/script&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <button class="demo-script" onclick="alert('脚本演示：这是由&lt;script&gt;触发的弹窗')">点击触发 alert (由脚本定义)</button>
+                        <p style="font-size:0.85rem;">页面上方也有一段内联脚本用于显示标题，证明&lt;script&gt;已执行。</p>
+                    </div>
+                </div>
+                <!-- <noscript> 卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;noscript&gt;</code><span class="card-title">无脚本内容</span></div>
+                    <div class="card-code">&lt;noscript&gt;您的浏览器未启用JavaScript&lt;/noscript&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">模拟效果</div>
+                        <noscript>🔴 您的浏览器当前不支持或禁用了JavaScript（此消息仅在无脚本时显示）</noscript>
+                        <span style="color:green;">✔️ 脚本已启用，你看不到noscript内容。</span>
+                    </div>
+                </div>
+                <!-- <base> 卡片 (基础URL) -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;base&gt;</code><span class="card-title">基础路径</span></div>
+                    <div class="card-code">&lt;base href="https://example.com/" target="_blank"&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">作用说明</div>
+                        <div>定义页面中所有相对URL的基准地址。当前页面未设置，因此相对链接相对于当前目录。若设置，所有相对链接都会受影响。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= 分组3：主体结构标签 ========= -->
+        <section class="section">
+            <div class="section-title">📌 主体结构标签 <span>&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;article&gt; &lt;section&gt; &lt;aside&gt; &lt;footer&gt;</span></div>
+            <div class="card-grid">
+                <!-- <header> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;header&gt;</code><span class="card-title">页眉/头部</span></div>
+                    <div class="card-code">&lt;header&gt;
+  &lt;h1&gt;网站标题&lt;/h1&gt;
+  &lt;p&gt;简介&lt;/p&gt;
+&lt;/header&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <header style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            <h2 style="margin:0;">演示header</h2>
+                            <p style="margin:0;">通常包含介绍或导航。</p>
+                        </header>
+                    </div>
+                </div>
+                <!-- <nav> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;nav&gt;</code><span class="card-title">导航区域</span></div>
+                    <div class="card-code">&lt;nav&gt;
+  &lt;a href="#"&gt;首页&lt;/a&gt; |
+  &lt;a href="#"&gt;关于&lt;/a&gt;
+&lt;/nav&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <nav style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            <a href="#">首页</a> | <a href="#">关于</a> | <a href="#">服务</a>
+                        </nav>
+                    </div>
+                </div>
+                <!-- <main> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;main&gt;</code><span class="card-title">主要内容</span></div>
+                    <div class="card-code">&lt;main&gt;
+  &lt;article&gt;...&lt;/article&gt;
+&lt;/main&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <main style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            页面核心内容应该放在&lt;main&gt;中 (本页所有卡片都属于主要内容区)
+                        </main>
+                    </div>
+                </div>
+                <!-- <article> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;article&gt;</code><span class="card-title">独立文章</span></div>
+                    <div class="card-code">&lt;article&gt;
+  &lt;h2&gt;新闻标题&lt;/h2&gt;
+  &lt;p&gt;内容...&lt;/p&gt;
+&lt;/article&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <article style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            <h3 style="margin:0;">文章示例</h3>
+                            <p>这是一篇独立文章，理论上可独立分发。</p>
+                        </article>
+                    </div>
+                </div>
+                <!-- <section> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;section&gt;</code><span class="card-title">通用章节</span></div>
+                    <div class="card-code">&lt;section&gt;
+  &lt;h2&gt;章节标题&lt;/h2&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/section&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <section style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            <h4 style="margin:0;">章节示例</h4>
+                            <p>文档中的一个主题区域。</p>
+                        </section>
+                    </div>
+                </div>
+                <!-- <aside> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;aside&gt;</code><span class="card-title">侧边栏/附注</span></div>
+                    <div class="card-code">&lt;aside&gt;
+  &lt;p&gt;相关链接或广告&lt;/p&gt;
+&lt;/aside&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <aside style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            侧边栏内容（通常与主内容相关）
+                        </aside>
+                    </div>
+                </div>
+                <!-- <footer> -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;footer&gt;</code><span class="card-title">页脚</span></div>
+                    <div class="card-code">&lt;footer&gt;
+  &lt;p&gt;版权信息&lt;/p&gt;
+&lt;/footer&gt;</div>
+                    <div class="card-effect">
+                        <div class="card-effect-label">实际效果</div>
+                        <footer style="border:1px dashed #90b8e0; padding:0.5rem; border-radius:12px;">
+                            © 2025 示例公司
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= 分组4：其他基础标签 ========= -->
+        <section class="section">
+            <div class="section-title">🔧 其他重要标签 <span>&lt;div&gt; &lt;span&gt; &lt;h1&gt;~&lt;h6&gt; &lt;p&gt; &lt;br&gt; &lt;hr&gt; &lt;!-- --&gt;</span></div>
+            <div class="card-grid">
+                <!-- div -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;div&gt;</code><span class="card-title">块级容器</span></div>
+                    <div class="card-code">&lt;div style="background:#ecf3fa;"&gt;内容&lt;/div&gt;</div>
+                    <div class="card-effect"><div style="background:#ecf3fa; padding:0.5rem; border-radius:8px;">块级div，用于布局分组</div></div>
+                </div>
+                <!-- span -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;span&gt;</code><span class="card-title">内联容器</span></div>
+                    <div class="card-code">&lt;span style="color:red;"&gt;红色文字&lt;/span&gt;</div>
+                    <div class="card-effect">这是一个<span style="color:red; font-weight:500;">红色span</span>，不换行。</div>
+                </div>
+                <!-- 标题 h1-h6 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;h1&gt; ~ &lt;h6&gt;</code><span class="card-title">标题层级</span></div>
+                    <div class="card-code">&lt;h1&gt;一级&lt;/h1&gt; ... &lt;h6&gt;六级&lt;/h6&gt;</div>
+                    <div class="card-effect">
+                        <h1 style="font-size:1.6rem; margin:0;">h1</h1>
+                        <h2 style="font-size:1.4rem; margin:0;">h2</h2>
+                        <h3 style="font-size:1.2rem; margin:0;">h3</h3>
+                        <h4 style="font-size:1rem; margin:0;">h4</h4>
+                        <h5 style="font-size:0.9rem; margin:0;">h5</h5>
+                        <h6 style="font-size:0.8rem; margin:0;">h6</h6>
+                    </div>
+                </div>
+                <!-- p -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;p&gt;</code><span class="card-title">段落</span></div>
+                    <div class="card-code">&lt;p&gt;这是一段文字...&lt;/p&gt;</div>
+                    <div class="card-effect"><p style="margin:0;">这是一个段落，前后有默认边距。</p></div>
+                </div>
+                <!-- br / hr -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;br&gt; &lt;hr&gt;</code><span class="card-title">换行/分割线</span></div>
+                    <div class="card-code">第一行&lt;br&gt;第二行&lt;hr&gt;</div>
+                    <div class="card-effect">
+                        第一行<br>第二行
+                        <hr style="margin:0.5rem 0;">
+                        分割线之上
+                    </div>
+                </div>
+                <!-- 注释 -->
+                <div class="card">
+                    <div class="card-header"><code>&lt;!-- --&gt;</code><span class="card-title">HTML注释</span></div>
+                    <div class="card-code">&lt;!-- 这是注释，不会显示 --&gt;</div>
+                    <div class="card-effect">
+                        <span>注释在源码可见，页面不渲染。</span>
+                        <!-- 这是一条隐藏注释，你看不到我 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例：展示这些标签如何协同工作 -->
+        <section class="section" style="margin-bottom:0;">
+            <div class="section-title">🧩 组合应用示例 <span>基础框架标签的实际嵌套</span></div>
+            <div class="card" style="grid-column:1/-1;">
+                <div class="card-header"><code>综合迷你页面</code><span class="card-title">header + nav + main + article + footer</span></div>
+                <div class="card-code" style="max-height:200px; overflow-y:auto;">&lt;body&gt;
+  &lt;header&gt;&lt;h2&gt;我的网站&lt;/h2&gt;&lt;/header&gt;
+  &lt;nav&gt;&lt;a href="#"&gt;首页&lt;/a&gt; &lt;a href="#"&gt;博客&lt;/a&gt;&lt;/nav&gt;
+  &lt;main&gt;
+    &lt;article&gt;
+      &lt;h3&gt;文章标题&lt;/h3&gt;
+      &lt;p&gt;内容...&lt;/p&gt;
+    &lt;/article&gt;
+    &lt;aside&gt;相关链接&lt;/aside&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;版权信息&lt;/footer&gt;
+&lt;/body&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <div style="border:1px solid #a0c0e0; border-radius:1rem; overflow:hidden;">
+                        <header style="background:#e1efff; padding:0.8rem; text-align:center;"><h3 style="margin:0;">🌟 我的网站</h3></header>
+                        <nav style="background:#c9ddf5; padding:0.5rem; display:flex; gap:1rem; justify-content:center;">
+                            <a href="#">首页</a><a href="#">博客</a><a href="#">项目</a>
+                        </nav>
+                        <main style="display:flex; padding:1rem; gap:1rem; background:#f4faff;">
+                            <article style="flex:3; background:white; padding:0.8rem; border-radius:0.8rem;">
+                                <h4>欢迎使用HTML框架</h4>
+                                <p>header, nav, main, article, aside, footer 共同构建语义化页面。</p>
+                            </article>
+                            <aside style="flex:1; background:#e7f0fc; padding:0.8rem; border-radius:0.8rem;">
+                                相关链接<br>· 链接1<br>· 链接2
+                            </aside>
+                        </main>
+                        <footer style="background:#c9ddf5; padding:0.5rem; text-align:center;">© 2025 基础框架展示</footer>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            ⚡ 本页展示了 HTML 基础框架标签：文档声明、html/head/body、元数据、内容结构标签等。每个卡片包含代码与效果说明。<br>
+            ⭐ 所有标签均可在当前页面源码中查看到实际应用。
+        </footer>
+    </div>
+
+    <!-- 底部脚本示例：也可放在body末尾 -->
+    <script>
+        // 额外的脚本演示：控制台输出
+        console.log('基础框架页面加载完成，演示<script>标签作用。');
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Element 对象 · 完全笔记</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧩 JavaScript Element 对象·完全笔记</h1>
+            <p>继承自 Node · 元素专属属性与方法大全</p>
+        </header>
+
+        <!-- 简介 -->
+        <section class="section">
+            <div class="section-title">
+                <span>基础</span> Element 是什么？
+            </div>
+            <div class="card-grid">
+                <div class="card" style="grid-column: span 2;">
+                    <div class="card-header"><code>Element 接口</code></div>
+                    <div class="card-title">文档中元素的基础对象</div>
+                    <div class="card-description">
+                        <code>Element</code> 继承自 <code>Node</code>，是所有 HTML 或 XML 元素对象的基类。它提供了元素特有的属性和方法，如 <code>id</code>、<code>className</code>、<code>classList</code>、<code>innerHTML</code> 以及尺寸、滚动等操作。
+                    </div>
+                    <pre class="card-code"><code>// 任何元素都是 Element 的实例
+document.body instanceof Element;  // true
+document.body instanceof Node;      // true</code></pre>
+                    <div class="card-example">true ; true</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 基础属性 -->
+        <section class="section">
+            <div class="section-title">
+                <span>属性</span> 标识与内容
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>id / className / tagName</code></div>
+                    <div class="card-title">基本标识</div>
+                    <div class="card-description"><code>id</code> 元素唯一标识，<code>className</code> 类名字符串，<code>tagName</code> 标签名（大写）。</div>
+                    <pre class="card-code"><code>el.id = 'main';
+el.className = 'box red';
+console.log(el.tagName); // 'DIV'</code></pre>
+                    <div class="card-example">设置 id 和 class，输出标签名 'DIV'</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>classList</code></div>
+                    <div class="card-title">类名操作</div>
+                    <div class="card-description">提供 add/remove/toggle/contains 方法管理类名。</div>
+                    <pre class="card-code"><code>el.classList.add('active');
+el.classList.toggle('visible');
+el.classList.contains('box'); // true</code></pre>
+                    <div class="card-example">添加类、切换类、检查类是否存在</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>innerHTML / outerHTML</code></div>
+                    <div class="card-title">HTML 内容</div>
+                    <div class="card-description"><code>innerHTML</code> 设置或获取内部的HTML；<code>outerHTML</code> 包含自身标签。</div>
+                    <pre class="card-code"><code>el.innerHTML = '&lt;span&gt;Hi&lt;/span&gt;';
+console.log(el.outerHTML); // '&lt;div&gt;&lt;span&gt;Hi&lt;/span&gt;&lt;/div&gt;'</code></pre>
+                    <div class="card-example">innerHTML 修改内部，outerHTML 输出完整标签</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>textContent</code></div>
+                    <div class="card-title">纯文本内容</div>
+                    <div class="card-description">获取或设置元素的文本（不解析 HTML）。</div>
+                    <pre class="card-code"><code>el.textContent = 'Hello &lt;b&gt;World&lt;/b&gt;'; // 不会加粗</code></pre>
+                    <div class="card-example">元素内显示 "Hello &lt;b&gt;World&lt;/b&gt;" 纯文本</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 遍历与查找 -->
+        <section class="section">
+            <div class="section-title">
+                <span>遍历</span> 父子兄弟 & 查找
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>children / parentElement</code></div>
+                    <div class="card-title">父子元素</div>
+                    <div class="card-description"><code>children</code> 返回子元素集合（HTMLCollection）；<code>parentElement</code> 返回父元素。</div>
+                    <pre class="card-code"><code>el.children;      // HTMLCollection
+el.parentElement; // 父元素或 null</code></pre>
+                    <div class="card-example">获取所有子元素和父元素</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>firstElementChild / lastElementChild</code></div>
+                    <div class="card-title">首尾子元素</div>
+                    <div class="card-description">只返回元素节点，忽略文本/注释。</div>
+                    <pre class="card-code"><code>el.firstElementChild; // 第一个子元素
+el.lastElementChild;  // 最后一个子元素</code></pre>
+                    <div class="card-example">与 firstChild 不同，它不会返回文本节点</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>nextElementSibling / previousElementSibling</code></div>
+                    <div class="card-title">兄弟元素</div>
+                    <div class="card-description">返回下一个/上一个兄弟元素，忽略非元素节点。</div>
+                    <pre class="card-code"><code>el.nextElementSibling;
+el.previousElementSibling;</code></pre>
+                    <div class="card-example">例如两个 &lt;div&gt; 之间若有换行，依然能正确获取相邻元素</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>closest(selector) / matches(selector)</code></div>
+                    <div class="card-title">选择器匹配</div>
+                    <div class="card-description"><code>closest</code> 返回匹配的最近祖先（包括自身）；<code>matches</code> 检查自身是否匹配。</div>
+                    <pre class="card-code"><code>el.closest('.container');
+el.matches('.active');   // true/false</code></pre>
+                    <div class="card-example">找到最近的 .container 祖先；检查自身是否有 active 类</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 属性操作 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 属性操作
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>getAttribute() / setAttribute()</code></div>
+                    <div class="card-title">获取/设置属性</div>
+                    <div class="card-description">操作任何属性（包括自定义 data-*）。</div>
+                    <pre class="card-code"><code>el.setAttribute('data-id', '123');
+console.log(el.getAttribute('data-id')); // '123'</code></pre>
+                    <div class="card-example">设置自定义属性并获取</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>hasAttribute() / removeAttribute()</code></div>
+                    <div class="card-title">判断/移除属性</div>
+                    <div class="card-description">检查是否存在属性，移除属性。</div>
+                    <pre class="card-code"><code>el.hasAttribute('disabled'); // true/false
+el.removeAttribute('disabled');</code></pre>
+                    <div class="card-example">移除 disabled 属性后按钮可用</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>dataset</code></div>
+                    <div class="card-title">自定义数据</div>
+                    <div class="card-description">通过 <code>dataset</code> 对象读写 <code>data-*</code> 属性。</div>
+                    <pre class="card-code"><code>el.dataset.user = '张三';
+console.log(el.dataset.user); // '张三'</code></pre>
+                    <div class="card-example">对应 HTML 中 data-user="张三"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 样式操作 -->
+        <section class="section">
+            <div class="section-title">
+                <span>样式</span> 内联与计算
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>style 属性</code></div>
+                    <div class="card-title">内联样式</div>
+                    <div class="card-description">读写元素的内联样式（驼峰命名）。</div>
+                    <pre class="card-code"><code>el.style.backgroundColor = 'red';
+el.style.fontSize = '16px';</code></pre>
+                    <div class="card-example">添加 background-color: red; 到内联样式</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>getComputedStyle()</code></div>
+                    <div class="card-title">计算后样式</div>
+                    <div class="card-description">获取元素最终应用的所有 CSS 属性值（只读）。</div>
+                    <pre class="card-code"><code>getComputedStyle(el).color; // 'rgb(0, 0, 0)'</code></pre>
+                    <div class="card-example">获取当前实际生效的颜色值</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 尺寸与位置 -->
+        <section class="section">
+            <div class="section-title">
+                <span>尺寸</span> 宽高与位置
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>clientWidth / clientHeight</code></div>
+                    <div class="card-title">可视内容宽高</div>
+                    <div class="card-description">包含内边距，不含边框和滚动条。</div>
+                    <pre class="card-code"><code>el.clientWidth;  // 例如 200</code></pre>
+                    <div class="card-example">元素内容区宽度（padding + width）</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>offsetWidth / offsetHeight</code></div>
+                    <div class="card-title">布局宽高</div>
+                    <div class="card-description">包含边框、内边距和滚动条（如果有）。</div>
+                    <pre class="card-code"><code>el.offsetWidth; // 例如 220 (包含边框)</code></pre>
+                    <div class="card-example">元素占用的完整宽高</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>scrollWidth / scrollHeight</code></div>
+                    <div class="card-title">滚动尺寸</div>
+                    <div class="card-description">包含溢出内容的完整尺寸。</div>
+                    <pre class="card-code"><code>el.scrollWidth;  // 内容总宽度</code></pre>
+                    <div class="card-example">当内容溢出时可获取完整宽高</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>getBoundingClientRect()</code></div>
+                    <div class="card-title">相对于视口的位置</div>
+                    <div class="card-description">返回 DOMRect 对象，包含 top, right, bottom, left, width, height。</div>
+                    <pre class="card-code"><code>const rect = el.getBoundingClientRect();
+console.log(rect.top, rect.left);</code></pre>
+                    <div class="card-example">元素左上角距离视口顶部/左边的距离</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 滚动与插入 -->
+        <section class="section">
+            <div class="section-title">
+                <span>行为</span> 滚动与插入
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>scrollIntoView()</code></div>
+                    <div class="card-title">滚动到可视区</div>
+                    <div class="card-description">使元素滚动到可见区域，可配置滚动行为和对齐方式。</div>
+                    <pre class="card-code"><code>el.scrollIntoView({ behavior: 'smooth', block: 'center' });</code></pre>
+                    <div class="card-example">页面平滑滚动，元素位于视口中央</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>insertAdjacentHTML()</code></div>
+                    <div class="card-title">插入 HTML</div>
+                    <div class="card-description">在指定位置插入 HTML 字符串，位置：'beforebegin', 'afterbegin', 'beforeend', 'afterend'。</div>
+                    <pre class="card-code"><code>el.insertAdjacentHTML('beforeend', '&lt;span&gt;Hi&lt;/span&gt;');</code></pre>
+                    <div class="card-example">在元素内部末尾添加 &lt;span&gt;Hi&lt;/span&gt;</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>insertAdjacentElement() / insertAdjacentText()</code></div>
+                    <div class="card-title">插入元素或文本</div>
+                    <div class="card-description">类似 insertAdjacentHTML，但参数分别为元素节点和文本字符串。</div>
+                    <pre class="card-code"><code>const span = document.createElement('span');
+el.insertAdjacentElement('beforeend', span);
+el.insertAdjacentText('afterbegin', 'Hello');</code></pre>
+                    <div class="card-example">在元素内部开头插入文本，末尾插入 span 元素</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 节点操作 (继承自 Node) -->
+        <section class="section">
+            <div class="section-title">
+                <span>操作</span> 添加/删除/替换 (Node 方法)
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>append() / prepend()</code></div>
+                    <div class="card-title">追加/前置子节点</div>
+                    <div class="card-description">可同时添加多个节点或字符串，无返回值。</div>
+                    <pre class="card-code"><code>parent.append('文本', childElement);
+parent.prepend(childElement);</code></pre>
+                    <div class="card-example">在父元素末尾/开头插入内容</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>before() / after()</code></div>
+                    <div class="card-title">在元素前后插入</div>
+                    <div class="card-description">将节点或字符串插入到当前元素之前或之后。</div>
+                    <pre class="card-code"><code>el.before('前面', someElement);
+el.after('后面', anotherElement);</code></pre>
+                    <div class="card-example">在当前元素前后添加内容</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>replaceWith()</code></div>
+                    <div class="card-title">替换自身</div>
+                    <div class="card-description">用指定的节点或字符串替换当前元素。</div>
+                    <pre class="card-code"><code>el.replaceWith(newElement, '一些文本');</code></pre>
+                    <div class="card-example">el 被 newElement 和文本节点替换</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>remove()</code></div>
+                    <div class="card-title">移除自身</div>
+                    <div class="card-description">直接从 DOM 中删除该元素。</div>
+                    <pre class="card-code"><code>el.remove(); // 元素消失</code></pre>
+                    <div class="card-example">从文档中移除 el</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例 -->
+        <div class="demo-box">
+            <h3 style="margin-bottom: 0.8rem; color: #1e3a5f;">🧪 综合示例：Element 方法小实践</h3>
+            <pre><code>&lt;div id="box" class="card" data-info="demo"&gt;原始内容&lt;/div&gt;
+
+&lt;script&gt;
+const box = document.getElementById('box');
+
+// 1. 属性操作
+box.setAttribute('data-size', 'large');
+console.log(box.dataset.size);   // 'large'
+
+// 2. 样式修改
+box.style.backgroundColor = '#ffd966';
+box.classList.add('highlight');
+
+// 3. 插入新元素
+const btn = document.createElement('button');
+btn.textContent = '点击';
+box.after(btn);
+
+// 4. 尺寸信息
+console.log(box.getBoundingClientRect().top);
+
+// 5. 查找祖先
+const container = box.closest('.container');
+&lt;/script&gt;</code></pre>
+            <p><strong>说明:</strong> 演示了属性、样式、插入、尺寸和查找等 Element 常用方法。</p>
+        </div>
+
+        <footer>
+            <p>📘 JavaScript Element 对象 · 代码在上 · 输出在下 · 涵盖核心属性与方法 <br> <span style="opacity:0.7;">标识 · 遍历 · 属性 · 样式 · 尺寸 · 滚动 · 节点操作</span></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教学：block · inline · inline-block · 其他基础display</title>
+    <!-- 引入外部样式文件 -->
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🧱 block · inline · inline-block 基础对比</h1>
+        <p>三种核心 display 值的独立演示与直观对比，外加其他常用取值</p>
+    </div>
+
+    <!-- ===== 1. 块元素 ===== -->
+    <section class="section">
+        <h2 class="section-title">📦 块元素 <code>display: block</code></h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><span>🔹 特性</span></div>
+                <ul style="padding-left:1.5rem;">
+                    <li>独占一行，自动换行</li>
+                    <li>默认宽度 100% 父容器</li>
+                    <li>可设置宽高、内外边距</li>
+                    <li>常见：<code>div, p, h1, section</code></li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>&lt;div&gt;</code> 示例</div>
+                <div class="card-demo">
+                    <pre style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;div class="demo-box"&gt;块元素&lt;/div&gt;
+&lt;p class="demo-box"&gt;另一个块&lt;/p&gt;</pre>
+                </div>
+                <div class="demo-box">块元素 div</div>
+                <p class="demo-box">块元素 p</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 2. 行内元素 ===== -->
+    <section class="section">
+        <h2 class="section-title">📄 行内元素 <code>display: inline</code></h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><span>🔹 特性</span></div>
+                <ul style="padding-left:1.5rem;">
+                    <li>与其他行内元素共享一行</li>
+                    <li>宽度由内容撑开，不可设宽高</li>
+                    <li>上下内边距不影响行高</li>
+                    <li>常见：<code>span, a, strong, em</code></li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>&lt;span&gt; &lt;a&gt;</code> 示例</div>
+                <div class="card-demo">
+                    <pre style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;span class="inline-demo"&gt;span&lt;/span&gt;
+&lt;a href="#" class="inline-demo"&gt;链接&lt;/a&gt;</pre>
+                </div>
+                <div>
+                    <span class="inline-demo">span</span>
+                    <a href="#" class="inline-demo">链接</a>
+                    <strong class="inline-demo">强调</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 3. 行内块元素 ===== -->
+    <section class="section">
+        <h2 class="section-title">🧩 行内块元素 <code>display: inline-block</code></h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><span>🔹 特性</span></div>
+                <ul style="padding-left:1.5rem;">
+                    <li>同行显示，但可设宽高</li>
+                    <li>默认宽度由内容撑开</li>
+                    <li>上下内外边距有效</li>
+                    <li>常见：<code>img, button, input</code> 或 CSS 设置</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>inline-block</code> 示例</div>
+                <div class="card-demo">
+                    <pre style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;div class="inline-block-demo"&gt;盒子1&lt;/div&gt;
+&lt;div class="inline-block-demo"&gt;盒子2&lt;/div&gt;</pre>
+                </div>
+                <div>
+                    <div class="inline-block-demo">盒子1</div>
+                    <div class="inline-block-demo">盒子2</div>
+                    <button style="width:80px; height:40px;">按钮</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. 直观对比（三种同框） ===== -->
+    <section class="section">
+        <h2 class="section-title">⚖️ 三种 display 直观对比</h2>
+        <div style="background: #f1f5f9; border-radius: 1.5rem; padding: 1.5rem;">
+            <div style="background: white; border-radius: 1rem; padding: 1rem; border: 1px solid #cbd5e1;">
+                <p><strong>块元素</strong>（蓝色）独占一行：</p>
+                <div class="demo-block">块 div</div>
+                <p class="demo-block">块 p</p>
+
+                <p><strong>行内元素</strong>（黄色）并排：</p>
+                <span class="demo-inline">span</span>
+                <a href="#" class="demo-inline">链接</a>
+                <strong class="demo-inline">strong</strong>
+
+                <p><strong>行内块</strong>（绿色）并排且可设宽高：</p>
+                <div class="demo-inlineblock">A</div>
+                <div class="demo-inlineblock demo-inlineblock-wide">B</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. 特性对比表（三行） ===== -->
+    <section class="section">
+        <h2 class="section-title">📋 特性对比表</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr><th>display 值</th><th>是否独占一行</th><th>默认宽度</th><th>可设宽高</th><th>内部布局特点</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>block</code></td><td>✅ 是</td><td>100% 父容器</td><td>✅ 是</td><td>块级流</td></tr>
+                <tr><td><code>inline</code></td><td>❌ 否</td><td>由内容撑开</td><td>❌ 否</td><td>行内流</td></tr>
+                <tr><td><code>inline-block</code></td><td>❌ 否</td><td>由内容撑开</td><td>✅ 是</td><td>块级内部但行外</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ===== 6. 其他常用 display 值（垂直排列卡片） ===== -->
+    <section class="section">
+        <h2 class="section-title">🧰 其他常用 display 值</h2>
+        <div class="card-grid" style="grid-template-columns: 1fr;">
+            <!-- none -->
+            <div class="card">
+                <div class="card-header"><code>display: none</code></div>
+                <div class="card-demo">
+                    <pre style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;div&gt;可见&lt;/div&gt;
+&lt;div style="display: none;"&gt;隐藏&lt;/div&gt;</pre>
+                </div>
+                <div>
+                    <span style="background:#bfdbfe; padding:0.2rem 0.5rem;">可见</span>
+                    <span style="display: none;">看不见</span>
+                    <span style="background:#bfdbfe; padding:0.2rem 0.5rem;">后面</span>
+                </div>
+                <p class="note">完全隐藏，不占空间</p>
+            </div>
+
+            <!-- list-item -->
+            <div class="card">
+                <div class="card-header"><code>display: list-item</code></div>
+                <div class="card-demo">
+                    <pre style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;div style="display: list-item;"&gt;项目&lt;/div&gt;</pre>
+                </div>
+                <div>
+                    <div class="list-item-demo" style="margin-left:1.5rem;">项目符号1</div>
+                    <div class="list-item-demo" style="margin-left:1.5rem;">项目符号2</div>
+                </div>
+                <p class="note">表现为列表项，自带标记</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 完整对比 block · inline · inline-block · 以及其他 display 取值（垂直卡片）
+    </footer>
+</div>
+</body>
+</html>

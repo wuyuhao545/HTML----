@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📁 项目结构与资源引用 · 变量提升 · 闭包</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/style.css"> 
+</head>
+<body>
+    <h1 class="sr-only">项目结构与资源引用 · 变量提升 · 闭包</h1>
+
+    <div class="container">
+        <div class="header">
+            <h1>📁 项目结构与资源引用</h1>
+            <p>绝对路径 · 模块化开发 · 文件组织 · 变量提升 · 闭包</p>
+        </div>
+
+        <!-- ===== 第二部分：模块化开发 (原第二部分, 现为第一部分) ===== -->
+        <section class="section">
+            <h2 class="section-title">🧩 模块化开发：抽离公共组件</h2>
+            <div class="card-grid">
+                <!-- 独立文件 header.html -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-file-code"></i>
+                        <span>header.html (独立文件)</span>
+                    </div>
+                    <div class="card-code">
+&lt;!-- header.html --&gt;
+&lt;header class="site-header"&gt;
+  &lt;img src="/picture/logo.png" alt="Logo"&gt;
+  &lt;nav&gt;
+    &lt;a href="/"&gt;首页&lt;/a&gt;
+    &lt;a href="/about"&gt;关于&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+                    </div>
+                    <div class="card-effect">
+                        <p>✔️ 一处编写，全局复用<br>✔️ 修改只需更新一个文件</p>
+                    </div>
+                </div>
+
+                <!-- 动态加载示例 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-download"></i>
+                        <span>fetch 加载组件</span>
+                    </div>
+                    <div class="card-code">
+fetch('/header.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('header-placeholder').innerHTML = html;
+    // 在这里初始化交互
+  })
+  .catch(err => {
+    console.error('加载失败', err);
+  });
+                    </div>
+                    <div class="card-effect">
+                        <button onclick="simulateModuleLoad()">点击加载模块</button>
+                        <div id="module-demo" style="margin-top:1rem; background:#f1f5f9; padding:0.5rem; border-radius:8px;">
+                            <!-- 模拟的 header 将出现 -->
+                        </div>
+                        <p class="note">实际项目中，header.html 需放在服务器根目录，并用绝对路径引用内部资源。</p>
+                    </div>
+                </div>
+
+                <!-- 好处总结 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>模块化优势</span>
+                    </div>
+                    <div class="card-effect">
+                        <ul style="padding-left:1.2rem;">
+                            <li>✅ 代码复用，减少重复</li>
+                            <li>✅ 维护简单，一处修改处处生效</li>
+                            <li>✅ 协作开发，分工明确</li>
+                            <li>✅ 缓存优化，公共文件可单独缓存</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第四部分：变量提升与闭包 (Hoisting & Closure) 原为第四部分，现为第二部分 ===== -->
+        <section class="section">
+            <h2 class="section-title">📌 变量提升与闭包 (Hoisting & Closure)</h2>
+            <div class="card-grid">
+                <!-- 函数声明提升 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                        <span>函数声明提升</span>
+                    </div>
+                    <div class="card-code">
+// 可以在声明前调用
+sayHi();  
+function sayHi() { return "Hello"; }
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            try {
+                                function sayHi() { return "Hello"; }
+                                let result = sayHi();
+                                document.write('<p>sayHi() 结果: ' + result + ' (函数声明提升，定义在后也可调用)</p>');
+                            } catch(e) {
+                                document.write('<p>错误: ' + e.message + '</p>');
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- var 变量提升 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                        <span>var 变量提升</span>
+                    </div>
+                    <div class="card-code">
+console.log(a); // undefined
+var a = 5;
+console.log(a); // 5
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>var a 提升前: ' + (typeof a !== 'undefined' ? a : 'undefined（实际为undefined，但未赋值）') + '</p>');
+                            var a = 5;
+                            document.write('<p>var a 赋值后: ' + a + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- let/const 暂时性死区 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-ban"></i>
+                        <span>let/const 暂时性死区</span>
+                    </div>
+                    <div class="card-code">
+// 不能提前访问
+console.log(b); // ReferenceError
+let b = 10;
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            try {
+                                document.write('<p>尝试访问 let b 前: ' + b + '</p>');
+                            } catch(e) {
+                                document.write('<p>捕获错误（暂时性死区）: ' + e.message + '</p>');
+                            }
+                            let b = 10;
+                            document.write('<p>let b 赋值后: ' + b + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 闭包基本示例 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>闭包基本示例</span>
+                    </div>
+                    <div class="card-code">
+function outer(x) {
+  return function(y) { return x + y; };
+}
+const add5 = outer(5);
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            function outer(x) {
+                                return function(y) { return x + y; };
+                            }
+                            const add5 = outer(5);
+                            document.write('<p>add5(3) = ' + add5(3) + ' (仍能访问 x=5)</p>');
+                            document.write('<p>add5(10) = ' + add5(10) + '</p>');
+                        </script>
+                        <div class="note">内部函数记住外部作用域的变量。</div>
+                    </div>
+                </div>
+
+                <!-- 计数器闭包 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span>计数器闭包</span>
+                    </div>
+                    <div class="card-code">
+function createCounter() {
+  let count = 0;
+  return function() { return ++count; };
+}
+const counter = createCounter();
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            function createCounter() {
+                                let count = 0;
+                                return function() { return ++count; };
+                            }
+                            const counter = createCounter();
+                            document.write('<p>counter() 第一次: ' + counter() + '</p>');
+                            document.write('<p>counter() 第二次: ' + counter() + '</p>');
+                            document.write('<p>counter() 第三次: ' + counter() + ' (count被保留)</p>');
+                        </script>
+                        <button onclick="alert('当前计数值: ' + counter())">点我调用 counter()</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== HTML/CSS 组件化与模板化 (原第五部分，现为第三部分) ===== -->
+        <section class="section">
+            <h2 class="section-title">🎨 HTML/CSS 组件化与模板化</h2>
+            <div class="card-grid">
+                <!-- 卡片1：<template> 标签 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-regular fa-file-code"></i>
+                        <span>&lt;template&gt; 标签</span>
+                    </div>
+                    <div class="card-code">
+&lt;!-- 定义模板（不可见） --&gt;
+&lt;template id="user-card"&gt;
+  &lt;div class="card"&gt;
+    &lt;h3&gt;用户名&lt;/h3&gt;
+    &lt;p&gt;简介内容&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  const template = document.getElementById('user-card');
+  const clone = template.content.cloneNode(true);
+  container.appendChild(clone);
+&lt;/script&gt;
+                    </div>
+                    <div class="card-effect">
+                        <button onclick="useTemplate()">克隆模板并插入</button>
+                        <div id="template-demo" style="margin-top:1rem; display: flex; gap: 1rem; flex-wrap: wrap;"></div>
+                        <p class="note"><code>&lt;template&gt;</code> 内容不可见，可被 JS 克隆多次，实现组件复用。</p>
+                    </div>
+                </div>
+
+                <!-- 卡片2：CSS BEM 命名规范 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-brands fa-css3-alt"></i>
+                        <span>CSS BEM 方法论</span>
+                    </div>
+                    <div class="card-code">
+/* 块 Block */
+.card { }
+/* 元素 Element */
+.card__title { }
+.card__desc { }
+/* 修饰符 Modifier */
+.card__desc--highlight { }
+                    </div>
+                    <div class="card-effect">
+                        <div class="bem-card">
+                            <div class="bem-card__title">BEM 卡片示例</div>
+                            <div class="bem-card__desc">普通描述文本</div>
+                            <div class="bem-card__desc bem-card__desc--highlight">高亮描述（修饰符）</div>
+                        </div>
+                        <p class="note">BEM 通过命名约定实现组件样式隔离，避免冲突。</p>
+                    </div>
+                </div>
+
+                <!-- 卡片3：Web Components 简介 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-brands fa-webflow"></i>
+                        <span>Web Components 基础</span>
+                    </div>
+                    <div class="card-code">
+// 定义自定义元素
+class MyButton extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = `
+      &lt;button style="background:#3b82f6; color:white; border:none; padding:0.5rem 1rem; border-radius:30px;"&gt;
+        &lt;slot&gt;默认按钮&lt;/slot&gt;
+      &lt;/button&gt;
+    `;
+  }
+}
+customElements.define('my-button', MyButton);
+                    </div>
+                    <div class="card-effect">
+                        <my-button>✨ 自定义按钮</my-button>
+                        <my-button></my-button>
+                        <p class="note">使用 Shadow DOM 封装内部结构和样式，生成可复用标签。</p>
+                    </div>
+                </div>
+
+                <!-- 卡片4：Shadow DOM 样式隔离 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>样式隔离 (Shadow DOM)</span>
+                    </div>
+                    <div class="card-code">
+&lt;style&gt;
+  /* 外部样式不影响 Shadow DOM 内部 */
+  .shadow-demo p { color: red; }
+&lt;/style&gt;
+
+&lt;div class="shadow-demo"&gt;
+  &lt;p&gt;外部普通段落（红色）&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;my-element&gt;&lt;/my-element&gt;
+                    </div>
+                    <div class="card-effect">
+                        <style>
+                            .shadow-demo p { color: red; }
+                        </style>
+                        <div class="shadow-demo">
+                            <p>外部段落（受全局样式影响，红色）</p>
+                        </div>
+                        <my-paragraph></my-paragraph>
+                        <p class="note">Shadow DOM 内部的元素不受外部 CSS 影响，实现真正隔离。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例：模拟真实项目 (原第六部分，现为第四部分) -->
+        <section class="section">
+            <h2 class="section-title">🧪 综合示例：动态加载的 Header 内部资源</h2>
+            <div class="card" style="grid-column:1/-1;">
+                <div class="card-header">
+                    <i class="fa-solid fa-code-branch"></i>
+                    <span>模拟一个包含图片的 header.html 加载</span>
+                </div>
+                <div class="card-code" style="display:flex; gap:1rem; flex-wrap:wrap;">
+&lt;!-- 假设 header.html 内容如下 --&gt;
+&lt;header&gt;
+  &lt;img src="/picture/logo.png" alt="绝对路径logo"&gt;
+  &lt;img src="picture/logo.png" alt="相对路径logo"&gt;
+  &lt;nav&gt;
+    &lt;a href="/"&gt;首页&lt;/a&gt;
+    &lt;a href="/about"&gt;关于&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+                </div>
+                <div class="card-effect">
+                    <button onclick="loadRealisticHeader()">加载综合示例</button>
+                    <div id="realistic-demo" style="margin-top:1rem; border:2px solid #cbd5e1; border-radius:12px; padding:1rem;">
+                        <!-- 内容动态插入 -->
+                    </div>
+                    <p class="note">注意观察两张图片：绝对路径的图片显示“根目录”，相对路径的显示“当前目录”。实际项目中请务必使用绝对路径。</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            ⚡ 今日学习：绝对路径、模块化、文件组织、变量提升、闭包 · 构建可维护的前端项目<br>
+            <span style="font-size:0.8rem;">所有演示均为模拟，真实环境需通过本地服务器运行测试</span>
+        </footer>
+    </div>
+
+    <!-- 定义一些模板和自定义元素供演示使用 -->
+    <template id="demo-template">
+        <div style="background:#dbeafe; padding:0.5rem; border-radius:8px; border:1px solid #3b82f6;">
+            <i class="fa-regular fa-copy"></i> 从模板克隆的卡片
+        </div>
+    </template>
+
+    <script>
+        // 模拟模块加载 (原用于第二部分)
+        function simulateModuleLoad() {
+            const demo = document.getElementById('module-demo');
+            demo.innerHTML = `
+                <header style="background:#f1f5f9; padding:0.5rem; border-radius:8px; display:flex; gap:1rem; align-items:center;">
+                    <span style="background:#cbd5e1; padding:0.3rem 1rem;">🔲 图片占位</span>
+                    <nav>
+                        <a href="#" style="margin-right:1rem;">首页</a>
+                        <a href="#">关于</a>
+                    </nav>
+                </header>
+                <p class="note">成功加载 header.html 模块（模拟）</p>
+            `;
+        }
+
+        // 综合示例加载 (原第六部分)
+        function loadRealisticHeader() {
+            const container = document.getElementById('realistic-demo');
+            container.innerHTML = `
+                <header style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 1rem;">
+                        <span style="background: #d1fae5; padding:0.3rem 1rem; border-radius:30px;">✅ 绝对路径图片 (显示)</span>
+                        <span style="background: #fee2e2; padding:0.3rem 1rem; border-radius:30px;">❌ 相对路径图片 (裂图)</span>
+                    </div>
+                    <nav style="display: flex; gap: 1rem;">
+                        <a href="#">首页</a>
+                        <a href="#">关于</a>
+                        <a href="#">服务</a>
+                    </nav>
+                </header>
+                <p style="margin-top:0.5rem; color:#475569;"><i class="fa-solid fa-circle-info"></i> 绝对路径 <code>/picture/logo.png</code> 总是从根目录请求，相对路径 <code>picture/logo.png</code> 基于当前页面，若在子目录则失败。</p>
+            `;
+        }
+
+        // template 演示函数
+        function useTemplate() {
+            const template = document.getElementById('demo-template');
+            const container = document.getElementById('template-demo');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+        }
+
+        // 定义 Web Components 示例
+        class MyButton extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.innerHTML = `
+                    <button style="background:#3b82f6; color:white; border:none; padding:0.5rem 1rem; border-radius:30px; font-size:1rem;">
+                        <slot></slot>
+                    </button>
+                `;
+            }
+        }
+        customElements.define('my-button', MyButton);
+
+        class MyParagraph extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        p { color: green; font-weight: bold; }
+                    </style>
+                    <p>我是 Shadow DOM 内部的段落（绿色，不受外部红色样式影响）</p>
+                `;
+            }
+        }
+        customElements.define('my-paragraph', MyParagraph);
+    </script>
+</body>
+</html>

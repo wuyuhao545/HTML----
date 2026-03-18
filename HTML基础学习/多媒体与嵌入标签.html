@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖼️ HTML 多媒体与嵌入标签大全 · 代码+效果</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎥 多媒体·图像·嵌入标签全集</h1>
+        <p>&lt;img&gt; &lt;picture&gt; &lt;figure&gt; &lt;audio&gt; &lt;video&gt; &lt;iframe&gt; &lt;canvas&gt; &lt;svg&gt; &lt;map&gt; … 每个卡片带有效果</p>
+    </div>
+
+    <!-- ========= 分组1：图像与图形 ========= -->
+    <section class="section">
+        <div class="section-title">🖼️ 图像与图形 <span>&lt;img&gt; &lt;picture&gt; &lt;figure&gt; &lt;map&gt; &lt;area&gt; &lt;canvas&gt; &lt;svg&gt;</span></div>
+        <div class="card-grid">
+            <!-- 基础 img 标签 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;img&gt;</code><span class="card-title">基础图像</span></div>
+                <div class="card-code">&lt;img src="https://picsum.photos/200/150?random=1" alt="示例图片" width="200" height="150"&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <img src="https://picsum.photos/200/150?random=1" alt="随机图片" width="200" height="150" style="border-radius:12px;">
+                    <div class="note">图片来自 picsum.photos (随机)</div>
+                </div>
+            </div>
+
+            <!-- picture + source 响应式图像 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;picture&gt; + &lt;source&gt;</code><span class="card-title">响应式图像</span></div>
+                <div class="card-code">&lt;picture&gt;
+  &lt;source media="(max-width: 400px)" srcset="data:image/svg+xml,%3Csvg...%3E"&gt;
+  &lt;img src="data:image/svg+xml,%3Csvg...%3E" alt="响应式"&gt;
+&lt;/picture&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">调整窗口宽度看变化 (≤400px 红方块 / >400px 绿方块)</div>
+                    <picture>
+                        <source media="(max-width: 400px)" srcset="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150'%3E%3Crect width='200' height='150' fill='%23e63946'/%3E%3Ctext x='20' y='80' fill='white' font-size='16'%3E小屏幕 红色%3C/text%3E%3C/svg%3E">
+                        <source media="(min-width: 401px)" srcset="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150'%3E%3Crect width='200' height='150' fill='%232a9d8f'/%3E%3Ctext x='20' y='80' fill='white' font-size='16'%3E大屏幕 绿色%3C/text%3E%3C/svg%3E">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150'%3E%3Crect width='200' height='150' fill='%23aaaaaa'/%3E%3Ctext x='20' y='80' fill='white'%3E默认%3C/text%3E%3C/svg%3E" alt="响应式演示">
+                    </picture>
+                </div>
+            </div>
+
+            <!-- figure + figcaption -->
+            <div class="card">
+                <div class="card-header"><code>&lt;figure&gt; + &lt;figcaption&gt;</code><span class="card-title">带标题的图像</span></div>
+                <div class="card-code">&lt;figure&gt;
+  &lt;img src="https://picsum.photos/200/120?random=2" alt="风景"&gt;
+  &lt;figcaption&gt;图：随机风景&lt;/figcaption&gt;
+&lt;/figure&gt;</div>
+                <div class="card-effect">
+                    <figure style="margin:0;">
+                        <img src="https://picsum.photos/200/120?random=2" alt="随机" style="border-radius:12px;">
+                        <figcaption style="font-size:0.9rem; color:#2b4f7b;">⬆️ 随机图片说明</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <!-- 图像映射 <map> + <area> -->
+            <div class="card">
+                <div class="card-header"><code>&lt;map&gt; + &lt;area&gt;</code><span class="card-title">图像热点区域</span></div>
+                <div class="card-code">&lt;img src="..." usemap="#shapeMap"&gt;
+&lt;map name="shapeMap"&gt;
+  &lt;area shape="circle" coords="80,80,40" href="#" alt="圆" title="圆形"&gt;
+  &lt;area shape="rect" coords="130,40,190,100" href="#" alt="矩形" title="矩形"&gt;
+&lt;/map&gt;</div>
+                <div class="card-effect">
+                    <!-- 使用内联SVG生成基础图片 -->
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='150'%3E%3Crect width='240' height='150' fill='%23e6f0ff'/%3E%3Ccircle cx='80' cy='80' r='40' fill='%23ffb3b3' stroke='%23a33' stroke-width='2' /%3E%3Crect x='130' y='40' width='60' height='60' fill='%23b3d9ff' stroke='%23266' stroke-width='2' /%3E%3Ctext x='20' y='130' fill='%23333' font-size='10'%3E鼠标悬停查看区域%3C/text%3E%3C/svg%3E" usemap="#demoMap" alt="map演示" style="border-radius:12px;">
+                    <map name="demoMap">
+                        <area shape="circle" coords="80,80,40" href="#" alt="圆形区域" title="圆形区域 (点击无跳转)">
+                        <area shape="rect" coords="130,40,190,100" href="#" alt="矩形区域" title="矩形区域 (点击无跳转)">
+                    </map>
+                    <div class="note">鼠标移到彩色区域上会显示指针（链接#）</div>
+                </div>
+            </div>
+
+            <!-- canvas 绘图 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;canvas&gt;</code><span class="card-title">动态绘制</span></div>
+                <div class="card-code">&lt;canvas id="myCanvas" width="200" height="120"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  const ctx = document...;
+  ctx.fillStyle = '#2a73c4';
+  ctx.fillRect(10,10,80,60);
+  ...
+&lt;/script&gt;</div>
+                <div class="card-effect">
+                    <canvas id="demoCanvas" width="200" height="120" style="border:1px solid #2a73c4; border-radius:12px;"></canvas>
+                    <script>
+                        const canvas = document.getElementById('demoCanvas');
+                        if (canvas.getContext) {
+                            const ctx = canvas.getContext('2d');
+                            // 填充背景
+                            ctx.fillStyle = '#f0f8ff';
+                            ctx.fillRect(0, 0, 200, 120);
+                            // 画一个蓝色圆角矩形
+                            ctx.fillStyle = '#2a73c4';
+                            ctx.beginPath();
+                            ctx.roundRect(10, 10, 80, 60, 12);
+                            ctx.fill();
+                            // 画一个橙色圆形
+                            ctx.fillStyle = '#f39c12';
+                            ctx.beginPath();
+                            ctx.arc(140, 50, 30, 0, 2 * Math.PI);
+                            ctx.fill();
+                            // 文字
+                            ctx.fillStyle = '#1e3c5f';
+                            ctx.font = 'bold 14px "Segoe UI"';
+                            ctx.fillText('Canvas', 20, 100);
+                        }
+                        // 辅助方法
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+                            if (w < 2 * r) r = w / 2;
+                            if (h < 2 * r) r = h / 2;
+                            this.moveTo(x + r, y);
+                            this.lineTo(x + w - r, y);
+                            this.quadraticCurveTo(x + w, y, x + w, y + r);
+                            this.lineTo(x + w, y + h - r);
+                            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                            this.lineTo(x + r, y + h);
+                            this.quadraticCurveTo(x, y + h, x, y + h - r);
+                            this.lineTo(x, y + r);
+                            this.quadraticCurveTo(x, y, x + r, y);
+                            this.closePath();
+                            return this;
+                        };
+                    </script>
+                </div>
+            </div>
+
+            <!-- 内联 SVG -->
+            <div class="card">
+                <div class="card-header"><code>&lt;svg&gt;</code><span class="card-title">可缩放矢量图形</span></div>
+                <div class="card-code">&lt;svg width="180" height="120" viewBox="0 0 180 120"&gt;
+  &lt;rect x="10" y="10" width="80" height="60" fill="#2a73c4" /&gt;
+  &lt;circle cx="130" cy="50" r="30" fill="#f39c12" /&gt;
+  &lt;text x="20" y="100" fill="#333"&gt;SVG&lt;/text&gt;
+&lt;/svg&gt;</div>
+                <div class="card-effect">
+                    <svg width="180" height="120" viewBox="0 0 180 120" style="border-radius:12px;">
+                        <rect x="10" y="10" width="80" height="60" fill="#2a73c4" rx="8" ry="8" />
+                        <circle cx="130" cy="50" r="30" fill="#f39c12" />
+                        <text x="20" y="100" fill="#1e3c5f" font-size="16" font-weight="500">SVG</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 分组2：音频与视频 ========= -->
+    <section class="section">
+        <div class="section-title">🎵 音频与视频 <span>&lt;audio&gt; &lt;video&gt; &lt;source&gt; &lt;track&gt;</span></div>
+        <div class="card-grid">
+            <!-- audio 示例 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;audio&gt; + &lt;source&gt;</code><span class="card-title">音频播放器</span></div>
+                <div class="card-code">&lt;audio controls&gt;
+  &lt;source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg"&gt;
+  您的浏览器不支持 audio 元素。
+&lt;/audio&gt;</div>
+                <div class="card-effect">
+                    <audio controls>
+                        <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                        您的浏览器不支持 audio 标签。
+                    </audio>
+                    <div class="note">马叫声 (horse.mp3) – 公共测试文件</div>
+                </div>
+            </div>
+
+            <!-- video 示例 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;video&gt; + &lt;source&gt;</code><span class="card-title">视频播放器</span></div>
+                <div class="card-code">&lt;video controls width="250" poster="..."&gt;
+  &lt;source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"&gt;
+&lt;/video&gt;</div>
+                <div class="card-effect">
+                    <video controls width="250" poster="https://www.w3schools.com/html/pic_trulli.jpg">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        您的浏览器不支持 video 标签。
+                    </video>
+                    <div class="note">Big Buck Bunny 公共测试视频</div>
+                </div>
+            </div>
+
+            <!-- video + track 字幕 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;track&gt; 字幕</code><span class="card-title">视频带字幕</span></div>
+                <div class="card-code">&lt;video controls&gt;
+  &lt;source src="..." type="video/mp4"&gt;
+  &lt;track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgpTdWJ0aXRsZXMKCjAwOjAwOjAwLjAwMCAtLT4gMDA6MDA6MDIuMDAwCkhlbGxvLCB3b3JsZCE=" default&gt;
+&lt;/video&gt;</div>
+                <div class="card-effect">
+                    <video controls width="250">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        <!-- 内联字幕：简单的 "Hello, world!" -->
+                        <track kind="subtitles" src="data:text/vtt;base64,V0VCVlRUCgpTdWJ0aXRsZXMKCjAwOjAwOjAwLjAwMCAtLT4gMDA6MDA6MDIuMDAwCkhlbGxvLCB3b3JsZCE=" default>
+                        您的浏览器不支持 video 标签。
+                    </video>
+                    <div class="note">开启字幕 (CC) 会显示 "Hello, world!"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 分组3：嵌入内容 ========= -->
+    <section class="section">
+        <div class="section-title">📦 嵌入内容 <span>&lt;iframe&gt; &lt;embed&gt; &lt;object&gt; &lt;param&gt;</span></div>
+        <div class="card-grid">
+            <!-- iframe 内联框架 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;iframe&gt;</code><span class="card-title">内联框架</span></div>
+                <div class="card-code">&lt;iframe srcdoc="&lt;p&gt;内嵌HTML&lt;/p&gt;" width="100%" height="100"&gt;&lt;/iframe&gt;</div>
+                <div class="card-effect">
+                    <iframe srcdoc="<div style='background:#e0f0ff; padding:10px; border-radius:12px; text-align:center;'>✨ 内联框架中的自定义内容</div>" width="100%" height="80" style="border:2px solid #8ab3df; border-radius:12px;"></iframe>
+                </div>
+            </div>
+
+            <!-- embed 嵌入 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;embed&gt;</code><span class="card-title">嵌入外部资源</span></div>
+                <div class="card-code">&lt;embed src="data:image/svg+xml,..." type="image/svg+xml" width="200" height="120"&gt;</div>
+                <div class="card-effect">
+                    <embed src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120'%3E%3Crect width='200' height='120' fill='%23d5e8ff'/%3E%3Ccircle cx='100' cy='60' r='40' fill='%234285f4'/%3E%3Ctext x='50' y='100' fill='%23000'%3EEmbed SVG%3C/text%3E%3C/svg%3E" type="image/svg+xml" width="200" height="120" style="border-radius:12px;">
+                </div>
+            </div>
+
+            <!-- object + param 示例 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;object&gt; + &lt;param&gt;</code><span class="card-title">嵌入带参数</span></div>
+                <div class="card-code">&lt;object data="data:image/svg+xml,..." type="image/svg+xml" width="200" height="120"&gt;
+  &lt;param name="foo" value="bar"&gt;
+&lt;/object&gt;</div>
+                <div class="card-effect">
+                    <object data="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120'%3E%3Crect width='200' height='120' fill='%23ffe0b3'/%3E%3Ctext x='30' y='60' fill='%23b35900' font-size='16'%3EObject + param%3C/text%3E%3C/svg%3E" type="image/svg+xml" width="200" height="120" style="border-radius:12px;">
+                        <param name="bgcolor" value="#ffe0b3">
+                        您的浏览器不支持 object 标签。
+                    </object>
+                    <div class="note">&lt;param&gt; 通常用于插件参数，此处仅演示语法。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 分组4：其他相关 ========= -->
+    <section class="section">
+        <div class="section-title">🔧 其他嵌入标签 <span>&lt;portal&gt;(实验) &lt;noscript&gt; &lt;del&gt; 略，但&lt;noscript&gt;已展示过</span></div>
+        <div class="card-grid">
+            <!-- <portal> 实验性，仅展示说明 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;portal&gt;</code><span class="card-title">实验性页面嵌入</span></div>
+                <div class="card-code">&lt;portal src="https://example.com"&gt;&lt;/portal&gt; (实验性，支持有限)</div>
+                <div class="card-effect">
+                    <div class="note">⚠️ &lt;portal&gt; 目前仅部分浏览器支持，此处不实际渲染。</div>
+                </div>
+            </div>
+            <!-- <noscript> 快速回顾 -->
+            <div class="card">
+                <div class="card-header"><code>&lt;noscript&gt;</code><span class="card-title">无脚本时显示</span></div>
+                <div class="card-code">&lt;noscript&gt;请启用JavaScript&lt;/noscript&gt;</div>
+                <div class="card-effect">
+                    <noscript>🔴 您的浏览器未启用脚本 (这条消息只在无脚本时可见)</noscript>
+                    <span class="note">当前脚本已启用，所以你看不到noscript内容。</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 综合效果演示：一个简单的媒体合集 -->
+    <section class="section" style="margin-bottom:0;">
+        <div class="section-title">🧩 多媒体组合示例</div>
+        <div class="card" style="grid-column:1/-1;">
+            <div class="card-header"><code>混合使用</code><span class="card-title">图像 + 视频 + iframe</span></div>
+            <div class="card-code">&lt;div style="display:flex; gap:1rem; flex-wrap:wrap;"&gt;...&lt;/div&gt;</div>
+            <div class="card-effect">
+                <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+                    <img src="https://picsum.photos/120/80?random=3" alt="缩略图" style="border-radius:12px;">
+                    <video controls width="160">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                    <audio controls>
+                        <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                    </audio>
+                    <iframe srcdoc="<div style='background:#2a73c4; color:white; padding:0.5rem; border-radius:20px;'>内联</div>" width="120" height="60" style="border:none;"></iframe>
+                </div>
+                <div class="note" style="margin-top:0.5rem;">多种媒体共存于一个布局</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 完整展示 HTML 图像、多媒体、嵌入及图形标签：&lt;img&gt; &lt;picture&gt; &lt;figure&gt; &lt;map&gt; &lt;area&gt; &lt;canvas&gt; &lt;svg&gt; &lt;audio&gt; &lt;video&gt; &lt;source&gt; &lt;track&gt; &lt;iframe&gt; &lt;embed&gt; &lt;object&gt; &lt;param&gt; 等。<br>
+        ⭐ 每个卡片均包含代码片段 + 实际渲染效果 (或模拟效果)。鼠标悬停可查看微动效。
+    </footer>
+</div>
+
+<!-- 确保canvas绘制方法在所有浏览器中定义 -->
+<script>
+    // 补充 roundRect 定义 (已经在上方定义，但确保可用)
+    (function() {
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                if (w < 2 * r) r = w / 2;
+                if (h < 2 * r) r = h / 2;
+                this.moveTo(x + r, y);
+                this.lineTo(x + w - r, y);
+                this.quadraticCurveTo(x + w, y, x + w, y + r);
+                this.lineTo(x + w, y + h - r);
+                this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                this.lineTo(x + r, y + h);
+                this.quadraticCurveTo(x, y + h, x, y + h - r);
+                this.lineTo(x, y + r);
+                this.quadraticCurveTo(x, y, x + r, y);
+                this.closePath();
+                return this;
+            };
+        }
+    })();
+</script>
+</body>
+</html>

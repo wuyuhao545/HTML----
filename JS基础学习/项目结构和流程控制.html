@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 循环 · 路径策略 · 文件组织</title>
+    <!-- 引用您提供的 CSS 文件 (保持不变) -->
+    <link rel="stylesheet" href="../CSS/style.css">
+    <!-- Font Awesome 图标库 (新增，确保路径部分图标显示) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* 原有样式：让 .card-effect 中的 span 显示为清晰的效果块 (仅作用于span，新部分已避免使用span) */
+        .card-effect span {
+            display: block;
+            background: #f0f7ff;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #3b82f6;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+        .card-effect span::before {
+            content: "👉 ";
+            color: #f97316;
+            font-weight: bold;
+        }
+        .card-code pre {
+            margin: 0;
+            background: transparent;
+            padding: 0;
+        }
+        /* 确保树形结构清晰 */
+        .tree {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0b1120;
+            color: #a5f3fc;
+            padding: 1.2rem;
+            border-radius: 0.8rem;
+            line-height: 1.9;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            border: 1px solid #334155;
+        }
+        .tree i {
+            color: #fbbf24;
+            margin-right: 0.3rem;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(59,130,246,0.3);
+            transition: background 0.15s;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .note {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 0.8rem;
+            background: #f1f4f9;
+            padding: 0.4rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔄 JavaScript 循环大全 + 项目结构规范</h1>
+        <p>循环卡片 + 绝对路径/相对路径 + 文件组织与命名</p>
+    </div>
+
+    <!-- ========== 原有：JavaScript 循环部分 ========== -->
+    <section class="section">
+        <h2 class="section-title">📋 循环语句示例</h2>
+        <div class="card-grid">
+            <!-- 1. for 循环 -->
+            <div class="card">
+                <div class="card-header"><code>for 循环</code></div>
+                <div class="card-code">
+                    <pre><code>let str = "";
+for (let i = 0; i < 5; i++) {
+    str += i + " ";
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>执行结果：0 1 2 3 4</span>
+                    <span>说明：标准 for 循环，从 0 迭代到 4，每次拼接当前值。</span>
+                </div>
+            </div>
+
+            <!-- 2. while 循环 -->
+            <div class="card">
+                <div class="card-header"><code>while 循环</code></div>
+                <div class="card-code">
+                    <pre><code>let j = 0;
+let res = "";
+while (j < 3) {
+    res += j + " ";
+    j++;
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>执行结果：0 1 2</span>
+                    <span>说明：先判断条件，满足则执行循环体。</span>
+                </div>
+            </div>
+
+            <!-- 3. do...while 循环 -->
+            <div class="card">
+                <div class="card-header"><code>do...while 循环</code></div>
+                <div class="card-code">
+                    <pre><code>let k = 0;
+let doRes = "";
+do {
+    doRes += k + " ";
+    k++;
+} while (k < 3);
+
+// 至少执行一次示例
+let m = 5;
+let doRes2 = "";
+do {
+    doRes2 += m + " ";
+    m++;
+} while (m < 3);</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>第一次结果：0 1 2</span>
+                    <span>第二次结果（m=5）：5</span>
+                    <span>说明：do...while 至少执行一次循环体。</span>
+                </div>
+            </div>
+
+            <!-- 4. for...of 循环（数组） -->
+            <div class="card">
+                <div class="card-header"><code>for...of</code></div>
+                <div class="card-code">
+                    <pre><code>const colors = ["红", "绿", "蓝"];
+let out = "";
+for (let color of colors) {
+    out += color + " ";
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>执行结果：红 绿 蓝</span>
+                    <span>说明：遍历数组元素，直接获取值。</span>
+                </div>
+            </div>
+
+            <!-- 5. for...in 循环（对象） -->
+            <div class="card">
+                <div class="card-header"><code>for...in</code></div>
+                <div class="card-code">
+                    <pre><code>const person = { name: "Alice", age: 30, city: "北京" };
+let keys = "", values = "";
+for (let key in person) {
+    keys += key + " ";
+    values += person[key] + " ";
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>属性名：name age city</span>
+                    <span>属性值：Alice 30 北京</span>
+                    <span>说明：遍历对象的可枚举属性（包括原型链）。</span>
+                </div>
+            </div>
+
+            <!-- 6. break 卡片（独立） -->
+            <div class="card">
+                <div class="card-header"><code>break 语句</code></div>
+                <div class="card-code">
+                    <pre><code>// break 示例：找到第一个偶数即停止
+let breakRes = "";
+for (let i = 1; i <= 10; i++) {
+    if (i % 2 === 0) {
+        breakRes += "找到偶数 " + i;
+        break;
+    }
+    breakRes += i + " ";
+}
+
+// 带标签的 break：跳出多层循环
+let outerBreak = "";
+outer: for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+        if (i === 1 && j === 1) break outer;
+        outerBreak += `(${i},${j}) `;
+    }
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>break 结果：1 找到偶数 2</span>
+                    <span>带标签 break 结果：(0,0) (0,1) (0,2) (1,0)</span>
+                    <span>说明：break 终止当前循环；带标签的 break 跳出指定多层循环。</span>
+                </div>
+            </div>
+
+            <!-- 7. continue 卡片（独立） -->
+            <div class="card">
+                <div class="card-header"><code>continue 语句</code></div>
+                <div class="card-code">
+                    <pre><code>// continue 示例：跳过偶数，只输出奇数
+let continueRes = "";
+for (let i = 1; i <= 5; i++) {
+    if (i % 2 === 0) continue;
+    continueRes += i + " ";
+}</code></pre>
+                </div>
+                <div class="card-effect">
+                    <span>continue 结果：1 3 5</span>
+                    <span>说明：continue 跳过本次迭代，继续下一次循环。</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 新增第一部分：绝对路径 vs 相对路径 ===== -->
+    <section class="section">
+        <h2 class="section-title">🔗 路径策略：绝对路径 vs 相对路径</h2>
+        <div class="card-grid">
+            <!-- 相对路径的陷阱 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-exclamation-triangle" style="color:#eab308;"></i>
+                    <span>相对路径的隐患</span>
+                </div>
+                <div class="card-code">
+&lt;!-- header.html 中的图片 --&gt;
+&lt;img src="picture/logo.png" alt="医院logo"&gt;
+                </div>
+                <div class="card-effect">
+                    <p><strong>场景：</strong> header.html 被加载到不同层级的页面</p>
+                    <ul style="margin-left:1.2rem;">
+                        <li>📄 首页 (/)：图片正常 ✅</li>
+                        <li>📁 /about/brief.html：浏览器请求 
+                            <code style="background:#fee2e2; color:#b91c1c; padding:0.1rem 0.4rem; border-radius:4px;">/about/picture/logo.png</code> ❌ 404
+                        </li>
+                    </ul>
+                    <div style="background:#fef2f2; padding:0.5rem; border-radius:8px; margin-top:0.5rem;">
+                        <i class="fa-solid fa-circle-exclamation" style="color:#ef4444;"></i>
+                        相对路径基于当前页面 URL 解析，导致资源丢失。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 绝对路径的优势 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
+                    <span>绝对路径的可靠性</span>
+                </div>
+                <div class="card-code">
+&lt;!-- header.html 中使用绝对路径 --&gt;
+&lt;img src="/picture/logo.png" alt="医院logo"&gt;
+                </div>
+                <div class="card-effect">
+                    <p><strong>无论页面在哪个目录：</strong></p>
+                    <ul style="margin-left:1.2rem;">
+                        <li>首页 (/)：请求 
+                            <code style="background:#dcfce7; color:#166534; padding:0.1rem 0.4rem; border-radius:4px;">/picture/logo.png</code> ✅
+                        </li>
+                        <li>/about/brief.html：同样请求 
+                            <code style="background:#dcfce7; color:#166534; padding:0.1rem 0.4rem; border-radius:4px;">/picture/logo.png</code> ✅
+                        </li>
+                    </ul>
+                    <div style="background:#f0fdf4; padding:0.5rem; border-radius:8px; margin-top:0.5rem;">
+                        <i class="fa-solid fa-check" style="color:#10b981;"></i>
+                        以 <code>/</code> 开头，从网站根目录定位，所有页面通用。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 动态演示 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-play"></i>
+                    <span>模拟动态加载</span>
+                </div>
+                <div class="card-code">
+// 模拟从 header.html 插入内容
+function loadHeader() {
+  const html = `
+    &lt;div&gt;
+      &lt;img src="/picture/logo.png" alt="绝对路径" width="30"&gt;
+      &lt;img src="picture/logo.png" alt="相对路径" width="30"&gt;
+    &lt;/div&gt;
+  `;
+  container.innerHTML = html;
+}
+                </div>
+                <div class="card-effect">
+                    <button onclick="simulateLoad()">模拟加载 header</button>
+                    <div id="path-demo" style="margin-top:1rem; display: flex; gap: 2rem; align-items: center; min-height: 4rem;">
+                        <!-- 动态内容会插入到这里 -->
+                    </div>
+                    <p class="note">点击按钮后，上方会插入两个图片占位：左侧绝对路径（通常可显示），右侧相对路径可能失效（显示裂图）。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 新增第二部分：文件组织与命名规范 ===== -->
+    <section class="section">
+        <h2 class="section-title">📂 文件组织与命名规范</h2>
+        <div class="card-grid">
+            <!-- 推荐结构 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <span>推荐项目结构</span>
+                </div>
+                <div class="tree">
+                    <i class="fa-regular fa-folder-open"></i> my-hospital/<br>
+                    &nbsp;&nbsp;├── <i class="fa-regular fa-folder"></i> css/<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; └── style.css<br>
+                    &nbsp;&nbsp;├── <i class="fa-regular fa-folder"></i> js/<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; └── main.js<br>
+                    &nbsp;&nbsp;├── <i class="fa-regular fa-folder"></i> picture/<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; ├── logo.png<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; └── icon.svg<br>
+                    &nbsp;&nbsp;├── <i class="fa-regular fa-folder"></i> components/<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; ├── header.html<br>
+                    &nbsp;&nbsp;│&nbsp;&nbsp; └── footer.html<br>
+                    &nbsp;&nbsp;├── index.html<br>
+                    &nbsp;&nbsp;└── about.html<br>
+                </div>
+            </div>
+
+            <!-- 命名规范 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-font"></i>
+                    <span>命名规范</span>
+                </div>
+                <div class="card-effect">
+                    <p><strong>✅ 推荐：</strong></p>
+                    <ul style="padding-left:1.2rem;">
+                        <li>全部小写</li>
+                        <li>连字符分隔：<code>main-nav.css</code></li>
+                        <li>无空格、中文：<code>hospital-logo.png</code></li>
+                    </ul>
+                    <p><strong>❌ 避免：</strong></p>
+                    <ul style="padding-left:1.2rem;">
+                        <li>大小写混用（Windows 不敏感，但 Linux 敏感）</li>
+                        <li>空格、特殊字符：<code>image copy.png</code></li>
+                        <li>中文文件名（可能编码问题）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 大小写敏感提醒 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>大小写敏感</span>
+                </div>
+                <div class="card-code">
+// Linux 服务器上
+/picture/logo.png   ✅
+/Picture/logo.png   ❌ 404
+                </div>
+                <div class="card-effect">
+                    <p>线上服务器通常运行 Linux，路径区分大小写！<br>建议统一使用 <strong>小写字母</strong> 命名文件和文件夹。</p>
+                    <div style="background:#fffbeb; padding:0.5rem; border-radius:8px; margin-top:0.8rem;">
+                        <i class="fa-solid fa-lightbulb" style="color:#eab308;"></i> 
+                        即使本地开发不区分，部署到服务器也可能产生404。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 每个卡片均包含完整代码（&lt;code&gt;）和效果说明。循环部分 break/continue 已独立展示；新增路径策略与文件组织规范，按钮可模拟路径加载。
+    </footer>
+</div>
+
+<!-- 新增的交互函数 (模拟路径加载) -->
+<script>
+    function simulateLoad() {
+        const demo = document.getElementById('path-demo');
+        if (!demo) return;
+        demo.innerHTML = `
+            <div style="display:flex; gap:2rem; align-items:center; flex-wrap:wrap;">
+                <div style="background:#d1fae5; padding:0.2rem 0.8rem; border-radius:20px; display:inline-block;">✅ /picture/logo.png</div>
+                <div style="background:#fee2e2; padding:0.2rem 0.8rem; border-radius:20px; display:inline-block;">❌ picture/logo.png (404)</div>
+            </div>
+            <p style="margin-top:0.5rem; width:100%;">说明：绝对路径从根目录请求，相对路径基于当前页面，可能导致404。</p>
+        `;
+    }
+</script>
+</body>
+</html>

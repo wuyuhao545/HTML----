@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flex · Grid 完全演示（合并版）</title>
+    <!-- Font Awesome 图标库 (用于点缀) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 2.5rem 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            font-size: 1.2rem;
+            color: #334155;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            margin: 4rem 0;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 6px solid #3b82f6;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title i {
+            color: #3b82f6;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+            overflow: hidden;
+            border: 1px solid #e9eef2;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -10px rgba(0,100,200,0.15);
+        }
+        .card-header {
+            background: #f1f5f9;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #d1d9e6;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-header i {
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        .card-header code {
+            background: #e2e8f0;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .card-code {
+            background: #0b1120;
+            color: #a5f3fc;
+            padding: 1rem 1.5rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #334155;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .card-effect {
+            padding: 1.8rem 1.5rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .card-description {
+            padding: 1rem 1.5rem 1.5rem;
+            background: #fcfdfe;
+            color: #334155;
+            font-size: 0.95rem;
+            border-top: 1px solid #e9edf2;
+        }
+        .card-description i {
+            color: #3b82f6;
+            margin-right: 0.3rem;
+        }
+
+        /* Flex 演示专用类 */
+        .flex-demo {
+            display: flex;
+            gap: 1rem;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 1rem;
+            flex-wrap: wrap;
+        }
+        .flex-demo > div {
+            background: #3b82f6;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .flex-demo > div:nth-child(even) {
+            background: #2563eb;
+        }
+
+        /* Grid 演示专用类 (与Flex共存) */
+        .grid-show {
+            display: grid;
+            background: #f1f5f9;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border: 1px solid #cbd5e1;
+        }
+        .grid-show > div {
+            background: #3b82f6;
+            color: white;
+            padding: 1rem 0.5rem;
+            border-radius: 0.6rem;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .grid-show > div:nth-child(even) {
+            background: #2563eb;
+        }
+        .grid-show > div:nth-child(odd) {
+            background: #1e4fd9;
+        }
+        .grid-show.special > div {
+            background: #b45309;
+        }
+        .grid-show.special > div:nth-child(even) {
+            background: #d97706;
+        }
+
+        /* 区域演示用 (grid) */
+        .area-show {
+            display: grid;
+            background: #f1f5f9;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            gap: 8px;
+        }
+        .area-show > div {
+            padding: 1rem;
+            border-radius: 0.6rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .header-area { background: #ef4444; color: white; }
+        .sidebar-area { background: #f97316; color: white; }
+        .main-area { background: #3b82f6; color: white; }
+        .footer-area { background: #10b981; color: white; }
+
+        /* 介绍性文字 (从Flex页面合并) */
+        .intro-text {
+            background: #e0f2fe;
+            padding: 1.2rem 1.5rem;
+            border-radius: 1.2rem;
+            margin: 1.5rem 0 2rem 0;
+            color: #0369a1;
+            font-size: 1.05rem;
+            border-left: 6px solid #0284c7;
+            line-height: 1.6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .intro-text strong {
+            color: #0c4a6e;
+            background: #bae6fd;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 3rem;
+            font-size: 1rem;
+            border: 1px solid #cbd5e1;
+        }
+        .footnote {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #dbeafe;
+            border-radius: 2rem;
+            text-align: center;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+        }
+        .footnote i {
+            color: #2563eb;
+            margin: 0 0.3rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-border-all" style="background: linear-gradient(135deg,#1e3c72,#2a5298); -webkit-background-clip:text; -webkit-text-fill-color:transparent;"></i> CSS Flex · Grid 完全演示</h1>
+        <p>一维弹性 + 二维网格 · 容器/项目属性 · 函数/区域 · 代码+效果+注解</p>
+    </div>
+
+    <!-- 统一的介绍文字 -->
+    <div class="intro-text">
+        <strong>📐 布局双雄</strong> — Flexbox 专注一维排列（行或列），适合组件内部分布；Grid 负责二维布局（行与列同时控制），适合页面宏观架构。下方分别详解二者属性，并配有直观示例。
+    </div>
+
+    <!-- ========= FLEX 容器属性 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-cubes"></i> Flex 容器属性</h2>
+        <div class="card-grid">
+            <!-- display: flex (已整合容器概览) -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-alt-h"></i> <code>display: flex</code></div>
+                <div class="card-code">.container { display: flex; }</div>
+                <div class="card-effect">
+                    <div class="flex-demo"><div>1</div><div>2</div><div>3</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-ruler-combined"></i> 块级弹性容器，独占一行，可设宽高。子项目默认水平排列。所有 flex 特性从此开始。
+                </div>
+            </div>
+
+            <!-- flex-direction -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrow-down"></i> <code>flex-direction</code></div>
+                <div class="card-code">flex-direction: column;</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="flex-direction: column;"><div>上</div><div>中</div><div>下</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-rotate"></i> 定义主轴方向。column 使主轴垂直，项目从上到下排列。
+                </div>
+            </div>
+
+            <!-- justify-content -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-left-right"></i> <code>justify-content</code></div>
+                <div class="card-code">justify-content: space-between;</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="justify-content: space-between;"><div>1</div><div>2</div><div>3</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-distribute-spacing-horizontal"></i> 主轴分布。space-between 使首尾贴边，中间均分。
+                </div>
+            </div>
+
+            <!-- align-items -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-up-down"></i> <code>align-items</code></div>
+                <div class="card-code">align-items: center;</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="align-items: center; height:100px;"><div style="height:30px;">矮</div><div style="height:60px;">中</div><div style="height:90px;">高</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-align-center"></i> 交叉轴对齐。center 使所有项目垂直居中。
+                </div>
+            </div>
+
+            <!-- flex-wrap -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-wrap"></i> <code>flex-wrap</code></div>
+                <div class="card-code">flex-wrap: wrap;</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="flex-wrap: wrap; width:200px;"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrow-down-wide-short"></i> 允许换行，防止项目溢出。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= FLEX 项目属性 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-cube"></i> Flex 项目属性</h2>
+        <div class="card-grid">
+            <!-- flex-grow -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-expand"></i> <code>flex-grow</code></div>
+                <div class="card-code">.item { flex-grow: 1; }</div>
+                <div class="card-effect">
+                    <div class="flex-demo"><div style="flex-grow:1;">1</div><div style="flex-grow:2;">2</div><div style="flex-grow:1;">3</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-weight-hanging"></i> 放大比例，剩余空间按值分配。
+                </div>
+            </div>
+
+            <!-- flex-shrink -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-compress"></i> <code>flex-shrink</code></div>
+                <div class="card-code">.item { flex-shrink: 0; }</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="width:200px;"><div style="flex-shrink:0; width:100px;">不收缩</div><div style="width:100px;">可收缩</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-down-left-and-up-right-to-center"></i> 缩小比例，设为 0 则拒绝收缩。
+                </div>
+            </div>
+
+            <!-- flex-basis -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-ruler"></i> <code>flex-basis</code></div>
+                <div class="card-code">flex-basis: 100px;</div>
+                <div class="card-effect">
+                    <div class="flex-demo"><div style="flex-basis:100px;">100px</div><div style="flex-basis:150px;">150px</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrow-left-long"></i> 初始主轴尺寸，优先级高于 width。
+                </div>
+            </div>
+
+            <!-- align-self -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-up-down"></i> <code>align-self</code></div>
+                <div class="card-code">align-self: flex-end;</div>
+                <div class="card-effect">
+                    <div class="flex-demo" style="height:80px;"><div>1</div><div style="align-self:flex-end;">2</div><div>3</div></div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrow-trend-down"></i> 覆盖容器的 align-items，单独对齐。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= GRID 容器属性 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-border-all"></i> Grid 容器属性</h2>
+        <div class="card-grid">
+            <!-- grid-template-columns -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-columns"></i> <code>grid-template-columns</code></div>
+                <div class="card-code">grid-template-columns: 1fr 2fr 1fr;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 2fr 1fr;">
+                        <div>1fr</div><div>2fr</div><div>1fr</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-ruler-combined"></i> 定义三列，比例1:2:1。<code>fr</code> 单位代表剩余空间比例。
+                </div>
+            </div>
+
+            <!-- grid-template-rows + repeat -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-rows"></i> <code>grid-template-rows</code> + repeat</div>
+                <div class="card-code">grid-template-rows: repeat(2, 80px);<br>grid-template-columns: 1fr 1fr;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-rows: repeat(2, 80px); grid-template-columns: 1fr 1fr; height:190px;">
+                        <div>行1</div><div>行1</div><div>行2</div><div>行2</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-repeat"></i> <code>repeat(2, 80px)</code> 创建两个高度80px的行。
+                </div>
+            </div>
+
+            <!-- gap -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-grip-lines"></i> <code>gap / row-gap / column-gap</code></div>
+                <div class="card-code">gap: 15px 30px;  /* 行15px 列30px */</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr; gap: 15px 30px;">
+                        <div>1</div><div>2</div><div>3</div><div>4</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrows-alt-h"></i> 行间距15px，列间距30px。
+                </div>
+            </div>
+
+            <!-- justify-items + align-items -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-alt"></i> <code>justify-items / align-items</code></div>
+                <div class="card-code">justify-items: center;<br>align-items: end;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr; justify-items: center; align-items: end; height:150px;">
+                        <div style="width:60%;">A</div><div style="height:40px;">B</div><div style="width:30%;">C</div><div>D</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-align-center"></i> 单元格内水平/垂直对齐。
+                </div>
+            </div>
+
+            <!-- justify-content + align-content -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-alt-h"></i> <code>justify-content / align-content</code></div>
+                <div class="card-code">justify-content: space-around;<br>align-content: center;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 60px 60px; grid-template-rows: 50px 50px; justify-content: space-around; align-content: center; height:180px;">
+                        <div>1</div><div>2</div><div>3</div><div>4</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-distribute-spacing-vertical"></i> 控制整个网格在容器内的分布。
+                </div>
+            </div>
+
+            <!-- auto-fill vs auto-fit -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-fill-drip"></i> <code>auto-fill</code> vs <code>auto-fit</code></div>
+                <div class="card-code">repeat(auto-fill, minmax(70px, 1fr))</div>
+                <div class="card-effect">
+                    <p style="font-size:0.85rem; margin-bottom:5px;"><strong>auto-fill</strong> 保留空白轨道</p>
+                    <div class="grid-show" style="grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); margin-bottom:15px;">
+                        <div>1</div><div>2</div><div>3</div>
+                    </div>
+                    <p style="font-size:0.85rem; margin-bottom:5px;"><strong>auto-fit</strong> 折叠空白轨道</p>
+                    <div class="grid-show" style="grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));">
+                        <div>1</div><div>2</div><div>3</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrows-spin"></i> <code>auto-fill</code> 尽可能多创建轨道，<code>auto-fit</code> 将空轨道收缩。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= GRID 项目属性 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-cube"></i> Grid 项目属性</h2>
+        <div class="card-grid">
+            <!-- grid-column / grid-row -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrow-pointer"></i> <code>grid-column / grid-row</code></div>
+                <div class="card-code">.item:first-child { grid-column: 1 / 3; }</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div style="grid-column: 1/3;">跨2列</div><div>3</div><div>4</div><div>5</div><div>6</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-up-down-left-right"></i> 通过网格线编号指定项目起始与结束。
+                </div>
+            </div>
+
+            <!-- grid-area (简写) -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-vector-square"></i> <code>grid-area (行列简写)</code></div>
+                <div class="card-code">grid-area: 1 / 1 / 3 / 3;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 50px;">
+                        <div style="grid-area: 1/1/3/3;">跨2行2列</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-layer-group"></i> <code>grid-area: row-start / col-start / row-end / col-end</code> 的简写。
+                </div>
+            </div>
+
+            <!-- justify-self / align-self -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-to-dot"></i> <code>justify-self / align-self</code></div>
+                <div class="card-code">.item:first-child { justify-self: center; align-self: end; }</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr; height:120px;">
+                        <div style="justify-self: center; align-self: end; height:30px; width:60%;">A</div>
+                        <div>B</div>
+                        <div style="justify-self: start;">C</div>
+                        <div style="justify-self: end; align-self: center;">D</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrows-up-down-left-right"></i> 覆盖容器的对齐方式。
+                </div>
+            </div>
+
+            <!-- 使用 span 关键字 -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-expand"></i> <code>span 关键字</code></div>
+                <div class="card-code">grid-column: 2 / span 2;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                        <div>1</div><div style="grid-column: 2 / span 2;">2/span2</div><div>4</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-right-left"></i> <code>span 2</code> 表示跨越2个轨道，灵活。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 函数与关键字 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-function"></i> 常用函数与关键字</h2>
+        <div class="card-grid">
+            <!-- minmax -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrow-left-long"></i> <code>minmax()</code></div>
+                <div class="card-code">grid-template-columns: 100px minmax(200px, 400px) 1fr;</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 100px minmax(200px, 400px) 1fr;">
+                        <div>100px</div><div>200~400px</div><div>1fr</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-arrows-left-right"></i> 定义轨道尺寸范围，最小200px，最大400px。
+                </div>
+            </div>
+
+            <!-- repeat + minmax -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-arrows-spin"></i> <code>repeat + minmax</code></div>
+                <div class="card-code">repeat(3, minmax(80px, 1fr))</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: repeat(3, minmax(80px, 1fr));">
+                        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-table-cells"></i> 至少80px宽，可等分剩余空间，适合响应式。
+                </div>
+            </div>
+
+            <!-- fr 单位说明 -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-weight-hanging"></i> <code>fr 单位</code></div>
+                <div class="card-code">1fr 2fr 1fr</div>
+                <div class="card-effect">
+                    <div class="grid-show" style="grid-template-columns: 1fr 2fr 1fr;">
+                        <div>1fr</div><div>2fr</div><div>1fr</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-pie-chart"></i> 剩余空间的比例分配，忽略 gap 计算。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 网格区域 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-draw-polygon"></i> 网格区域 grid-template-areas</h2>
+        <div class="card-grid">
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-header"><i class="fas fa-map"></i> 区域命名布局 (圣杯)</div>
+                <div class="card-code">
+grid-template-areas: 
+  "header header"
+  "sidebar main"
+  "footer footer";
+                </div>
+                <div class="card-effect">
+                    <div class="area-show" style="grid-template-areas: 'header header' 'sidebar main' 'footer footer'; grid-template-columns: 1fr 2fr;">
+                        <div class="header-area" style="grid-area: header;">头部 header</div>
+                        <div class="sidebar-area" style="grid-area: sidebar;">侧边栏 sidebar</div>
+                        <div class="main-area" style="grid-area: main;">主要内容 main</div>
+                        <div class="footer-area" style="grid-area: footer;">底部 footer</div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <i class="fas fa-pencil-alt"></i> 用 <code>grid-template-areas</code> 划分区域，子元素通过 <code>grid-area: 区域名</code> 放入。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 综合实例 ========= -->
+    <section class="section">
+        <h2 class="section-title"><i class="fas fa-star"></i> 综合实例：响应式图片网格</h2>
+        <div class="card">
+            <div class="card-header"><i class="fas fa-images"></i> 自动适配的图片墙</div>
+            <div class="card-code">
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+            </div>
+            <div class="card-effect">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.8rem; background: #f1f5f9; padding: 1rem; border-radius: 1rem;">
+                    <div style="background: #3b82f6; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片1</div>
+                    <div style="background: #2563eb; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片2</div>
+                    <div style="background: #1d4ed8; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片3</div>
+                    <div style="background: #3b82f6; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片4</div>
+                    <div style="background: #2563eb; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片5</div>
+                    <div style="background: #1d4ed8; color:white; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; border-radius: 12px;">图片6</div>
+                </div>
+            </div>
+            <div class="card-description">
+                <i class="fas fa-arrows-spin"></i> 使用 <code>repeat(auto-fit, minmax(150px, 1fr))</code> 实现响应式网格，项目最小150px，自动折行并拉伸。
+            </div>
+        </div>
+    </section>
+
+    <!-- 合并后的页脚 -->
+    <footer>
+        <i class="fas fa-border-all"></i> Flex 一维 · Grid 二维 · 双剑合璧 · 完整演示
+    </footer>
+    <div class="footnote">
+        <i class="fas fa-border-all fa-xl" style="margin-right: 0.5rem;"></i>
+        Grid 与 Flex 经常结合使用：外部 Grid 定骨架，内部 Flex 排细节。<br>
+        所有卡片均包含“代码 + 效果 + 注解”，F12 查看网格线。
+    </div>
+</div>
+</body>
+</html>

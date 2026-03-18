@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL · 数据操作 (DML)</title>
+    <link rel="stylesheet" href="sql.css">
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="nav-home">🏠 返回主页</a>
+    <h1>✏️ 数据操作语言 (DML)</h1>
+    <p class="example-note">INSERT · UPDATE · DELETE · 事务基本概念</p>
+
+    <h2>INSERT 插入</h2>
+    <pre><code>-- 插入完整行
+INSERT INTO 表名 VALUES (值1, 值2, ...);
+
+-- 指定列
+INSERT INTO 表名 (列1, 列2) VALUES (值1, 值2);
+
+-- 批量插入
+INSERT INTO 表名 (列1, 列2) VALUES 
+    (值1, 值2),
+    (值3, 值4);</code></pre>
+
+    <h2>UPDATE 更新</h2>
+    <pre><code>UPDATE 表名
+SET 列1 = 新值1, 列2 = 新值2
+WHERE 条件;   -- 务必加 WHERE，否则全表更新</code></pre>
+    <pre><code>-- 示例：部门5员工工资涨10%
+UPDATE employees
+SET salary = salary * 1.1
+WHERE dept_id = 5;</code></pre>
+
+    <h2>DELETE 删除</h2>
+    <pre><code>DELETE FROM 表名 WHERE 条件;   -- 不加条件会清空表</code></pre>
+
+    <h2>事务控制（基本）</h2>
+    <pre><code>BEGIN;  -- 或 START TRANSACTION;
+UPDATE ...;
+DELETE ...;
+COMMIT;    -- 提交
+ROLLBACK;  -- 回滚</code></pre>
+
+    <div class="back2top"><a href="#">⬆ 回到顶部</a></div>
+    <footer>← 返回主页可切换其他模块</footer>
+</div>
+</body>
+</html>

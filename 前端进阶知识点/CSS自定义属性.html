@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端笔记 · CSS 变量 & 语义化卡片</title>
+    <style>
+        /* ----- 全局重置与变量 (合并) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 定义全局 CSS 变量 —— 呼应最初提问的 --clr-accent / --clr-light */
+        :root {
+            --clr-accent: #3b82f6;        /* 鲜明的蓝色，用作强调色 */
+            --clr-light: #f8fafc;          /* 极浅的背景色/文字反色 */
+            --clr-dark: #0a1e2f;            /* 深色文字 */
+            --clr-card-bg: rgba(255,255,255,0.85);
+            --clr-border-light: #d9e2ef;
+        }
+
+        /* ----- 主体样式 ----- */
+        body {
+            background: linear-gradient(145deg, #f4f7fc 0%, #eef2f6 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+            line-height: 1.5;
+            color: #0a1e2f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+        /* ----- 容器 ----- */
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+        }
+
+        /* ----- 头部区域 ----- */
+        .header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1e3c72, #2b4f8e, #5b4b8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(4px);
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.7);
+            display: inline-block;
+        }
+
+        /* ----- 章节标题 ----- */
+        .section {
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2.5rem 0 1.8rem;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #0b2a41;
+            border-bottom: 3px solid rgba(37,99,235,0.2);
+            padding-bottom: 0.6rem;
+            padding-left: 1rem;
+            border-left: 8px solid #3b82f6;
+            gap: 0.5rem;
+        }
+
+        .section-title span {
+            background: #1e3a5f;
+            color: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 8px rgba(0,35,70,0.15);
+        }
+
+        /* ----- 卡片网格 ----- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        /* ----- 卡片通用 ----- */
+        .card {
+            display: flex;
+            flex-direction: column;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 1.5rem 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 15px 30px -12px rgba(0,20,40,0.2), 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.25s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            background: white;
+            border-color: #b1c9f0;
+            box-shadow: 0 25px 35px -12px rgba(17,45,88,0.25), 0 4px 12px rgba(0,55,120,0.1);
+        }
+
+        .card:focus-visible {
+            outline: 3px solid #1e4f8a;
+            outline-offset: 2px;
+        }
+
+        /* 卡片头部 */
+        .card-header {
+            background: #f0f4fc;
+            padding: 0.8rem 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid #d9e6ff;
+            color: #1e4a8b;
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-header code {
+            background: #e6edf8;
+            padding: 0.35rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #0b3b5c;
+            border: 1px solid #cbd6e9;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+            font-weight: 500;
+            word-break: break-word;
+            max-width: 100%;
+            line-height: 1.4;
+        }
+
+        /* 卡片标题 */
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #1f3a6b, #2d4f8f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+            margin-top: 0.1rem;
+        }
+
+        /* 卡片描述 */
+        .card-description {
+            color: #2d3f58;
+            margin-bottom: 1.5rem;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        /* 卡片按钮 */
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1f4a8a;
+            border-bottom: 2px solid transparent;
+            width: fit-content;
+            transition: border 0.2s, gap 0.2s;
+            margin-top: 0.3rem;
+        }
+
+        .card-button::after {
+            content: "→";
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover .card-button {
+            border-bottom-color: #2563eb;
+        }
+
+        .card:hover .card-button::after {
+            transform: translateX(5px);
+        }
+
+        /* 卡片代码区 (来自第一个样式) */
+        .card-code {
+            background: #0f1825 !important;
+            color: #e2e8f0;
+            padding: 1rem 1.2rem !important;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            border-bottom: 1px solid #334155;
+        }
+
+        .card-effect {
+            padding: 1.2rem;
+            background: #fafcff;
+        }
+
+        /* ----- 对比双栏布局 (来自第一个样式) ----- */
+        .compare-row {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .compare-col {
+            flex: 1 1 300px;
+            background: #ffffff;
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            border: 1px solid #d9e2ef;
+            box-shadow: 0 6px 14px rgba(0,20,40,0.02);
+            transition: 0.15s;
+        }
+
+        .compare-col:hover {
+            box-shadow: 0 18px 30px -12px #3b82f633;
+        }
+
+        .compare-col h4 {
+            margin-bottom: 1.2rem;
+            color: #0f3a6b;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .html4-badge {
+            background: #64748b;
+            color: white;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .html5-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ----- 统一代码块样式 ----- */
+        pre, .code-block {
+            background: #0f1825;
+            color: #e2e8f0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            border: 1px solid #2d3a4f;
+            margin-bottom: 1.2rem;
+        }
+
+        code {
+            background: #e9edf3;
+            color: #c0262f;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* ----- 演示框 ----- */
+        .demo-box {
+            background: #f8fafc;
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            border: 1px solid #d0dfed;
+            margin-top: 1rem;
+        }
+
+        /* 专门用于变量演示的区块 —— 直接使用 --clr-accent 和 --clr-light */
+        .var-demo-block {
+            background-color: var(--clr-accent);
+            color: var(--clr-light);
+            padding: 1.2rem;
+            border-radius: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: 0.2s;
+            border: 2px solid var(--clr-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .var-demo-block code {
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        /* ----- 旧布局模拟 (来自第一个样式) ----- */
+        .old-layout > div {
+            background: #cbd5e1;
+            padding: 0.7rem;
+            margin: 0.6rem 0;
+            text-align: center;
+            border-radius: 0.8rem;
+        }
+
+        .new-layout header,
+        .new-layout nav,
+        .new-layout main,
+        .new-layout article,
+        .new-layout aside,
+        .new-layout footer {
+            background: #dbeafe;
+            padding: 0.7rem;
+            margin: 0.6rem 0;
+            text-align: center;
+            border: 2px solid #3b82f6;
+            border-radius: 0.8rem;
+            color: #1e3c72;
+            font-weight: 500;
+        }
+
+        /* ----- 按钮样式 ----- */
+        button {
+            background: #e2e8f0;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #cbd5e1;
+            margin: 0.25rem 0.25rem 0 0;
+        }
+
+        button:hover {
+            background: #cbd5e1;
+        }
+
+        /* ----- 表单元素 ----- */
+        input, select, textarea {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 1.2rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            max-width: 280px;
+            font-size: 0.9rem;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: auto;
+            margin-right: 0.3rem;
+        }
+
+        label {
+            margin-right: 1rem;
+        }
+
+        /* ----- 注释块 ----- */
+        .note {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 1rem;
+            padding: 0.4rem 1rem;
+            background: #f1f5f9;
+            border-radius: 30px;
+            border-left: 3px solid #94a3b8;
+        }
+
+        /* ----- 页脚 ----- */
+        footer {
+            text-align: center;
+            margin-top: 4.5rem;
+            padding: 2rem 1rem 1.5rem;
+            border-top: 2px dashed #a7c0e3;
+            color: #36557a;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 60px 60px 20px 20px;
+            width: 100%;
+        }
+
+        footer br {
+            display: none;
+        }
+
+        /* ----- 链接 ----- */
+        a:visited {
+            color: inherit;
+        }
+
+        /* ----- 媒体查询 ----- */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            footer br {
+                display: inline;
+            }
+        }
+
+        /* 新增：确保在大屏幕上卡片四列一行 */
+        @media (min-width: 1200px) {
+            .card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header class="header">
+            <h1>📘 CSS 模块化笔记 · 变量 & 语义化</h1>
+            <p>自定义属性 · 卡片设计 · HTML5 布局对比</p>
+        </header>
+
+        <!-- 章节：HTML4 vs HTML5 语义化布局对比 -->
+        <section class="section">
+            <div class="section-title">
+                HTML4 vs HTML5 布局
+                <span>语义化标签</span>
+            </div>
+            <div class="compare-row">
+                <div class="compare-col">
+                    <h4><span class="html4-badge">HTML4</span> 无意义 div</h4>
+                    <div class="old-layout">
+                        <div>div id="header"</div>
+                        <div>div id="nav"</div>
+                        <div>div class="main"</div>
+                        <div>div class="article"</div>
+                        <div>div id="footer"</div>
+                    </div>
+                    <p class="note">依赖 id/class 表达结构，机器可读性弱。</p>
+                </div>
+                <div class="compare-col">
+                    <h4><span class="html5-badge">HTML5</span> 语义化标签</h4>
+                    <div class="new-layout">
+                        <header>header</header>
+                        <nav>nav</nav>
+                        <main>main</main>
+                        <article>article</article>
+                        <footer>footer</footer>
+                    </div>
+                    <p class="note">清晰的结构，对开发者、SEO、辅助技术更友好。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 章节：CSS 变量（核心演示） -->
+        <section class="section">
+            <div class="section-title">
+                CSS 自定义属性
+                <span>var( ) 语法</span>
+            </div>
+            <div class="card-grid">
+                <!-- 卡片1：最初提问的代码片段 + 可视化效果 -->
+                <div class="card">
+                    <div class="card-header">
+                        ⚡ 提问原样
+                        <code>background-color: var(--clr-accent);<br>color: var(--clr-light);</code>
+                    </div>
+                    <div class="card-title">变量直接使用</div>
+                    <div class="card-description">
+                        在根作用域定义 <code>--clr-accent</code> 和 <code>--clr-light</code>，然后任何地方都能调用。
+                    </div>
+                    <div class="card-effect">
+                        <div class="var-demo-block">
+                            🌟 背景 = <code>var(--clr-accent)</code><br> 
+                            文字 = <code>var(--clr-light)</code>
+                        </div>
+                    </div>
+                    <div class="card-code">
+                        :root {<br>
+                        &nbsp;&nbsp;--clr-accent: #3b82f6;<br>
+                        &nbsp;&nbsp;--clr-light: #f8fafc;<br>
+                        }<br>
+                        .demo {<br>
+                        &nbsp;&nbsp;background: var(--clr-accent);<br>
+                        &nbsp;&nbsp;color: var(--clr-light);<br>
+                        }
+                    </div>
+                </div>
+                <!-- 卡片2：变量与动态主题 -->
+                <div class="card">
+                    <div class="card-header">
+                        🎨 主题切换基础
+                        <code>--clr-accent 可动态改变</code>
+                    </div>
+                    <div class="card-title">JavaScript 更新变量</div>
+                    <div class="card-description">
+                        修改变量值即可全局更新配色，无需逐一覆盖。
+                    </div>
+                    <div class="card-effect">
+                        <button id="themeBtn" style="background: var(--clr-accent); color: white; border: none;">点我切换强调色</button>
+                        <script>
+                            (function(){
+                                let accent = true;
+                                document.getElementById('themeBtn')?.addEventListener('click', function(e){
+                                    const root = document.documentElement;
+                                    if(accent){
+                                        root.style.setProperty('--clr-accent', '#8b5cf6'); // 紫色
+                                        root.style.setProperty('--clr-light', '#f5f3ff');
+                                    } else {
+                                        root.style.setProperty('--clr-accent', '#3b82f6');
+                                        root.style.setProperty('--clr-light', '#f8fafc');
+                                    }
+                                    accent = !accent;
+                                });
+                            })();
+                        </script>
+                    </div>
+                    <div class="card-code">
+                        // 改变根变量<br>
+                        document.documentElement.style<br>
+                        &nbsp;&nbsp;.setProperty('--clr-accent', '#8b5cf6');
+                    </div>
+                </div>
+                <!-- 卡片3：变量与响应式 -->
+                <div class="card">
+                    <div class="card-header">
+                        📱 响应式中的变量
+                        <code>@media 内重定义</code>
+                    </div>
+                    <div class="card-title">适配深色/浅色</div>
+                    <div class="card-description">
+                        媒体查询或数据集切换变量值，实现主题统一。
+                    </div>
+                    <div class="card-code">
+                        @media (prefers-color-scheme: dark) {<br>
+                        &nbsp;&nbsp;:root { --clr-accent: #bb86fc; }<br>
+                        }
+                    </div>
+                </div>
+                <!-- 卡片4：结合卡片设计 -->
+                <div class="card">
+                    <div class="card-header">
+                        🧩 卡片本身也用了变量
+                        <code>background: var(--clr-card-bg)</code>
+                    </div>
+                    <div class="card-title">继承与后备</div>
+                    <div class="card-description">
+                        卡片背景使用了 <code>rgba(255,255,255,0.85)</code>，但也可以替换为变量，更灵活。
+                    </div>
+                    <div class="demo-box" style="background: var(--clr-card-bg, #ffffff); border-left: 6px solid var(--clr-accent);">
+                        此处背景 <code>var(--clr-card-bg, #ffffff)</code>，后备为白色。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 章节：卡片网格扩展 — 更多CSS特性卡片 -->
+        <section class="section">
+            <div class="section-title">
+                卡片系统展示
+                <span>flex / grid</span>
+            </div>
+            <div class="card-grid">
+                <!-- 卡片5：HTML5 语义卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        📄 新标签
+                        <code>&lt;header&gt; &lt;main&gt; &lt;footer&gt;</code>
+                    </div>
+                    <div class="card-title">语义化结构</div>
+                    <div class="card-description">
+                        让页面大纲清晰，便于屏幕阅读器和搜索引擎抓取。
+                    </div>
+                    <span class="card-button">了解更多</span>
+                </div>
+                <!-- 卡片6：表单演示 -->
+                <div class="card">
+                    <div class="card-header">
+                        📝 表单控件
+                        <code>input / select / button</code>
+                    </div>
+                    <div class="card-title">现代表单风格</div>
+                    <div class="card-description">
+                        输入框获得圆润边框，与卡片整体设计一致。
+                    </div>
+                    <div class="demo-box">
+                        <input type="text" placeholder="姓名" value="张三"><br>
+                        <select><option>选项一</option><option>选项二</option></select><br>
+                        <button>提交</button>
+                    </div>
+                </div>
+                <!-- 卡片7：渐变文字 -->
+                <div class="card">
+                    <div class="card-header">
+                        ✨ 渐变与背景裁剪
+                        <code>-webkit-background-clip: text</code>
+                    </div>
+                    <div class="card-title" style="font-size: 1.3rem; background: linear-gradient(145deg, #d946ef, #f59e0b); -webkit-background-clip: text;">七彩标题效果</div>
+                    <div class="card-description">
+                        卡片标题默认使用深蓝渐变，同样基于 <code>linear-gradient</code>。
+                    </div>
+                </div>
+                <!-- 卡片8：代码展示 -->
+                <div class="card">
+                    <div class="card-header">
+                        🔧 代码片段
+                        <code>.card-code 区域</code>
+                    </div>
+                    <div class="card-title">内联代码块</div>
+                    <div class="card-description">
+                        使用 <code>pre</code> 保留格式，背景深色，适合展示CSS/HTML。
+                    </div>
+                    <pre class="card-code" style="margin-bottom:0;">.example {
+    display: grid;
+    gap: 1rem;
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 轻量注释/提示 -->
+        <div class="note" style="text-align:center; max-width:800px; margin: 0 auto 2rem;">
+            ⚡ 所有 <code>--clr-accent</code> 和 <code>--clr-light</code> 已在 <code>:root</code> 中定义。
+            点击第二个卡片上的按钮可以动态修改 <code>--clr-accent</code> 的值。
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            CSS 模块化学习笔记 · 包含最初提问的 <code>var(--clr-accent)</code> 语法演示<br>
+            <span style="opacity:0.7;">设计基于你所提供的全部样式，并融入了自定义属性实例</span>
+        </footer>
+    </div>
+    <!-- 小脚本用于主题切换按钮（已在卡片内联，为避免重复单独再放一个确保可用） -->
+    <!-- 所有功能正常 -->
+</body>
+</html>

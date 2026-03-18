@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript DOM · 完全笔记 (示例+输出)</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📄 JavaScript DOM 完全笔记</h1>
+            <p>文档对象模型 · 节点操作 · 事件 · 方法大全</p>
+        </header>
+
+        <!-- 简介 & 节点类型 -->
+        <section class="section">
+            <div class="section-title">
+                <span>基础</span> DOM 简介 & 节点类型
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>DOM 树</code></div>
+                    <div class="card-title">什么是 DOM？</div>
+                    <div class="card-description">文档对象模型将 HTML 文档表示为节点树。每个元素、属性、文本都是节点。</div>
+                    <pre class="card-code"><code>// 简单示例
+&lt;div id="app"&gt;Hello&lt;/div&gt;
+// 对应的节点: Element(div), Attr(id), Text("Hello")</code></pre>
+                    <div class="card-example">根节点: document ; 元素节点: &lt;div&gt; ; 文本节点: "Hello"</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>nodeType</code></div>
+                    <div class="card-title">节点类型常量</div>
+                    <div class="card-description">每个节点有 nodeType 属性标识类型：1(元素), 2(属性), 3(文本), 8(注释), 9(文档)。</div>
+                    <pre class="card-code"><code>document.nodeType; // 9
+document.body.nodeType; // 1</code></pre>
+                    <div class="card-example">9  ;  1</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>nodeName / nodeValue</code></div>
+                    <div class="card-title">节点名称与值</div>
+                    <div class="card-description">元素节点 nodeName 为标签名，文本节点 nodeValue 为文本内容。</div>
+                    <pre class="card-code"><code>document.body.nodeName; // "BODY"
+document.body.firstChild?.nodeValue; // 可能为null或文本</code></pre>
+                    <div class="card-example">"BODY"  ;  文本内容</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>instanceof 检查</code></div>
+                    <div class="card-title">判断节点类型</div>
+                    <div class="card-description">使用 instanceof 检查特定接口：Element, HTMLElement, HTMLDivElement 等。</div>
+                    <pre class="card-code"><code>document.body instanceof HTMLElement; // true</code></pre>
+                    <div class="card-example">true</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 选择元素 (getElementsByTagName 已扩展) -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 选择 / 获取元素
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>getElementById()</code></div>
+                    <div class="card-title">通过 ID 获取</div>
+                    <div class="card-description">返回匹配ID的第一个元素，效率高。</div>
+                    <pre class="card-code"><code>document.getElementById('app');</code></pre>
+                    <div class="card-example">返回对应元素或 null</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>getElementsByClassName()</code></div>
+                    <div class="card-title">通过类名获取</div>
+                    <div class="card-description">返回实时 HTMLCollection，可通过索引访问。</div>
+                    <pre class="card-code"><code>document.getElementsByClassName('item');</code></pre>
+                    <div class="card-example">HTMLCollection(2) [div.item, div.item]</div>
+                </div>
+                <!-- 扩展后的卡片 -->
+                <div class="card">
+                    <div class="card-header"><code>getElementsByTagName()</code></div>
+                    <div class="card-title">通过标签名获取</div>
+                    <div class="card-description">返回实时 HTMLCollection。可以通过索引访问特定元素，也可遍历所有元素。</div>
+                    <pre class="card-code"><code>// 假设页面有两个 &lt;div&gt; 元素
+const divs = document.getElementsByTagName('div');
+
+// 获取第二个 &lt;div&gt; (索引从0开始)
+const secondDiv = divs[1];
+console.log(secondDiv.textContent); // 输出第二个div的内容
+
+// 遍历所有 &lt;div&gt;
+for (let div of divs) {
+    console.log(div.textContent);
+}
+
+// 或者转为数组后使用 forEach
+Array.from(divs).forEach(div => console.log(div.id));</code></pre>
+                    <div class="card-example">假设页面有两个div，内容分别为 "第一个" 和 "第二个"，则 divs[1] 返回第二个div，内容 "第二个"；遍历依次输出 "第一个" 和 "第二个"。</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>querySelector() / querySelectorAll()</code></div>
+                    <div class="card-title">CSS 选择器</div>
+                    <div class="card-description">querySelector 返回第一个匹配，querySelectorAll 返回静态 NodeList。</div>
+                    <pre class="card-code"><code>document.querySelector('.item:first-child');
+document.querySelectorAll('div > p');</code></pre>
+                    <div class="card-example">Element ; NodeList(2) [p, p]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 节点遍历 (父子兄弟) -->
+        <section class="section">
+            <div class="section-title">
+                <span>属性</span> 节点遍历 (父子兄弟)
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>parentNode / parentElement</code></div>
+                    <div class="card-title">父节点</div>
+                    <div class="card-description">parentNode 可能返回 Document 节点，parentElement 返回元素父节点。</div>
+                    <pre class="card-code"><code>document.body.parentNode; // &lt;html&gt;
+document.body.parentElement; // &lt;html&gt;</code></pre>
+                    <div class="card-example">&lt;html&gt;元素</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>children / childNodes</code></div>
+                    <div class="card-title">子节点</div>
+                    <div class="card-description">children 仅元素子节点，childNodes 包含文本、注释等。</div>
+                    <pre class="card-code"><code>document.body.children;
+document.body.childNodes;</code></pre>
+                    <div class="card-example">HTMLCollection ; NodeList (含换行文本等)</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>firstChild / lastChild</code></div>
+                    <div class="card-title">首尾子节点</div>
+                    <div class="card-description">包括文本节点。对应元素版本: firstElementChild / lastElementChild。</div>
+                    <pre class="card-code"><code>document.body.firstChild;
+document.body.firstElementChild;</code></pre>
+                    <div class="card-example">可能是文本节点 ; 第一个元素</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>nextSibling / previousSibling</code></div>
+                    <div class="card-title">兄弟节点</div>
+                    <div class="card-description">包括文本节点。元素版本: nextElementSibling / previousElementSibling。</div>
+                    <pre class="card-code"><code>document.body.nextSibling; // 通常是换行文本</code></pre>
+                    <div class="card-example">文本节点或 null</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 节点操作 (增删改) -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 节点操作 (创建/插入/移除)
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>createElement() / createTextNode()</code></div>
+                    <div class="card-title">创建节点</div>
+                    <div class="card-description">创建元素节点和文本节点。</div>
+                    <pre class="card-code"><code>const div = document.createElement('div');
+const text = document.createTextNode('Hello');</code></pre>
+                    <div class="card-example">div 元素 ; 文本节点</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>appendChild() / append()</code></div>
+                    <div class="card-title">添加子节点</div>
+                    <div class="card-description">appendChild 追加一个节点，返回该节点。append 可追加多个节点/字符串，无返回值。</div>
+                    <pre class="card-code"><code>parent.appendChild(newChild);
+parent.append('text', anotherChild);</code></pre>
+                    <div class="card-example">parent 最后增加子节点</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>insertBefore() / insertAdjacentElement()</code></div>
+                    <div class="card-title">插入到指定位置</div>
+                    <div class="card-description">insertBefore( newNode, referenceNode )；insertAdjacentElement 支持 'beforebegin' 等。</div>
+                    <pre class="card-code"><code>parent.insertBefore(newItem, existingItem);</code></pre>
+                    <div class="card-example">将 newItem 插入到 existingItem 之前</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>removeChild() / remove()</code></div>
+                    <div class="card-title">移除节点</div>
+                    <div class="card-description">removeChild 需通过父节点移除，返回被移除节点。remove 是被元素自身调用（IE 不支持）。</div>
+                    <pre class="card-code"><code>parent.removeChild(child);
+child.remove(); // 现代浏览器</code></pre>
+                    <div class="card-example">从 DOM 中移除 child</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>replaceChild()</code></div>
+                    <div class="card-title">替换子节点</div>
+                    <div class="card-description">parent.replaceChild(newChild, oldChild)。</div>
+                    <pre class="card-code"><code>parent.replaceChild(newSpan, oldP);</code></pre>
+                    <div class="card-example">用 newSpan 替换 oldP</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>cloneNode()</code></div>
+                    <div class="card-title">克隆节点</div>
+                    <div class="card-description">参数 true 深克隆（包含子节点），false 浅克隆。</div>
+                    <pre class="card-code"><code>const copy = node.cloneNode(true);</code></pre>
+                    <div class="card-example">返回克隆的新节点</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 属性操作 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 属性操作
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>getAttribute() / setAttribute()</code></div>
+                    <div class="card-title">标准属性方法</div>
+                    <div class="card-description">获取、设置任意属性（包括自定义 data-*）。</div>
+                    <pre class="card-code"><code>el.getAttribute('data-id');
+el.setAttribute('class', 'active');</code></pre>
+                    <div class="card-example">'123' ; 设置 class</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>hasAttribute() / removeAttribute()</code></div>
+                    <div class="card-title">判断/移除属性</div>
+                    <div class="card-description">检查是否存在某属性，移除属性。</div>
+                    <pre class="card-code"><code>el.hasAttribute('disabled');
+el.removeAttribute('disabled');</code></pre>
+                    <div class="card-example">true ; 移除后 disabled 消失</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>id / className / classList</code></div>
+                    <div class="card-title">直接属性访问</div>
+                    <div class="card-description">id 和 className 直接读写；classList 提供 add/remove/toggle/contains 方法。</div>
+                    <pre class="card-code"><code>el.id = 'main';
+el.className = 'box';
+el.classList.add('highlight');</code></pre>
+                    <div class="card-example">设置 ID、类，添加 highlight 类</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>dataset</code></div>
+                    <div class="card-title">自定义数据属性</div>
+                    <div class="card-description">访问 data-* 属性的对象，例如 data-user 对应 dataset.user。</div>
+                    <pre class="card-code"><code>el.dataset.user = '张三';</code></pre>
+                    <div class="card-example">设置 data-user="张三"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 样式操作 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 样式操作
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>style 属性</code></div>
+                    <div class="card-title">内联样式</div>
+                    <div class="card-description">通过 element.style 属性读写内联样式（驼峰命名）。</div>
+                    <pre class="card-code"><code>el.style.backgroundColor = 'red';
+el.style.fontSize = '16px';</code></pre>
+                    <div class="card-example">内联样式添加 background-color: red;</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>getComputedStyle()</code></div>
+                    <div class="card-title">计算后样式</div>
+                    <div class="card-description">获取元素最终应用的所有 CSS 属性值（只读）。</div>
+                    <pre class="card-code"><code>getComputedStyle(el).color;</code></pre>
+                    <div class="card-example">"rgb(0, 0, 0)"</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>classList 操作</code></div>
+                    <div class="card-title">通过类切换样式</div>
+                    <div class="card-description">add, remove, toggle, contains 管理类名。</div>
+                    <pre class="card-code"><code>el.classList.toggle('visible');</code></pre>
+                    <div class="card-example">如果存在则移除，否则添加</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 事件监听 -->
+        <section class="section">
+            <div class="section-title">
+                <span>方法</span> 事件监听
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header"><code>addEventListener()</code></div>
+                    <div class="card-title">添加事件</div>
+                    <div class="card-description">绑定事件处理函数，第三个参数可选（捕获、once等）。</div>
+                    <pre class="card-code"><code>btn.addEventListener('click', (e) => {
+    console.log('clicked');
+});</code></pre>
+                    <div class="card-example">点击按钮时打印 "clicked"</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>removeEventListener()</code></div>
+                    <div class="card-title">移除事件</div>
+                    <div class="card-description">需传入相同函数引用才能移除。</div>
+                    <pre class="card-code"><code>btn.removeEventListener('click', handler);</code></pre>
+                    <div class="card-example">移除后不再触发</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>事件对象 e</code></div>
+                    <div class="card-title">常用属性和方法</div>
+                    <div class="card-description">target, currentTarget, preventDefault(), stopPropagation()。</div>
+                    <pre class="card-code"><code>e.preventDefault(); // 阻止默认行为
+e.stopPropagation(); // 阻止冒泡</code></pre>
+                    <div class="card-example">例如阻止链接跳转</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>事件委托</code></div>
+                    <div class="card-title">利用冒泡</div>
+                    <div class="card-description">在父元素监听事件，通过 target 判断子元素，适用于动态元素。</div>
+                    <pre class="card-code"><code>list.addEventListener('click', (e) => {
+    if (e.target.matches('li')) {...}
+});</code></pre>
+                    <div class="card-example">点击 li 时触发</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 陷阱与对比 -->
+        <section class="section">
+            <div class="section-title">
+                <span>陷阱</span> 常见坑 & 对比
+            </div>
+            <div class="trap-grid">
+                <div class="card full-width-card">
+                    <div class="card-header"><code>HTMLCollection vs NodeList</code></div>
+                    <div class="card-title">实时与静态</div>
+                    <div class="card-description">getElementsBy系列返回 <strong>实时集合</strong> (DOM 变化自动更新)；querySelectorAll 返回 <strong>静态 NodeList</strong> (快照)。</div>
+                    <pre class="card-code"><code>const items = document.getElementsByClassName('item');
+const itemsStatic = document.querySelectorAll('.item');
+// 删除一个 .item 后，items 长度减少，itemsStatic 不变</code></pre>
+                    <div class="card-example">items 实时变化；itemsStatic 保持旧长度</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>childNodes vs children</code></div>
+                    <div class="card-title">节点与元素</div>
+                    <div class="card-description">childNodes 包含文本、注释，children 只包含元素节点。</div>
+                    <pre class="card-code"><code>document.body.childNodes.length; // 可能包含换行文本
+document.body.children.length;   // 只计元素</code></pre>
+                    <div class="card-example">例如 body 直接子元素个数</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>innerHTML vs textContent</code></div>
+                    <div class="card-title">内容操作</div>
+                    <div class="card-description">innerHTML 解析 HTML 标签，textContent 纯文本，更安全。</div>
+                    <pre class="card-code"><code>el.innerHTML = '&lt;b&gt;Hi&lt;/b&gt;';  // 加粗
+el.textContent = '&lt;b&gt;Hi&lt;/b&gt;'; // 显示原文</code></pre>
+                    <div class="card-example">第一个显示加粗 Hi，第二个显示 &lt;b&gt;Hi&lt;/b&gt;</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><code>offsetWidth / clientWidth</code></div>
+                    <div class="card-title">尺寸区别</div>
+                    <div class="card-description">offsetWidth 包括边框、滚动条；clientWidth 包括内边距，不含边框。</div>
+                    <pre class="card-code"><code>el.offsetWidth; // 完整外宽
+el.clientWidth; // 可视内容宽</code></pre>
+                    <div class="card-example">举例：边框+内边距+宽度</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例：动态待办列表 -->
+        <div class="demo-box">
+            <h3 style="margin-bottom: 0.8rem; color: #1e3a5f;">🧪 综合示例：动态待办列表 (DOM 操作 + 事件委托)</h3>
+            <pre><code>&lt;ul id="todo-list"&gt;
+    &lt;li&gt;学习 DOM&lt;/li&gt;
+    &lt;li&gt;写笔记&lt;/li&gt;
+&lt;/ul&gt;
+&lt;input id="newTodo" placeholder="新任务"&gt;
+&lt;button id="addBtn"&gt;添加&lt;/button&gt;
+
+&lt;script&gt;
+const list = document.getElementById('todo-list');
+const input = document.getElementById('newTodo');
+document.getElementById('addBtn').addEventListener('click', () => {
+    const text = input.value.trim();
+    if (text) {
+        const li = document.createElement('li');
+        li.textContent = text;
+        list.appendChild(li);
+        input.value = '';
+    }
+});
+// 事件委托：点击 li 标记完成
+list.addEventListener('click', (e) => {
+    if (e.target.tagName === 'LI') {
+        e.target.classList.toggle('done');
+    }
+});
+&lt;/script&gt;</code></pre>
+            <p><strong>说明:</strong> 点击按钮添加任务，点击任务项切换完成状态 (需要预先定义 .done 样式)</p>
+        </div>
+
+        <footer>
+            <p>📖 JavaScript DOM 完全笔记 · 代码在上 · 输出在下 · 避开常见陷阱 <br> <span style="opacity:0.7;">节点 · 选择 · 增删改 · 属性 · 样式 · 事件</span></p>
+        </footer>
+    </div>
+</body>
+</html>

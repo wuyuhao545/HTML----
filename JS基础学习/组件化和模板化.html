@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS 模块化 · 代码与效果</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 注意：模块化演示需要 type="module"，但内联模块可能跨域，此处仅展示语法 -->
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 JavaScript 模块化</h1>
+        <p>export / import · 默认导出 · 命名导出</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">📤 导出语法</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>命名导出</code></div>
+                <div class="card-code">export const name = '张三';<br>export function add(a,b) { return a+b; }</div>
+                <div class="card-effect">
+                    <p>代码示例，需在模块环境中运行。</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>默认导出</code></div>
+                <div class="card-code">export default function() { ... }</div>
+                <div class="card-effect">
+                    <p>每个模块只能有一个默认导出。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">📥 导入语法</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>导入命名导出</code></div>
+                <div class="card-code">import { name, add } from './module.js';</div>
+                <div class="card-effect">
+                    <p>需在&lt;script type="module"&gt;中使用。</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>导入默认导出</code></div>
+                <div class="card-code">import myFunc from './module.js';</div>
+                <div class="card-effect">
+                    <p>可自定义导入名称。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">🧪 简单演示（需要实际模块文件）</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>动态导入</code></div>
+                <div class="card-code">import('./module.js').then(module => { ... })</div>
+                <div class="card-effect">
+                    <button onclick="alert('动态导入需配合模块文件，此处仅为示意')">演示</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 模块化使代码可维护、可复用。
+    </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📐 JavaScript Math 对象 · 常用方法</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+    <h1 class="sr-only">JavaScript Math 对象方法详解</h1>
+
+    <div class="container">
+        <div class="header">
+            <h1>📐 JavaScript Math 对象</h1>
+            <p>常量 · 数学运算 · 随机数 · 三角函数</p>
+        </div>
+
+        <!-- ===== 第一部分：数学常量 ===== -->
+        <section class="section">
+            <h2 class="section-title">🔢 数学常量</h2>
+            <div class="card-grid">
+                <!-- 圆周率 PI -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-regular fa-circle"></i>
+                        <span>Math.PI</span>
+                    </div>
+                    <div class="card-code">Math.PI  // 圆周率</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.PI = ' + Math.PI + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 自然常数 E -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-regular fa-e"></i>
+                        <span>Math.E</span>
+                    </div>
+                    <div class="card-code">Math.E   // 自然对数的底数</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.E = ' + Math.E + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 其他常量 LN2、LN10、LOG2E、LOG10E -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-regular fa-calculator"></i>
+                        <span>更多常量</span>
+                    </div>
+                    <div class="card-code">
+Math.LN2
+Math.LN10
+Math.LOG2E
+Math.LOG10E
+Math.SQRT1_2
+Math.SQRT2
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.LN2 = ' + Math.LN2 + '</p>');
+                            document.write('<p>Math.LN10 = ' + Math.LN10 + '</p>');
+                            document.write('<p>Math.LOG2E = ' + Math.LOG2E + '</p>');
+                            document.write('<p>Math.LOG10E = ' + Math.LOG10E + '</p>');
+                            document.write('<p>Math.SQRT1_2 = ' + Math.SQRT1_2 + '</p>');
+                            document.write('<p>Math.SQRT2 = ' + Math.SQRT2 + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第二部分：取整与绝对值 ===== -->
+        <section class="section">
+            <h2 class="section-title">📌 取整与绝对值</h2>
+            <div class="card-grid">
+                <!-- Math.abs -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-absolute"></i>
+                        <span>Math.abs()</span>
+                    </div>
+                    <div class="card-code">Math.abs(-5)   // 5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.abs(-5) = ' + Math.abs(-5) + '</p>');
+                            document.write('<p>Math.abs(3.14) = ' + Math.abs(3.14) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.ceil -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chevron-up"></i>
+                        <span>Math.ceil()</span>
+                    </div>
+                    <div class="card-code">Math.ceil(4.2)  // 5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.ceil(4.2) = ' + Math.ceil(4.2) + '</p>');
+                            document.write('<p>Math.ceil(-4.2) = ' + Math.ceil(-4.2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.floor -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chevron-down"></i>
+                        <span>Math.floor()</span>
+                    </div>
+                    <div class="card-code">Math.floor(4.9) // 4</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.floor(4.9) = ' + Math.floor(4.9) + '</p>');
+                            document.write('<p>Math.floor(-4.2) = ' + Math.floor(-4.2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.round -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                        <span>Math.round()</span>
+                    </div>
+                    <div class="card-code">Math.round(4.5) // 5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.round(4.5) = ' + Math.round(4.5) + '</p>');
+                            document.write('<p>Math.round(4.4) = ' + Math.round(4.4) + '</p>');
+                            document.write('<p>Math.round(-4.5) = ' + Math.round(-4.5) + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第三部分：最值、幂与平方 ===== -->
+        <section class="section">
+            <h2 class="section-title">⚡ 最值、幂与平方</h2>
+            <div class="card-grid">
+                <!-- Math.max -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-maximize"></i>
+                        <span>Math.max()</span>
+                    </div>
+                    <div class="card-code">Math.max(10, 20, 5) // 20</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.max(10, 20, 5) = ' + Math.max(10, 20, 5) + '</p>');
+                            document.write('<p>Math.max(-1, -5, -2) = ' + Math.max(-1, -5, -2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.min -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-minimize"></i>
+                        <span>Math.min()</span>
+                    </div>
+                    <div class="card-code">Math.min(10, 20, 5) // 5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.min(10, 20, 5) = ' + Math.min(10, 20, 5) + '</p>');
+                            document.write('<p>Math.min(-1, -5, -2) = ' + Math.min(-1, -5, -2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.pow -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-exclamation"></i>
+                        <span>Math.pow()</span>
+                    </div>
+                    <div class="card-code">Math.pow(2, 3)  // 8</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.pow(2, 3) = ' + Math.pow(2, 3) + '</p>');
+                            document.write('<p>Math.pow(5, 2) = ' + Math.pow(5, 2) + '</p>');
+                            document.write('<p>Math.pow(4, 0.5) = ' + Math.pow(4, 0.5) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.sqrt -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-square-root-variable"></i>
+                        <span>Math.sqrt()</span>
+                    </div>
+                    <div class="card-code">Math.sqrt(16)  // 4</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.sqrt(16) = ' + Math.sqrt(16) + '</p>');
+                            document.write('<p>Math.sqrt(2) = ' + Math.sqrt(2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第四部分：随机数 ===== -->
+        <section class="section">
+            <h2 class="section-title">🎲 随机数</h2>
+            <div class="card-grid">
+                <!-- Math.random 基础 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-dice"></i>
+                        <span>Math.random()</span>
+                    </div>
+                    <div class="card-code">Math.random()  // 0 <= 值 < 1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>本次随机: ' + Math.random() + '</p>');
+                            document.write('<p>再次随机: ' + Math.random() + '</p>');
+                        </script>
+                        <button onclick="updateRandom()">生成新随机数</button>
+                        <div id="random-demo" class="math-demo" style="margin-top:0.5rem;">点击按钮更新</div>
+                    </div>
+                </div>
+
+                <!-- 随机整数 [min,max] -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-dice-d6"></i>
+                        <span>随机整数</span>
+                    </div>
+                    <div class="card-code">
+// 1～10 随机整数
+Math.floor(Math.random() * 10) + 1
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            function randInt(min, max) {
+                                return Math.floor(Math.random() * (max - min + 1)) + min;
+                            }
+                            document.write('<p>1～10: ' + randInt(1,10) + '</p>');
+                            document.write('<p>100～200: ' + randInt(100,200) + '</p>');
+                        </script>
+                        <button onclick="updateRandomInt()">新随机整数</button>
+                        <div id="random-int-demo" class="math-demo">1～10 随机: 点击按钮</div>
+                    </div>
+                </div>
+
+                <!-- 随机布尔值 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-coin"></i>
+                        <span>随机布尔值</span>
+                    </div>
+                    <div class="card-code">Math.random() < 0.5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>随机布尔: ' + (Math.random() < 0.5) + '</p>');
+                            document.write('<p>再次: ' + (Math.random() < 0.5) + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第五部分：三角函数 ===== -->
+        <section class="section">
+            <h2 class="section-title">📐 三角函数</h2>
+            <div class="card-grid">
+                <!-- Math.sin -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-wave-sine"></i>
+                        <span>Math.sin()</span>
+                    </div>
+                    <div class="card-code">Math.sin(Math.PI/2)  // 1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>sin(π/2) = ' + Math.sin(Math.PI/2) + '</p>');
+                            document.write('<p>sin(0) = ' + Math.sin(0) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.cos -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-wave-square"></i>
+                        <span>Math.cos()</span>
+                    </div>
+                    <div class="card-code">Math.cos(0)  // 1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>cos(0) = ' + Math.cos(0) + '</p>');
+                            document.write('<p>cos(π) = ' + Math.cos(Math.PI) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.tan -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Math.tan()</span>
+                    </div>
+                    <div class="card-code">Math.tan(Math.PI/4)  // 约等于1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>tan(π/4) = ' + Math.tan(Math.PI/4) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 反三角函数 asin/acos/atan -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                        <span>反三角函数</span>
+                    </div>
+                    <div class="card-code">
+Math.asin(0)
+Math.acos(1)
+Math.atan(1)
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.asin(0) = ' + Math.asin(0) + ' rad</p>');
+                            document.write('<p>Math.acos(1) = ' + Math.acos(1) + ' rad</p>');
+                            document.write('<p>Math.atan(1) = ' + Math.atan(1) + ' rad ≈ 45°</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第六部分：对数与指数 ===== -->
+        <section class="section">
+            <h2 class="section-title">📈 对数与指数</h2>
+            <div class="card-grid">
+                <!-- Math.log (自然对数) -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Math.log()</span>
+                    </div>
+                    <div class="card-code">Math.log(1)   // 0</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.log(1) = ' + Math.log(1) + '</p>');
+                            document.write('<p>Math.log(10) = ' + Math.log(10) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.log2 / Math.log10 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-2"></i>
+                        <span>Math.log2() / log10()</span>
+                    </div>
+                    <div class="card-code">Math.log2(8)   // 3</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.log2(8) = ' + Math.log2(8) + '</p>');
+                            document.write('<p>Math.log10(1000) = ' + Math.log10(1000) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.exp -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-exponential"></i>
+                        <span>Math.exp()</span>
+                    </div>
+                    <div class="card-code">Math.exp(1)  // e^1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.exp(1) = ' + Math.exp(1) + '</p>');
+                            document.write('<p>Math.exp(2) = ' + Math.exp(2) + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第七部分：其他实用方法 ===== -->
+        <section class="section">
+            <h2 class="section-title">🔧 其他实用方法</h2>
+            <div class="card-grid">
+                <!-- Math.trunc (截断) -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-scissors"></i>
+                        <span>Math.trunc()</span>
+                    </div>
+                    <div class="card-code">Math.trunc(3.9)  // 3</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.trunc(3.9) = ' + Math.trunc(3.9) + '</p>');
+                            document.write('<p>Math.trunc(-3.9) = ' + Math.trunc(-3.9) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.sign 符号 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-plus-minus"></i>
+                        <span>Math.sign()</span>
+                    </div>
+                    <div class="card-code">Math.sign(-5)  // -1</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.sign(-5) = ' + Math.sign(-5) + '</p>');
+                            document.write('<p>Math.sign(0) = ' + Math.sign(0) + '</p>');
+                            document.write('<p>Math.sign(8) = ' + Math.sign(8) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.cbrt 立方根 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-cube"></i>
+                        <span>Math.cbrt()</span>
+                    </div>
+                    <div class="card-code">Math.cbrt(27)  // 3</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.cbrt(27) = ' + Math.cbrt(27) + '</p>');
+                            document.write('<p>Math.cbrt(8) = ' + Math.cbrt(8) + '</p>');
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Math.hypot 平方和的平方根 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-triangle"></i>
+                        <span>Math.hypot()</span>
+                    </div>
+                    <div class="card-code">Math.hypot(3, 4)  // 5</div>
+                    <div class="card-effect">
+                        <script>
+                            document.write('<p>Math.hypot(3, 4) = ' + Math.hypot(3, 4) + '</p>');
+                            document.write('<p>Math.hypot(5, 12) = ' + Math.hypot(5, 12) + '</p>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例：利用Math计算圆面积 -->
+        <section class="section">
+            <h2 class="section-title">🧪 综合示例：圆面积计算器</h2>
+            <div class="card" style="grid-column:1/-1;">
+                <div class="card-header">
+                    <i class="fa-regular fa-circle"></i>
+                    <span>使用 Math.PI 和 Math.pow</span>
+                </div>
+                <div class="card-code">
+function circleArea(radius) {
+  return Math.PI * Math.pow(radius, 2);
+}
+                </div>
+                <div class="card-effect">
+                    <script>
+                        function circleArea(radius) {
+                            return Math.PI * Math.pow(radius, 2);
+                        }
+                        document.write('<p>半径 5 的圆面积: ' + circleArea(5).toFixed(4) + '</p>');
+                        document.write('<p>半径 10 的圆面积: ' + circleArea(10).toFixed(4) + '</p>');
+                    </script>
+                    <div style="margin-top: 1rem;">
+                        <label>输入半径: <input type="number" id="radiusInput" value="3" step="0.1" min="0"></label>
+                        <button onclick="calcArea()">计算面积</button>
+                        <p id="areaResult" class="math-demo">结果将显示在这里</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            ⚡ JavaScript Math 对象提供丰富的数学常量和函数 · 所有方法均可在控制台尝试<br>
+            <span style="font-size:0.85rem;">示例中的随机数按钮会动态更新，其他静态结果在页面加载时生成</span>
+        </footer>
+    </div>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 更新随机数演示 (Math.random)
+        function updateRandom() {
+            const demo = document.getElementById('random-demo');
+            if (demo) {
+                demo.innerHTML = '新随机数: ' + Math.random();
+            }
+        }
+
+        // 更新随机整数演示 (1~10)
+        function updateRandomInt() {
+            const demo = document.getElementById('random-int-demo');
+            if (demo) {
+                const r = Math.floor(Math.random() * 10) + 1;
+                demo.innerHTML = '1～10 随机: ' + r;
+            }
+        }
+
+        // 圆面积计算器
+        function calcArea() {
+            const input = document.getElementById('radiusInput');
+            const resultP = document.getElementById('areaResult');
+            const r = parseFloat(input.value);
+            if (isNaN(r) || r < 0) {
+                resultP.innerHTML = '请输入有效的正数半径';
+            } else {
+                const area = Math.PI * Math.pow(r, 2);
+                resultP.innerHTML = `半径 ${r} 的圆面积 = ${area.toFixed(6)}`;
+            }
+        }
+    </script>
+</body>
+</html>

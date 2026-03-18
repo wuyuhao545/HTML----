@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 vs 旧版HTML · 差异对比与示例（优化版）</title>
+    <!-- 保留外部样式链接（路径已标准化为正向斜杠） -->
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔁 HTML5 vs 旧版HTML</h1>
+        <p>核心差异对比 · 代码示例 + 实际效果</p>
+    </div>
+
+    <!-- 1. 文档类型声明 -->
+    <section class="section">
+        <h2 class="section-title">📄 文档类型声明</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML 4.01</span></h4>
+                <div class="card-code">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;</div>
+                <p class="note">冗长且难以记忆</p>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span></h4>
+                <div class="card-code">&lt;!DOCTYPE html&gt;</div>
+                <p class="note">简洁，不区分大小写，触发标准模式</p>
+            </div>
+        </div>
+        <div class="demo-box">
+            <p>✅ 当前页面顶部使用的就是 <code>&lt;!DOCTYPE html&gt;</code>，所有现代浏览器均支持。</p>
+        </div>
+    </section>
+
+    <!-- 2. 语义化标签 -->
+    <section class="section">
+        <h2 class="section-title">🏷️ 语义化标签</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML4</span> 使用大量 div</h4>
+                <div class="card-code">&lt;div class="header"&gt;页眉&lt;/div&gt;
+&lt;div class="nav"&gt;导航&lt;/div&gt;
+&lt;div class="main"&gt;
+  &lt;div class="article"&gt;文章&lt;/div&gt;
+  &lt;div class="aside"&gt;侧边栏&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="footer"&gt;页脚&lt;/div&gt;</div>
+                <div class="demo-box">
+                    <div class="old-layout">
+                        <div>页眉</div>
+                        <div>导航</div>
+                        <div>主区域</div>
+                        <div>文章</div>
+                        <div>侧边栏</div>
+                        <div>页脚</div>
+                    </div>
+                </div>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span> 语义化标签</h4>
+                <div class="card-code">&lt;header&gt;页眉&lt;/header&gt;
+&lt;nav&gt;导航&lt;/nav&gt;
+&lt;main&gt;
+  &lt;article&gt;文章&lt;/article&gt;
+  &lt;aside&gt;侧边栏&lt;/aside&gt;
+&lt;/main&gt;
+&lt;footer&gt;页脚&lt;/footer&gt;</div>
+                <div class="demo-box">
+                    <div class="new-layout">
+                        <header>页眉</header>
+                        <nav>导航</nav>
+                        <main>
+                            <article>文章</article>
+                            <aside>侧边栏</aside>
+                        </main>
+                        <footer>页脚</footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="note">语义化标签更清晰，利于SEO和屏幕阅读器，但渲染效果与div无异。</p>
+    </section>
+
+    <!-- 3. 表单增强 -->
+    <section class="section">
+        <h2 class="section-title">📝 表单控件与属性</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML4</span> 基本控件</h4>
+                <div class="card-code">&lt;input type="text" name="name"&gt;
+&lt;input type="password"&gt;
+&lt;input type="checkbox"&gt;
+&lt;input type="radio"&gt;
+&lt;textarea&gt;&lt;/textarea&gt;
+&lt;select&gt;&lt;option&gt;...&lt;/option&gt;&lt;/select&gt;</div>
+                <div class="demo-box">
+                    <form>
+                        <input type="text" placeholder="文本"><br>
+                        <input type="password" placeholder="密码"><br>
+                        <label><input type="checkbox"> 复选框</label><br>
+                        <label><input type="radio" name="r"> 选项1</label>
+                        <label><input type="radio" name="r"> 选项2</label><br>
+                        <textarea rows="2" placeholder="多行文本"></textarea><br>
+                        <select><option>选项A</option><option>选项B</option></select>
+                    </form>
+                </div>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span> 新增类型与属性</h4>
+                <div class="card-code">&lt;input type="email" placeholder="邮箱" required&gt;
+&lt;input type="url"&gt;
+&lt;input type="tel"&gt;
+&lt;input type="number" min="1" max="10"&gt;
+&lt;input type="range"&gt;
+&lt;input type="color"&gt;
+&lt;input type="date"&gt;
+&lt;input type="time"&gt;
+&lt;input type="search"&gt;
+&lt;input type="file" multiple&gt;
+&lt;input type="text" pattern="[A-Za-z]{3}" title="三个字母"&gt;
+&lt;input list="browsers"&gt;
+&lt;datalist id="browsers"&gt;&lt;option value="Chrome"&gt;...&lt;/datalist&gt;</div>
+                <div class="demo-box">
+                    <form>
+                        <input type="email" placeholder="邮箱" required><br>
+                        <input type="url" placeholder="网址"><br>
+                        <input type="tel" placeholder="电话"><br>
+                        <input type="number" min="1" max="10" value="5"><br>
+                        <input type="range"><br>
+                        <input type="color" value="#3b82f6"><br>
+                        <input type="date"><br>
+                        <input type="time"><br>
+                        <input type="search" placeholder="搜索"><br>
+                        <input type="file" multiple><br>
+                        <input type="text" pattern="[A-Za-z]{3}" title="三个字母" placeholder="三个字母"><br>
+                        <input list="browsers-html5" placeholder="选择浏览器">
+                        <datalist id="browsers-html5">
+                            <option value="Chrome">
+                            <option value="Firefox">
+                            <option value="Edge">
+                        </datalist>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p class="note">HTML5 新增多种输入类型和内建验证（如 required、pattern），减少JavaScript依赖。</p>
+    </section>
+
+    <!-- 4. 多媒体：audio 和 video -->
+    <section class="section">
+        <h2 class="section-title">🎵 多媒体 (audio/video)</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML4</span> 依赖第三方插件</h4>
+                <div class="card-code">&lt;object data="movie.swf" type="application/x-shockwave-flash"&gt;
+  &lt;param name="movie" value="movie.swf"&gt;
+&lt;/object&gt;
+&lt;embed src="audio.mp3" type="audio/mpeg"&gt;</div>
+                <div class="demo-box">
+                    <p>需要Flash或其他插件，现已不推荐。</p>
+                </div>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span> 原生支持</h4>
+                <div class="card-code">&lt;audio controls&gt;
+  &lt;source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg"&gt;
+&lt;/audio&gt;
+
+&lt;video controls width="250"&gt;
+  &lt;source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"&gt;
+&lt;/video&gt;</div>
+                <div class="demo-box">
+                    <audio controls>
+                        <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                        您的浏览器不支持 audio 元素。
+                    </audio><br>
+                    <video controls width="200">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        您的浏览器不支持 video 元素。
+                    </video>
+                </div>
+            </div>
+        </div>
+        <p class="note">音频/视频无需插件，支持多种格式，提供完整JavaScript API。</p>
+    </section>
+
+    <!-- 5. Canvas 绘图 -->
+    <section class="section">
+        <h2 class="section-title">🎨 Canvas 绘图</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML4</span> 无原生绘图</h4>
+                <div class="card-code">通常使用 Flash、VML 或复杂的 SVG 脚本。</div>
+                <div class="demo-box">
+                    <p>没有简单的方式动态绘制图形。</p>
+                </div>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span> &lt;canvas&gt;</h4>
+                <div class="card-code">&lt;canvas id="myCanvas" width="200" height="100"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  var ctx = document.getElementById('myCanvas').getContext('2d');
+  ctx.fillStyle = '#3b82f6';
+  ctx.fillRect(10,10,80,60);
+  ctx.fillStyle = '#f97316';
+  ctx.beginPath();
+  ctx.arc(140,50,30,0,2*Math.PI);
+  ctx.fill();
+&lt;/script&gt;</div>
+                <div class="demo-box">
+                    <canvas id="canvasDemo" width="200" height="100" style="border:1px solid #ccc; border-radius:0.8rem;"></canvas>
+                    <script>
+                        (function() {
+                            var ctx = document.getElementById('canvasDemo').getContext('2d');
+                            ctx.fillStyle = '#3b82f6';
+                            ctx.fillRect(10,10,80,60);
+                            ctx.fillStyle = '#f97316';
+                            ctx.beginPath();
+                            ctx.arc(140,50,30,0,2*Math.PI);
+                            ctx.fill();
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 本地存储 -->
+    <section class="section">
+        <h2 class="section-title">💾 本地存储 (localStorage)</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">HTML4</span> 仅Cookie</h4>
+                <div class="card-code">document.cookie = "key=value; expires=...";</div>
+                <div class="demo-box">
+                    <p>存储大小受限（约4KB），每次请求都会发送到服务器。</p>
+                </div>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">HTML5</span> localStorage / sessionStorage</h4>
+                <div class="card-code">// 存储
+localStorage.setItem('name', '张三');
+// 读取
+localStorage.getItem('name');
+// 删除
+localStorage.removeItem('name');</div>
+                <div class="demo-box" style="background: white;">
+                    <p>存储容量更大（5MB+），仅客户端保存，不发送到服务器。</p>
+                    <button onclick="localStorage.setItem('demo','Hello HTML5!'); alert('已存储')">存储数据</button>
+                    <button onclick="alert(localStorage.getItem('demo')||'无数据')">读取数据</button>
+                    <button onclick="localStorage.removeItem('demo'); alert('已删除')">删除数据</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 新增的API和元素（使用卡片网格） -->
+    <section class="section">
+        <h2 class="section-title">🚀 其他新增特性</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>地理位置</code></div>
+                <div class="card-code">navigator.geolocation.getCurrentPosition(success, error);</div>
+                <div class="card-effect">
+                    <button onclick="navigator.geolocation.getCurrentPosition(p=>alert('纬度:'+p.coords.latitude), e=>alert('无法获取'))">获取位置</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>拖放</code></div>
+                <div class="card-code">&lt;div draggable="true"&gt;可拖动&lt;/div&gt;</div>
+                <div class="card-effect">
+                    <div draggable="true" style="background:#3b82f6; color:white; padding:0.5rem 1rem; border-radius:2rem; display:inline-block;">可拖动</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Web Workers</code></div>
+                <div class="card-code">const worker = new Worker('worker.js');</div>
+                <div class="card-effect">后台线程，不阻塞UI</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>WebSocket</code></div>
+                <div class="card-code">const ws = new WebSocket('ws://...');</div>
+                <div class="card-effect">全双工通信</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 移除的元素 -->
+    <section class="section">
+        <h2 class="section-title">🗑️ HTML5 中移除的旧元素</h2>
+        <div class="compare-row">
+            <div class="compare-col">
+                <h4><span class="html4-badge">已移除</span></h4>
+                <ul style="list-style: none; padding:0;">
+                    <li><code>&lt;font&gt;</code> – 改用CSS</li>
+                    <li><code>&lt;center&gt;</code> – 改用 text-align</li>
+                    <li><code>&lt;big&gt;</code> – 改用 font-size</li>
+                    <li><code>&lt;strike&gt;</code> – 改用 text-decoration</li>
+                    <li><code>&lt;frame&gt; &lt;frameset&gt;</code> – 改用 iframe 或布局</li>
+                </ul>
+            </div>
+            <div class="compare-col">
+                <h4><span class="html5-badge">现代替代</span></h4>
+                <div class="card-code">&lt;span style="color:red;"&gt;文本&lt;/span&gt;
+&lt;div style="text-align:center;"&gt;居中&lt;/div&gt;</div>
+                <div class="demo-box">
+                    <span style="color:red;">CSS 控制颜色</span><br>
+                    <div style="text-align:center;">CSS 居中</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ HTML5 带来了更简洁、更强大、更语义化的标记，推动现代Web应用发展。<br>
+        ✨ 优化版：统一代码块样式，修复缺失类，增强可读性。
+    </footer>
+</div>
+</body>
+</html>

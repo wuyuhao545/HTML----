@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Fetch · 代码与效果</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🌐 JavaScript 网络请求</h1>
+        <p>Fetch API、XMLHttpRequest 及动态组件加载</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">📡 Fetch API</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>GET请求</code></div>
+                <div class="card-code">fetch('https://jsonplaceholder.typicode.com/todos/1')<br>  .then(res => res.json())<br>  .then(data => console.log(data))</div>
+                <div class="card-effect">
+                    <button onclick="fetch('https://jsonplaceholder.typicode.com/todos/1').then(res => res.json()).then(data => alert('userId: ' + data.userId + ', title: ' + data.title)).catch(e => alert('请求失败'))">发送GET请求</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>POST请求</code></div>
+                <div class="card-code">fetch(url, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })</div>
+                <div class="card-effect">
+                    <button onclick="fetch('https://jsonplaceholder.typicode.com/posts', { method: 'POST', body: JSON.stringify({title: 'foo', body: 'bar', userId: 1}), headers: {'Content-Type': 'application/json'} }).then(res => res.json()).then(data => alert('创建成功，ID: ' + data.id)).catch(e => alert('请求失败'))">发送POST请求</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">📜 XMLHttpRequest</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>传统Ajax</code></div>
+                <div class="card-code">const xhr = new XMLHttpRequest();<br>xhr.open('GET', url);<br>xhr.onload = function() {...}</div>
+                <div class="card-effect">
+                    <button onclick="const xhr = new XMLHttpRequest(); xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos/2'); xhr.onload = function() { if(xhr.status === 200) alert(JSON.parse(xhr.responseText).title); }; xhr.send();">使用XHR请求</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 今日所学：动态加载公共组件 -->
+    <section class="section">
+        <h2 class="section-title">📦 动态加载公共组件（今日所学）</h2>
+        <div class="card-grid">
+            <!-- 成功加载示例（已有） -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-check-circle" style="color:#10b981;"></i> 成功加载 & 生命周期</div>
+                <div class="card-code">
+// 从 API 获取数据并构造组件（模拟加载 header.html）
+fetch('https://jsonplaceholder.typicode.com/posts/1')
+  .then(res => res.json())
+  .then(data => {
+    const html = `&lt;header style="background:#f1f5f9; padding:1rem; border-radius:8px;"&gt;
+      &lt;h3&gt;${data.title}&lt;/h3&gt;
+      &lt;p&gt;动态加载的组件内容&lt;/p&gt;
+    &lt;/header&gt;`;
+    document.getElementById('dynamic-header-placeholder').innerHTML = html;
+    // 依赖 DOM 的代码放在这里执行
+    document.querySelector('#dynamic-header-placeholder button')?.addEventListener('click', () => alert('按钮被点击'));
+  })
+  .catch(err => console.error(err));
+                </div>
+                <div class="card-effect">
+                    <button onclick="loadHeaderSuccess()">加载成功示例</button>
+                    <div id="dynamic-header-placeholder">
+                        <!-- 动态内容将显示在这里 -->
+                    </div>
+                    <p class="note">成功加载后，在 <code>.then()</code> 中操作 DOM，确保组件已插入。</p>
+                </div>
+            </div>
+
+            <!-- 错误处理示例（已有） -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-exclamation-triangle" style="color:#ef4444;"></i> 错误处理 & 友好提示</div>
+                <div class="card-code">
+// 请求不存在的文件（header.html）
+fetch('header.html')
+  .then(res => {
+    if (!res.ok) throw new Error('网络响应失败');
+    return res.text();
+  })
+  .then(html => {
+    document.getElementById('error-demo').innerHTML = html;
+  })
+  .catch(error => {
+    document.getElementById('error-demo').innerHTML =
+      '&lt;div class="error-box"&gt;❌ 加载失败：' + error.message + '，请稍后重试。&lt;/div&gt;';
+  });
+                </div>
+                <div class="card-effect">
+                    <button onclick="loadHeaderFail()">加载失败示例</button>
+                    <div id="error-demo"></div>
+                    <p class="note">使用 <code>.catch()</code> 显示友好提示，避免页面空白。</p>
+                </div>
+            </div>
+
+            <!-- 新增卡片：原始代码加载 header.html 到 <header> 元素 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-code" style="color:#8b5cf6;"></i> 原始代码：加载 header.html 到 &lt;header&gt;</div>
+                <div class="card-code">
+// 您提供的原始代码（稍作适配，使用 #demo-header 演示）
+fetch('header.html')  // 确保 header.html 位于网站根目录
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP 错误 ${response.status}`);
+    }
+    return response.text();
+  })
+  .then(html => {
+    // 将获取到的 header 内容放入 &lt;header&gt; 标签
+    document.querySelector('#demo-header').innerHTML = html;
+    // 可选：触发自定义事件
+  })
+  .catch(error => {
+    console.error('加载 header 失败:', error);
+    document.querySelector('#demo-header').innerHTML =
+      '&lt;div style="padding:1rem; background:#f0f0f0; text-align:center;"&gt;导航栏加载失败，请刷新重试&lt;/div&gt;';
+  });
+                </div>
+                <div class="card-effect">
+                    <div style="margin-bottom:0.5rem;">
+                        <strong>演示用 &lt;header&gt; 元素：</strong>
+                    </div>
+                    <header id="demo-header" style="border:1px solid #cbd5e1; border-radius:6px; padding:0.5rem; background:#ffffff; min-height:4rem;">
+                        默认 header 内容（等待加载）
+                    </header>
+                    <div style="margin-top:0.8rem;">
+                        <button onclick="demoLoadHeaderSuccess()">📥 模拟成功加载</button>
+                        <button onclick="demoLoadHeaderFail()">⚠️ 模拟失败加载</button>
+                    </div>
+                    <p class="note">
+                        成功按钮使用 <code>data:</code> URL 模拟返回 HTML 片段；失败按钮请求不存在的 <code>header.html</code>。<br>
+                        观察上方 <code>&lt;header&gt;</code> 内容的变化及错误提示。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 今日所学：可访问性增强 ===== -->
+    <section class="section">
+        <h2 class="section-title">♿ 可访问性增强（今日所学）</h2>
+        <div class="card-grid">
+            <!-- 卡片1：键盘导航 :focus -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-keyboard"></i> 键盘导航 <code>:focus</code></div>
+                <div class="card-code">
+&lt;button class="focus-demo-btn"&gt;按钮1&lt;/button&gt;
+&lt;button class="focus-demo-btn"&gt;按钮2&lt;/button&gt;
+&lt;a href="#" class="focus-demo-btn"&gt;链接&lt;/a&gt;
+                </div>
+                <div class="card-effect">
+                    <button class="focus-demo-btn">按钮1</button>
+                    <button class="focus-demo-btn">按钮2</button>
+                    <a href="#" class="focus-demo-btn">链接</a>
+                    <p class="note">按 <kbd>Tab</kbd> 键切换焦点，观察蓝色外圈样式。<code>:focus</code> 确保键盘用户能看到当前位置。</p>
+                </div>
+            </div>
+
+            <!-- 卡片2：屏幕阅读器支持 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-ear-listen"></i> 屏幕阅读器支持</div>
+                <div class="card-code">
+&lt;button aria-label="关闭对话框" onclick="alert('关闭')"&gt;X&lt;/button&gt;
+&lt;div role="alert"&gt;重要提示&lt;/div&gt;
+&lt;article&gt;
+  &lt;h2&gt;文章标题&lt;/h2&gt;
+  &lt;p&gt;内容...&lt;/p&gt;
+&lt;/article&gt;
+                </div>
+                <div class="card-effect">
+                    <button aria-label="关闭对话框" onclick="alert('关闭')">X</button>
+                    <div role="alert" style="background:#fee2e2; padding:0.5rem; border-radius:6px; margin-top:0.5rem;">⚠️ 重要提示（role="alert"）</div>
+                    <article style="border:1px solid #cbd5e1; border-radius:8px; padding:0.8rem; margin-top:0.5rem;">
+                        <h2>语义化文章标题</h2>
+                        <p>使用 <code>&lt;article&gt;</code> 标签，屏幕阅读器可识别为独立内容。</p>
+                    </article>
+                    <p class="note">添加 <code>aria-label</code>、<code>role</code> 和语义标签，提升辅助技术体验。</p>
+                </div>
+            </div>
+
+            <!-- 卡片3：颜色对比度 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-eye"></i> 颜色对比度</div>
+                <div class="card-code">
+&lt;button class="contrast-bad"&gt;对比度不足&lt;/button&gt;
+&lt;button class="contrast-good"&gt;对比度良好&lt;/button&gt;
+                </div>
+                <div class="card-effect">
+                    <button class="contrast-bad">对比度不足</button>
+                    <button class="contrast-good">对比度良好</button>
+                    <p class="note">左侧按钮文字与背景对比度低（浅灰/浅灰），难以阅读；右侧白色文字配深色背景，符合WCAG要求。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 网络请求使页面能与服务器交互。<br>
+        🆕 今日新增：动态加载公共组件、异步生命周期、错误处理、可访问性增强（键盘焦点、ARIA、对比度）。
+    </footer>
+</div>
+
+<!-- 引入 Font Awesome 图标（用于美化卡片） -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script>
+    // 原有函数：成功加载示例
+    function loadHeaderSuccess() {
+        fetch('https://jsonplaceholder.typicode.com/posts/1')
+            .then(response => {
+                if (!response.ok) throw new Error('网络响应失败');
+                return response.json();
+            })
+            .then(data => {
+                const html = `
+                    <header style="background: #f1f5f9; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <h3 style="margin:0 0 0.5rem 0;">${data.title}</h3>
+                        <p style="margin:0;">这是一段动态加载的组件内容（模拟 header.html）</p>
+                        <button style="margin-top:0.5rem; background:#3b82f6; color:white; border:none; border-radius:20px; padding:0.2rem 1rem;">点击我</button>
+                    </header>
+                `;
+                const container = document.getElementById('dynamic-header-placeholder');
+                container.innerHTML = html;
+                const btn = container.querySelector('button');
+                if (btn) {
+                    btn.addEventListener('click', () => alert('动态加载的按钮被点击！'));
+                }
+            })
+            .catch(error => {
+                console.error('加载失败:', error);
+                document.getElementById('dynamic-header-placeholder').innerHTML =
+                    '<div class="error-box">❌ 加载失败，请稍后重试。</div>';
+            });
+    }
+
+    // 原有函数：错误加载示例
+    function loadHeaderFail() {
+        fetch('header.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} - 文件不存在`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('error-demo').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('error-demo').innerHTML =
+                    `<div class="error-box">❌ 加载失败：${error.message}，请检查文件路径或网络。</div>`;
+            });
+    }
+
+    // 新增函数：模拟成功加载 header.html（使用 data: URL 返回一个简单的 HTML 片段）
+    function demoLoadHeaderSuccess() {
+        // 模拟的 header.html 内容（实际开发中应替换为真实文件）
+        const mockHtml = `<header style="background: #dbeafe; padding: 0.8rem; border-radius: 6px; text-align: center;">
+    <h2 style="margin:0 0 0.3rem 0;">📋 模拟的公共导航栏</h2>
+    <nav>
+        <a href="#" style="margin:0 0.5rem;">首页</a> |
+        <a href="#" style="margin:0 0.5rem;">关于</a> |
+        <a href="#" style="margin:0 0.5rem;">服务</a> |
+        <a href="#" style="margin:0 0.5rem;">联系</a>
+    </nav>
+    <p style="margin:0.3rem 0 0; font-size:0.85rem;">来自 header.html 的内容</p>
+</header>`;
+
+        // 使用 data: URL 模拟网络请求，返回上述 HTML
+        fetch('data:text/html;charset=utf-8,' + encodeURIComponent(mockHtml))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP 错误 ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                // 将获取到的 header 内容放入 <header id="demo-header"> 标签
+                document.querySelector('#demo-header').innerHTML = html;
+                // 可选：触发自定义事件
+            })
+            .catch(error => {
+                console.error('加载 header 失败:', error);
+                document.querySelector('#demo-header').innerHTML =
+                    '<div style="padding:1rem; background:#f0f0f0; text-align:center; color:#b91c1c;">❌ 导航栏加载失败，请刷新重试</div>';
+            });
+    }
+
+    // 新增函数：模拟失败加载（请求不存在的 header.html）
+    function demoLoadHeaderFail() {
+        fetch('header.html')  // 这个文件实际不存在，会触发 404
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP 错误 ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.querySelector('#demo-header').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('加载 header 失败:', error);
+                document.querySelector('#demo-header').innerHTML =
+                    '<div style="padding:1rem; background:#f0f0f0; text-align:center; color:#b91c1c;">❌ 导航栏加载失败，请刷新重试</div>';
+            });
+    }
+</script>
+</body>
+</html>

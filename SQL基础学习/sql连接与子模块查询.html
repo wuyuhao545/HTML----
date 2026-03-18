@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL · 连接 & 子查询</title>
+    <link rel="stylesheet" href="sql.css">
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="nav-home">🏠 返回主页</a>
+    <h1>🔗 连接查询 & 子查询</h1>
+    <p class="example-note">多表关联 · 嵌套查询 · 派生表</p>
+
+    <h2>INNER JOIN 内连接</h2>
+    <pre><code>SELECT e.name, d.dept_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+
+    <h2>LEFT JOIN 左连接</h2>
+    <pre><code>SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+
+    <h2>标量子查询</h2>
+    <pre><code>SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);</code></pre>
+
+    <h2>IN 子查询</h2>
+    <pre><code>SELECT name
+FROM employees
+WHERE dept_id IN (SELECT dept_id FROM departments WHERE location='北京');</code></pre>
+
+    <h2>派生表（子查询作为临时表）</h2>
+    <pre><code>SELECT max_sal, name
+FROM (SELECT MAX(salary) max_sal FROM employees) t;</code></pre>
+
+    <div class="back2top"><a href="#">⬆ 回到顶部</a></div>
+    <footer>← 返回主页可切换其他模块</footer>
+</div>
+</body>
+</html>

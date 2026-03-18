@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS 对象与数组 · 代码与效果</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 JavaScript 对象与数组</h1>
+        <p>对象字面量、数组方法、遍历</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">🔹 对象</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>对象字面量</code></div>
+                <div class="card-code">const person = { name: "李四", age: 28 };</div>
+                <div class="card-effect">
+                    <script>
+                        const person = { name: "李四", age: 28 };
+                        document.write('<p>姓名: ' + person.name + '</p>');
+                        document.write('<p>年龄: ' + person.age + '</p>');
+                    </script>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>属性操作</code></div>
+                <div class="card-code">person.city = "北京";<br>delete person.age;</div>
+                <div class="card-effect">
+                    <script>
+                        const p = { name: "王五", age: 30 };
+                        p.city = "上海";
+                        delete p.age;
+                        document.write('<p>添加city: ' + p.city + '</p>');
+                        document.write('<p>删除age后: ' + (p.age === undefined ? '无age' : p.age) + '</p>');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">🔸 数组</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>数组字面量</code></div>
+                <div class="card-code">const fruits = ["苹果", "香蕉", "橘子"];</div>
+                <div class="card-effect">
+                    <script>
+                        const fruits = ["苹果", "香蕉", "橘子"];
+                        document.write('<p>第一个: ' + fruits[0] + '</p>');
+                        document.write('<p>长度: ' + fruits.length + '</p>');
+                    </script>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>常用方法</code></div>
+                <div class="card-code">fruits.push("葡萄");<br>fruits.pop();<br>fruits.map(...)</div>
+                <div class="card-effect">
+                    <script>
+                        let arr = [1, 2, 3, 4];
+                        document.write('<p>原数组: ' + arr + '</p>');
+                        arr.push(5);
+                        document.write('<p>push(5)后: ' + arr + '</p>');
+                        arr.pop();
+                        document.write('<p>pop()后: ' + arr + '</p>');
+                        const doubled = arr.map(x => x * 2);
+                        document.write('<p>map(x2): ' + doubled + '</p>');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 对象和数组是JS中最常用的数据结构。
+    </footer>
+</div>
+</body>
+</html>

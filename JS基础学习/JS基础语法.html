@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 JS 核心概念 · 基础语法 & 函数（闭包/提升独立）</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        .feature-desc ul {
+            margin: 0.25rem 0 0.5rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        .feature-desc li {
+            margin-bottom: 0.2rem;
+        }
+        .card-effect button {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .card-effect button:hover {
+            background: #3b5a8c;
+        }
+        kbd {
+            background: #f0f0f0;
+            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            font-family: monospace;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📘 JavaScript 基础语法 · 函数 · 提升 · 闭包</h1>
+        <p>变量 · 数据类型 · 运算符 · 输出方式 · 函数定义 · 变量提升（独立） · 闭包（独立）</p>
+    </div>
+
+    <!-- ========= 第一部分：基础语法（变量声明、数据类型、运算符、输出） ========= -->
+
+    <!-- 变量声明 · var/let/const 特点卡片 -->
+    <section class="section">
+        <h2 class="section-title">📌 变量声明 (var / let / const 特点)</h2>
+        <div class="card-grid">
+            <!-- var 卡片 -->
+            <div class="card">
+                <div class="card-header"><code>var</code></div>
+                <div class="card-code">var name = "张三";</div>
+                <div class="card-effect">
+                    <div class="feature-desc">
+                        <strong>🔹 特点：</strong>
+                        <ul>
+                            <li>函数作用域 / 全局作用域</li>
+                            <li>存在变量提升（hoisting）</li>
+                            <li>可重复声明同一变量</li>
+                            <li>全局作用域下成为 <code>window</code> 属性</li>
+                        </ul>
+                    </div>
+                    <script>
+                        var nameVar = "张三";
+                        document.write('<p>var name = "张三" → ' + nameVar + '</p>');
+                    </script>
+                </div>
+            </div>
+            <!-- let 卡片 -->
+            <div class="card">
+                <div class="card-header"><code>let</code></div>
+                <div class="card-code">let age = 25;</div>
+                <div class="card-effect">
+                    <div class="feature-desc">
+                        <strong>🔹 特点：</strong>
+                        <ul>
+                            <li>块级作用域 <code>{ }</code></li>
+                            <li>暂时性死区（TDZ），无变量提升</li>
+                            <li>同一作用域内不可重复声明</li>
+                            <li>全局声明的变量不属于 <code>window</code></li>
+                        </ul>
+                    </div>
+                    <script>
+                        let ageLet = 25;
+                        document.write('<p>let age = 25 → ' + ageLet + '</p>');
+                    </script>
+                </div>
+            </div>
+            <!-- const 卡片 -->
+            <div class="card">
+                <div class="card-header"><code>const</code></div>
+                <div class="card-code">const PI = 3.14;</div>
+                <div class="card-effect">
+                    <div class="feature-desc">
+                        <strong>🔹 特点：</strong>
+                        <ul>
+                            <li>块级作用域，必须初始化赋值</li>
+                            <li>常量引用不可变（对象属性可变）</li>
+                            <li>不存在变量提升，有暂时性死区</li>
+                            <li>不可重复声明</li>
+                        </ul>
+                    </div>
+                    <script>
+                        const PI = 3.14;
+                        document.write('<p>const PI = 3.14 → ' + PI + '</p>');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据类型 (原始 + 引用) -->
+    <section class="section">
+        <h2 class="section-title">🔢 数据类型 (原始类型 + 引用类型)</h2>
+        <div class="card-grid">
+            <!-- String -->
+            <div class="card">
+                <div class="card-header"><code>String</code></div>
+                <div class="card-code">let str = "Hello";</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>📝 特点：</strong> 表示文本；可用引号 <code>''</code>、<code>""</code>、<code>``</code>；不可变；有 <code>length</code> 和丰富方法。</div>
+                    <script>document.write('<p>字符串 "Hello" → 值 ' + "Hello" + ' 类型 ' + typeof "Hello" + '</p>');</script>
+                </div>
+            </div>
+            <!-- Number -->
+            <div class="card">
+                <div class="card-header"><code>Number</code></div>
+                <div class="card-code">let num = 42;</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>🔢 特点：</strong> 整数和浮点数；包含 <code>Infinity</code>、<code>-Infinity</code>、<code>NaN</code>；双精度64位。</div>
+                    <script>document.write('<p>数字 42 → 值 ' + 42 + ' 类型 ' + typeof 42 + '</p>');</script>
+                </div>
+            </div>
+            <!-- Boolean -->
+            <div class="card">
+                <div class="card-header"><code>Boolean</code></div>
+                <div class="card-code">let bool = true;</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>✅ 特点：</strong> 仅 <code>true</code> 和 <code>false</code>；常用于条件判断；逻辑运算符返回布尔值,默认是false。</div>
+                    <script>document.write('<p>布尔 true → 值 ' + true + ' 类型 ' + typeof true + '</p>');</script>
+                </div>
+            </div>
+            <!-- null -->
+            <div class="card">
+                <div class="card-header"><code>null</code></div>
+                <div class="card-code">let a = null;</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>🚫 特点：</strong> 表示“空”或“不存在”；<code>typeof null</code> 返回 <code>"object"</code>（历史遗留）；主动赋值空缺。</div>
+                    <script>document.write('<p>null → 值 ' + null + ' 类型 ' + typeof null + '</p>');</script>
+                </div>
+            </div>
+            <!-- undefined -->
+            <div class="card">
+                <div class="card-header"><code>undefined</code></div>
+                <div class="card-code">let b;</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>❓ 特点：</strong> 变量声明未赋值；函数默认返回值；<code>typeof undefined</code> 返回 <code>"undefined"</code>。</div>
+                    <script>document.write('<p>undefined → 值 ' + undefined + ' 类型 ' + typeof undefined + '</p>');</script>
+                </div>
+            </div>
+            <!-- Symbol -->
+            <div class="card">
+                <div class="card-header"><code>Symbol</code></div>
+                <div class="card-code">let sym = Symbol();</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>✨ 特点：</strong> ES6新增；每个 <code>Symbol()</code> 独一无二；常用于对象属性键避免冲突。</div>
+                    <script>document.write('<p>Symbol() → 类型 ' + typeof Symbol() + ' (值永远唯一)</p>');</script>
+                </div>
+            </div>
+            <!-- Object -->
+            <div class="card">
+                <div class="card-header"><code>Object</code></div>
+                <div class="card-code">let user = { name: "Alice", age: 25 };</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>📦 特点：</strong> 键值对集合；引用传递；动态增删属性；基于原型链。</div>
+                    <script>let userObj = { name: "Alice", age: 25 }; document.write('<p>user.name → ' + userObj.name + ' | typeof: ' + typeof userObj + '</p>');</script>
+                </div>
+            </div>
+            <!-- Array -->
+            <div class="card">
+                <div class="card-header"><code>Array</code></div>
+                <div class="card-code">let colors = ["red", "green", "blue"];</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>📋 特点：</strong> 有序列表；索引从0开始；动态长度；继承数组方法。</div>
+                    <script>let colorsArr = ["red", "green", "blue"]; document.write('<p>colors[0] → ' + colorsArr[0] + ' | typeof: ' + typeof colorsArr + '</p>');</script>
+                </div>
+            </div>
+            <!-- Function (引用类型) -->
+            <div class="card">
+                <div class="card-header"><code>Function</code></div>
+                <div class="card-code">function greet() { return "Hello"; }</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>⚡ 特点：</strong> 可调用对象；多种定义方式；一等公民；形成闭包。</div>
+                    <script>function greet() { return "Hello"; } document.write('<p>greet() → ' + greet() + ' | typeof: ' + typeof greet + '</p>');</script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 运算符部分（含 typeof、三元） -->
+    <section class="section">
+        <h2 class="section-title">🧮 运算符</h2>
+        <div class="card-grid">
+            <!-- 算术 -->
+            <div class="card">
+                <div class="card-header"><code>算术运算符</code></div>
+                <div class="card-code">10 + 5 = 15<br>10 - 5 = 5<br>10 * 5 = 50<br>10 / 5 = 2<br>10 % 3 = 1</div>
+                <div class="card-effect">
+                    <script>
+                        document.write('<p>10 + 5 = ' + (10+5) + '</p><p>10 - 5 = ' + (10-5) + '</p><p>10 * 5 = ' + (10*5) + '</p><p>10 / 5 = ' + (10/5) + '</p><p>10 % 3 = ' + (10%3) + '</p>');
+                    </script>
+                </div>
+            </div>
+            <!-- 比较 -->
+            <div class="card">
+                <div class="card-header"><code>比较运算符</code></div>
+                <div class="card-code">5 == '5' → true<br>5 === '5' → false<br>5 > 3 → true<br>5 <= 5 → true</div>
+                <div class="card-effect">
+                    <script>
+                        document.write('<p>5 == "5" → ' + (5 == '5') + '</p><p>5 === "5" → ' + (5 === '5') + '</p><p>5 > 3 → ' + (5 > 3) + '</p><p>5 <= 5 → ' + (5 <= 5) + '</p>');
+                    </script>
+                </div>
+            </div>
+            <!-- 逻辑 -->
+            <div class="card">
+                <div class="card-header"><code>逻辑运算符</code></div>
+                <div class="card-code">true && false → false<br>true || false → true<br>!true → false</div>
+                <div class="card-effect">
+                    <script>document.write('<p>true && false → ' + (true && false) + '</p><p>true || false → ' + (true || false) + '</p><p>!true → ' + (!true) + '</p>');</script>
+                </div>
+            </div>
+            <!-- typeof 运算符 -->
+            <div class="card">
+                <div class="card-header"><code>typeof 运算符</code></div>
+                <div class="card-code">typeof 42          // "number"<br>typeof "hello"     // "string"<br>typeof true        // "boolean"<br>typeof undefined   // "undefined"<br>typeof null        // "object"<br>typeof {}          // "object"<br>typeof []          // "object"<br>typeof function(){} // "function"</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>🔍 特点：</strong><ul><li>返回表示数据类型的字符串</li><li>对 <code>null</code> 返回 <code>"object"</code>（语言缺陷）</li><li>函数返回 <code>"function"</code></li><li>数组、普通对象等都返回 <code>"object"</code></li><li>未声明变量返回 <code>"undefined"</code> 不报错</li></ul></div>
+                    <script>
+                        document.write('<p>typeof 42 → ' + typeof 42 + '</p><p>typeof "hello" → ' + typeof "hello" + '</p><p>typeof true → ' + typeof true + '</p><p>typeof undefined → ' + typeof undefined + '</p><p>typeof null → ' + typeof null + ' (注意：null被错误识别为object)</p><p>typeof { name: "Alice" } → ' + typeof { name: "Alice" } + '</p><p>typeof [1,2,3] → ' + typeof [1,2,3] + ' (数组也是object)</p><p>typeof function(){} → ' + typeof function(){} + '</p>');
+                    </script>
+                    <button onclick="console.log('typeof 42:', typeof 42); console.log('typeof null:', typeof null); console.log('typeof []:', typeof []); console.log('typeof function(){}:', typeof function(){});">在控制台输出更多</button>
+                </div>
+            </div>
+            <!-- 三元运算符 -->
+            <div class="card">
+                <div class="card-header"><code>三元运算符 (?:)</code></div>
+                <div class="card-code">条件 ? 表达式1 : 表达式2<br>示例：<br>(5 > 3) ? '大于' : '小于或等于'  → '大于'<br>(2 === '2') ? '相等' : '不相等' → '不相等'</div>
+                <div class="card-effect">
+                    <div class="feature-desc"><strong>❓ 特点：</strong><ul><li>JS中唯一的三元运算符</li><li>根据条件返回其中一个值</li><li>可嵌套但降低可读性</li><li>简化简单if...else</li></ul></div>
+                    <script>
+                        let result1 = (5 > 3) ? '大于' : '小于或等于';
+                        let result2 = (2 === '2') ? '相等' : '不相等';
+                        let result3 = (10 % 2 === 0) ? '偶数' : '奇数';
+                        document.write('<p>(5 > 3) ? \'大于\' : \'小于或等于\' → ' + result1 + '</p><p>(2 === \'2\') ? \'相等\' : \'不相等\' → ' + result2 + '</p><p>(10 % 2 === 0) ? \'偶数\' : \'奇数\' → ' + result3 + '</p>');
+                    </script>
+                    <button onclick="let age = 18; let status = age >= 18 ? '成年人' : '未成年人'; alert('年龄 ' + age + ' ：' + status); console.log('三元结果:', status);">点击测试：年龄判断</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 输出方式演示 -->
+    <section class="section">
+        <h2 class="section-title">🖨️ JavaScript 输出方式</h2>
+        <div class="card-grid">
+            <!-- document.write -->
+            <div class="card">
+                <div class="card-header"><code>document.write</code></div>
+                <div class="card-code">document.write("文本");</div>
+                <div class="card-effect"><p>✅ 页面加载时直接写入（本页已大量使用）。</p><p style="font-size:0.85em; opacity:0.8;">⚠️ 加载后调用会覆盖整个文档。</p></div>
+            </div>
+            <!-- innerHTML -->
+            <div class="card">
+                <div class="card-header"><code>innerHTML</code></div>
+                <div class="card-code">element.innerHTML = "新内容";</div>
+                <div class="card-effect">
+                    <p>点击按钮更新下方内容：</p>
+                    <div id="innerTarget">原始内容</div>
+                    <button onclick="document.getElementById('innerTarget').innerHTML = '内容已通过 <strong>innerHTML</strong> 更新！'">更新 innerHTML</button>
+                </div>
+            </div>
+            <!-- console.log -->
+            <div class="card">
+                <div class="card-header"><code>console.log</code></div>
+                <div class="card-code">console.log("消息");</div>
+                <div class="card-effect">
+                    <p>🔍 按 <kbd>F12</kbd> 打开控制台查看输出</p>
+                    <button onclick="console.log('这是一条来自按钮的 console.log 消息'); console.log('当前时间:', new Date());">在控制台输出</button>
+                </div>
+            </div>
+            <!-- 对话框卡片 -->
+            <div class="card">
+                <div class="card-header"><code>alert / confirm / prompt</code></div>
+                <div class="card-code">alert("提示");<br>confirm("确定?");<br>prompt("输入:");</div>
+                <div class="card-effect">
+                    <button onclick="alert('这是 alert 弹窗')">弹出 alert</button>
+                    <button onclick="let r = confirm('是否确认？'); console.log('confirm 结果:', r); alert('confirm 返回 ' + r);">测试 confirm</button>
+                    <button onclick="let p = prompt('请输入一些内容'); if(p!==null) { console.log('prompt 输入:', p); alert('您输入了: ' + p); } else { console.log('prompt 取消'); alert('您取消了输入'); }">测试 prompt</button>
+                    <small>confirm/prompt 结果同时通过 alert 显示，并输出到控制台。</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 第二部分：函数定义 ========= -->
+    <section class="section">
+        <h2 class="section-title">📌 函数定义</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>函数声明</code></div>
+                <div class="card-code">function add(a, b) { return a + b; }</div>
+                <div class="card-effect">
+                    <script>
+                        function add(a, b) { return a + b; }
+                        document.write('<p>add(3,5) = ' + add(3,5) + '</p>');
+                    </script>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>函数表达式</code></div>
+                <div class="card-code">const multiply = function(a, b) { return a * b; };</div>
+                <div class="card-effect">
+                    <script>
+                        const multiply = function(a, b) { return a * b; };
+                        document.write('<p>multiply(4,6) = ' + multiply(4,6) + '</p>');
+                    </script>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>箭头函数</code></div>
+                <div class="card-code">const square = x => x * x;</div>
+                <div class="card-effect">
+                    <script>
+                        const square = x => x * x;
+                        document.write('<p>square(7) = ' + square(7) + '</p>');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 第三部分：变量提升与闭包 (原独立部分，已合并至此) ========= -->
+    <section class="section">
+        <h2 class="section-title">📌 变量提升与闭包 (Hoisting & Closure)</h2>
+        <div class="card-grid">
+            <!-- 卡片1：函数声明提升 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    <span>函数声明提升</span>
+                </div>
+                <div class="card-code">
+// 可以在声明前调用
+sayHi();  
+function sayHi() { return "Hello"; }
+                </div>
+                <div class="card-effect">
+                    <script>
+                        try {
+                            function sayHi() { return "Hello"; }
+                            let result = sayHi();
+                            document.write('<p>sayHi() 结果: ' + result + ' (函数声明提升，定义在后也可调用)</p>');
+                        } catch(e) {
+                            document.write('<p>错误: ' + e.message + '</p>');
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <!-- 卡片2：var 变量提升 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    <span>var 变量提升</span>
+                </div>
+                <div class="card-code">
+console.log(a); // undefined
+var a = 5;
+console.log(a); // 5
+                </div>
+                <div class="card-effect">
+                    <script>
+                        document.write('<p>var a 提升前: ' + (typeof a !== 'undefined' ? a : 'undefined（实际为undefined，但未赋值）') + '</p>');
+                        var a = 5;
+                        document.write('<p>var a 赋值后: ' + a + '</p>');
+                    </script>
+                </div>
+            </div>
+
+            <!-- 卡片3：let/const 暂时性死区 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-ban"></i>
+                    <span>let/const 暂时性死区</span>
+                </div>
+                <div class="card-code">
+// 不能提前访问
+console.log(b); // ReferenceError
+let b = 10;
+                </div>
+                <div class="card-effect">
+                    <script>
+                        try {
+                            document.write('<p>尝试访问 let b 前: ' + b + '</p>');
+                        } catch(e) {
+                            document.write('<p>捕获错误（暂时性死区）: ' + e.message + '</p>');
+                        }
+                        let b = 10;
+                        document.write('<p>let b 赋值后: ' + b + '</p>');
+                    </script>
+                </div>
+            </div>
+
+            <!-- 卡片4：闭包基本示例 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>闭包基本示例</span>
+                </div>
+                <div class="card-code">
+function outer(x) {
+  return function(y) { return x + y; };
+}
+const add5 = outer(5);
+                </div>
+                <div class="card-effect">
+                    <script>
+                        function outer(x) {
+                            return function(y) { return x + y; };
+                        }
+                        const add5 = outer(5);
+                        document.write('<p>add5(3) = ' + add5(3) + ' (仍能访问 x=5)</p>');
+                        document.write('<p>add5(10) = ' + add5(10) + '</p>');
+                    </script>
+                    <div class="note">内部函数记住外部作用域的变量。</div>
+                </div>
+            </div>
+
+            <!-- 卡片5：计数器闭包 (含可点击按钮) -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span>计数器闭包</span>
+                </div>
+                <div class="card-code">
+function createCounter() {
+  let count = 0;
+  return function() { return ++count; };
+}
+const counter = createCounter();
+                </div>
+                <div class="card-effect">
+                    <script>
+                        function createCounter() {
+                            let count = 0;
+                            return function() { return ++count; };
+                        }
+                        const counter = createCounter();
+                        document.write('<p>counter() 第一次: ' + counter() + '</p>');
+                        document.write('<p>counter() 第二次: ' + counter() + '</p>');
+                        document.write('<p>counter() 第三次: ' + counter() + ' (count被保留)</p>');
+                    </script>
+                    <button onclick="alert('当前计数值: ' + counter())">点我调用 counter()</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 基础语法是JS的基石，函数是一等公民。变量提升与闭包现已独立成章，结构更清晰。本页汇集两大核心，示例均可执行。
+    </footer>
+</div>
+</body>
+</html>

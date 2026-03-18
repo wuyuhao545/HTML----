@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML文本标签 + 重要样式效果 综合展示（完全内联样式）</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+    <!-- 隐藏标题：为页面提供语义主题，仅对屏幕阅读器可见（今日所学 .sr-only） -->
+    <h1 class="sr-only">HTML文本标签与重要样式效果综合展示页面</h1>
+
+<div class="container">
+    <div class="header">
+        <h1>🎯 常用 HTML 文本标签 + 重要 style 效果</h1>
+        <p>每个卡片展示标签写法、默认渲染，并新增「重要样式效果」分组展示内联style属性效果</p>
+    </div>
+
+    <!-- 分组 1：标题 & 段落 -->
+    <section class="section">
+        <div class="section-title">📐 标题与段落 <span>h1~h6 · p</span></div>
+        <div class="card-grid">
+            <!-- 标题组 h1-h6 (合并卡片) -->
+            <div class="card">
+                <div class="card-header">
+                    <code>&lt;h1&gt; ~ &lt;h6&gt;</code>
+                    <span class="card-title">标题层级</span>
+                </div>
+                <div class="card-code">&lt;h1&gt;一级标题&lt;/h1&gt;
+&lt;h2&gt;二级标题&lt;/h2&gt;
+&lt;h3&gt;三级标题&lt;/h3&gt;
+&lt;h4&gt;四级标题&lt;/h4&gt;
+&lt;h5&gt;五级标题&lt;/h5&gt;
+&lt;h6&gt;六级标题&lt;/h6&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">实际效果</div>
+                    <h1 style="font-size:1.8rem; margin:0 0 0.2rem 0;">一级标题</h1>
+                    <h2 style="font-size:1.5rem; margin:0.2rem 0;">二级标题</h2>
+                    <h3 style="font-size:1.3rem; margin:0.2rem 0;">三级标题</h3>
+                    <h4 style="font-size:1.1rem; margin:0.2rem 0;">四级标题</h4>
+                    <h5 style="font-size:1rem; margin:0.2rem 0;">五级标题</h5>
+                    <h6 style="font-size:0.9rem; margin:0.2rem 0;">六级标题</h6>
+                </div>
+            </div>
+
+            <!-- 段落 <p> -->
+            <div class="card">
+                <div class="card-header">
+                    <code>&lt;p&gt;</code>
+                    <span class="card-title">段落</span>
+                </div>
+                <div class="card-code">&lt;p&gt;这是一个标准的段落。它会自动换行，前后有默认边距。&lt;/p&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">实际效果</div>
+                    <p>这是一个标准的段落。它会自动换行，前后有默认边距。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分组 2：基础格式化 (粗/斜/小/标记等) -->
+    <section class="section">
+        <div class="section-title">✒️ 基础格式化 <span>b, strong, i, em, u, small, mark</span></div>
+        <div class="card-grid">
+            <!-- <b> -->
+            <div class="card"><div class="card-header"><code>&lt;b&gt;</code><span class="card-title">粗体 (样式)</span></div><div class="card-code">&lt;b&gt;加粗文字&lt;/b&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><b>加粗文字</b></div></div>
+            <!-- <strong> -->
+            <div class="card"><div class="card-header"><code>&lt;strong&gt;</code><span class="card-title">重要 (语义强)</span></div><div class="card-code">&lt;strong&gt;重要内容&lt;/strong&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><strong>重要内容</strong></div></div>
+            <!-- <i> -->
+            <div class="card"><div class="card-header"><code>&lt;i&gt;</code><span class="card-title">斜体 (术语/思想)</span></div><div class="card-code">&lt;i&gt;斜体文本&lt;/i&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><i>斜体文本</i></div></div>
+            <!-- <em> -->
+            <div class="card"><div class="card-header"><code>&lt;em&gt;</code><span class="card-title">强调 (斜体)</span></div><div class="card-code">&lt;em&gt;强调文字&lt;/em&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><em>强调文字</em></div></div>
+            <!-- <u> -->
+            <div class="card"><div class="card-header"><code>&lt;u&gt;</code><span class="card-title">下划线</span></div><div class="card-code">&lt;u&gt;带下划线文本&lt;/u&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><u>带下划线文本</u></div></div>
+            <!-- <small> -->
+            <div class="card"><div class="card-header"><code>&lt;small&gt;</code><span class="card-title">小号字体</span></div><div class="card-code">&lt;small&gt;小号旁注&lt;/small&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><small>小号旁注</small></div></div>
+            <!-- <mark> -->
+            <div class="card"><div class="card-header"><code>&lt;mark&gt;</code><span class="card-title">标记高亮</span></div><div class="card-code">&lt;mark&gt;高亮词&lt;/mark&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><mark>高亮词</mark></div></div>
+        </div>
+    </section>
+
+    <!-- 分组 3：删除/插入/上下标 -->
+    <section class="section">
+        <div class="section-title">🔄 修订与数学 <span>del, ins, sub, sup</span></div>
+        <div class="card-grid">
+            <!-- <del> -->
+            <div class="card"><div class="card-header"><code>&lt;del&gt;</code><span class="card-title">删除线</span></div><div class="card-code">&lt;del&gt;已删除内容&lt;/del&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><del>已删除内容</del></div></div>
+            <!-- <ins> -->
+            <div class="card"><div class="card-header"><code>&lt;ins&gt;</code><span class="card-title">插入文本</span></div><div class="card-code">&lt;ins&gt;新增内容&lt;/ins&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><ins>新增内容</ins></div></div>
+            <!-- <sub> 下标 -->
+            <div class="card"><div class="card-header"><code>&lt;sub&gt;</code><span class="card-title">下标</span></div><div class="card-code">H&lt;sub&gt;2&lt;/sub&gt;O</div><div class="card-effect"><div class="card-effect-label">实际效果</div>H<sub>2</sub>O</div></div>
+            <!-- <sup> 上标 -->
+            <div class="card"><div class="card-header"><code>&lt;sup&gt;</code><span class="card-title">上标</span></div><div class="card-code">E = mc&lt;sup&gt;2&lt;/sup&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div>E = mc<sup>2</sup></div></div>
+        </div>
+    </section>
+
+    <!-- 分组 4：引用与出处 -->
+    <section class="section">
+        <div class="section-title">📚 引用与出处 <span>blockquote, q, cite, abbr, address</span></div>
+        <div class="card-grid">
+            <!-- <blockquote> -->
+            <div class="card"><div class="card-header"><code>&lt;blockquote&gt;</code><span class="card-title">块引用</span></div><div class="card-code">&lt;blockquote&gt;&lt;p&gt;知之为知之...&lt;/p&gt;&lt;/blockquote&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><blockquote><p>知之为知之，不知为不知，是知也。</p></blockquote></div></div>
+            <!-- <q> -->
+            <div class="card"><div class="card-header"><code>&lt;q&gt;</code><span class="card-title">短引用</span></div><div class="card-code">&lt;q&gt;行远自迩&lt;/q&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><q>行远自迩</q> (自动添加引号)</div></div>
+            <!-- <cite> -->
+            <div class="card"><div class="card-header"><code>&lt;cite&gt;</code><span class="card-title">引用标题</span></div><div class="card-code">&lt;cite&gt;山海经&lt;/cite&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><cite>山海经</cite> (通常斜体)</div></div>
+            <!-- <abbr> -->
+            <div class="card"><div class="card-header"><code>&lt;abbr&gt;</code><span class="card-title">缩写</span></div><div class="card-code">&lt;abbr title="World Health Organization"&gt;WHO&lt;/abbr&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果 (悬停看全称)</div><abbr title="World Health Organization">WHO</abbr></div></div>
+            <!-- <address> -->
+            <div class="card"><div class="card-header"><code>&lt;address&gt;</code><span class="card-title">联系信息</span></div><div class="card-code">&lt;address&gt;反馈请发 📧 web@example.com&lt;/address&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><address>反馈请发 📧 web@example.com</address></div></div>
+        </div>
+    </section>
+
+    <!-- 分组 5：计算机相关代码 -->
+    <section class="section">
+        <div class="section-title">💻 代码与键盘 <span>code, pre, kbd, samp, var</span></div>
+        <div class="card-grid">
+            <!-- <code> -->
+            <div class="card"><div class="card-header"><code>&lt;code&gt;</code><span class="card-title">行内代码</span></div><div class="card-code">&lt;code&gt;console.log("hello")&lt;/code&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><code>console.log("hello")</code></div></div>
+            <!-- <pre> 保留格式 -->
+            <div class="card"><div class="card-header"><code>&lt;pre&gt;</code><span class="card-title">预格式化</span></div><div class="card-code">&lt;pre&gt;
+function hello() {
+  console.log(" 预格式 ");
+}
+&lt;/pre&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><pre>
+function hello() {
+  console.log(" 预格式 ");
+}
+</pre></div></div>
+            <!-- <kbd> 键盘输入 -->
+            <div class="card"><div class="card-header"><code>&lt;kbd&gt;</code><span class="card-title">键盘按键</span></div><div class="card-code">&lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;C&lt;/kbd&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><kbd>Ctrl</kbd> + <kbd>C</kbd></div></div>
+            <!-- <samp> 示例输出 -->
+            <div class="card"><div class="card-header"><code>&lt;samp&gt;</code><span class="card-title">程序输出</span></div><div class="card-code">&lt;samp&gt;Hello, World!&lt;/samp&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><samp>Hello, World!</samp></div></div>
+            <!-- <var> 变量 -->
+            <div class="card"><div class="card-header"><code>&lt;var&gt;</code><span class="card-title">变量</span></div><div class="card-code">&lt;var&gt;userName&lt;/var&gt; = &lt;var&gt;age&lt;/var&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><var>userName</var> = <var>age</var> (通常斜体)</div></div>
+        </div>
+    </section>
+
+    <!-- 分组 6：辅助与布局 -->
+    <section class="section">
+        <div class="section-title">🔧 辅助与布局 <span>span, br, hr, bdo</span></div>
+        <div class="card-grid">
+            <!-- <span> 内联容器 -->
+            <div class="card"><div class="card-header"><code>&lt;span&gt;</code><span class="card-title">内联区块</span></div><div class="card-code">&lt;span style="color:#2563eb; font-weight:bold"&gt;彩色文字&lt;/span&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><span style="color:#2563eb; font-weight:bold">彩色文字</span> (配合样式)</div></div>
+            <!-- <br> 换行 -->
+            <div class="card"><div class="card-header"><code>&lt;br&gt;</code><span class="card-title">换行</span></div><div class="card-code">第一行&lt;br&gt;第二行</div><div class="card-effect"><div class="card-effect-label">实际效果</div>第一行<br>第二行</div></div>
+            <!-- <hr> 分割线 -->
+            <div class="card"><div class="card-header"><code>&lt;hr&gt;</code><span class="card-title">水平线</span></div><div class="card-code">&lt;hr&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果</div><hr class="demo-hr"></div></div>
+            <!-- <bdo> 文字方向 -->
+            <div class="card"><div class="card-header"><code>&lt;bdo&gt;</code><span class="card-title">双向覆盖</span></div><div class="card-code">&lt;bdo dir="rtl"&gt;从右向左&lt;/bdo&gt;</div><div class="card-effect"><div class="card-effect-label">实际效果 (从右向左)</div><bdo dir="rtl">从右向左</bdo></div></div>
+        </div>
+    </section>
+
+    <!-- 新增分组 7：重要样式效果 (内联style示例) -->
+    <section class="section">
+        <div class="section-title">🎨 重要样式效果 (内联style) <span>color · background · border · font-size · 更多</span></div>
+        <div class="card-grid">
+            <!-- 颜色与背景 -->
+            <div class="card">
+                <div class="card-header"><code>style="color: ..."</code><span class="card-title">文字颜色</span></div>
+                <div class="card-code">&lt;span style="color: #c2410c;"&gt;橙红色文字&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="color: #c2410c;">橙红色文字</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="background: ..."</code><span class="card-title">背景色</span></div>
+                <div class="card-code">&lt;mark style="background: #a5f3fc;"&gt;青色背景&lt;/mark&gt; (覆盖默认)</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><mark style="background: #a5f3fc;">青色背景</mark></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="border: ..."</code><span class="card-title">边框</span></div>
+                <div class="card-code">&lt;span style="border: 2px solid #3b82f6; padding: 0 6px;"&gt;带边框文字&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="border: 2px solid #3b82f6; padding: 0 6px; border-radius: 8px;">带边框文字</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="font-size: ..."</code><span class="card-title">字号变化</span></div>
+                <div class="card-code">&lt;span style="font-size: 1.8rem;"&gt;大号&lt;/span&gt; 对比 &lt;small&gt;小号&lt;/small&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="font-size: 1.8rem;">大号</span> 对比 <small>小号</small></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="font-weight: ..."</code><span class="card-title">字重微调</span></div>
+                <div class="card-code">&lt;span style="font-weight: 300;"&gt;细体&lt;/span&gt; · &lt;b&gt;默认粗&lt;/b&gt; · &lt;span style="font-weight: 900;"&gt;特粗&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="font-weight: 300;">细体</span> · <b>默认粗</b> · <span style="font-weight: 900;">特粗</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="text-decoration: ..."</code><span class="card-title">装饰线组合</span></div>
+                <div class="card-code">&lt;span style="text-decoration: underline wavy #e11d48;"&gt;波浪下划线&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="text-decoration: underline wavy #e11d48;">波浪下划线</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="background + border-radius"</code><span class="card-title">胶囊背景</span></div>
+                <div class="card-code">&lt;span style="background:#f1f5f9; padding:4px 12px; border-radius:40px;"&gt;胶囊标签&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="background:#f1f5f9; padding:4px 12px; border-radius:40px; border:1px solid #ccc;">胶囊标签</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="box-shadow"</code><span class="card-title">盒子阴影</span></div>
+                <div class="card-code">&lt;span style="box-shadow: 0 6px 10px rgba(0,0,0,0.1); padding:4px 8px;"&gt;投影文字&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="box-shadow: 0 6px 10px rgba(0,0,0,0.1); padding:4px 8px; display:inline-block;">投影文字</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="transform"</code><span class="card-title">简单变换</span></div>
+                <div class="card-code">&lt;span style="display:inline-block; transform:rotate(2deg);"&gt;略微旋转&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="display:inline-block; transform:rotate(2deg);">略微旋转</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="letter-spacing"</code><span class="card-title">字符间距</span></div>
+                <div class="card-code">&lt;span style="letter-spacing: 6px;"&gt;宽间距&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="letter-spacing: 6px;">宽间距</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style="all: unset"</code><span class="card-title">重置样式 (实验)</span></div>
+                <div class="card-code">&lt;button style="all:unset"&gt;像文本的按钮&lt;/button&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><button style="all:unset; cursor:pointer; color:#2563eb;">像文本的按钮</button> (移上变色)</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>style组合</code><span class="card-title">渐变文字</span></div>
+                <div class="card-code">&lt;span style="background: linear-gradient(145deg, #ef4444, #8b5cf6); -webkit-background-clip:text; background-clip:text; color:transparent;"&gt;渐变文字&lt;/span&gt;</div>
+                <div class="card-effect"><div class="card-effect-label">实际效果</div><span style="background: linear-gradient(145deg, #ef4444, #8b5cf6); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:bold;">渐变文字</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 一个混合行内元素的卡片，展示更多可能性 -->
+    <section class="section" style="margin-bottom:0;">
+        <div class="section-title">🧩 行内元素混排 <span>组合示例</span></div>
+        <div class="card" style="grid-column: 1 / -1; max-width:100%;">
+            <div class="card-header"><code>多种标签混合 + 内联样式</code><span class="card-title">丰富样式段落</span></div>
+            <div class="card-code">&lt;p&gt;
+  这是一段 &lt;mark style="background:#bbf7d0;"&gt;混合&lt;/mark&gt; 文本，
+  包含 &lt;strong style="color:#b45309;"&gt;橙色重要&lt;/strong&gt;、
+  &lt;span style="border-bottom:2px dotted #2563eb;"&gt;虚线下划线&lt;/span&gt;、
+  &lt;code style="background:#1e293b; color:white; padding:2px 6px; border-radius:20px;"&gt;代码风格&lt;/code&gt;。
+&lt;/p&gt;</div>
+            <div class="card-effect">
+                <div class="card-effect-label">实际效果</div>
+                <p>这是一段 <mark style="background:#bbf7d0;">混合</mark> 文本，包含 <strong style="color:#b45309;">橙色重要</strong>、<span style="border-bottom:2px dotted #2563eb;">虚线下划线</span>、<code style="background:#1e293b; color:white; padding:2px 6px; border-radius:20px;">代码风格</code>。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 今日所学：可访问性增强示例 ===== -->
+    <section class="section">
+        <div class="section-title">♿ 今日所学：可访问性技巧</div>
+        <div class="card-grid">
+            <!-- 隐藏标题示例 -->
+            <div class="card">
+                <div class="card-header"><span>🔹 隐藏标题 <code>.sr-only</code></span></div>
+                <p>为页面添加一个仅对屏幕阅读器可见的标题，提升SEO和可访问性：</p>
+                <div class="card-code" style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;h1 class="sr-only"&gt;页面主题描述&lt;/h1&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">实际效果 (不可见，但辅助技术可读)</div>
+                    <p>本页顶部已添加隐藏的h1，描述“HTML文本标签与重要样式效果综合展示页面”。</p>
+                </div>
+            </div>
+            <!-- ARIA 搜索区域示例 -->
+            <div class="card">
+                <div class="card-header"><span>🔹 ARIA属性：搜索区域</span></div>
+                <p>为搜索表单添加 <code>role="search"</code> 和 <code>aria-label</code>，让辅助技术识别：</p>
+                <div class="card-code" style="background:#1e293b; color:#f8fafc; padding:0.8rem; border-radius:8px;">&lt;form role="search" aria-label="站内搜索"&gt;
+  &lt;input type="text" placeholder="搜索..." aria-label="搜索关键词"&gt;
+  &lt;button type="submit" aria-label="提交搜索"&gt;搜索&lt;/button&gt;
+&lt;/form&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">实际效果 (可互动)</div>
+                    <form role="search" aria-label="站内搜索" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem;">
+                        <input type="text" placeholder="搜索..." aria-label="搜索关键词" style="flex:1; min-width:150px; padding:0.3rem 0.8rem; border:1px solid #ccc; border-radius:20px;">
+                        <button type="submit" aria-label="提交搜索" class="demo-search-btn">搜索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ HTML常用文本标签 + 重要style属性效果 · 每个卡片都包含源码与渲染效果 · 新增「重要样式效果」分组演示内联CSS
+        <br><span style="font-size:0.8rem; opacity:0.7;">覆盖 color, background, border, font-size, text-decoration, box-shadow, transform, 渐变等</span>
+        <br><span style="font-size:0.8rem; opacity:0.7;">今日新增：隐藏标题(.sr-only) 与 ARIA搜索区域示例</span>
+    </footer>
+</div>
+</body>
+</html>

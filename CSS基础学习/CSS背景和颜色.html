@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 背景与颜色 · 图片布局示例</title>
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <style>
+        /* 原有样式保持不变 */
+        .bg-demo {
+            width: 200px;
+            height: 100px;
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        .bg-image-demo {
+            width: 200px;
+            height: 100px;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"%3E%3Ccircle cx="20" cy="20" r="10" fill="%232563eb"/%3E%3C/svg%3E');
+            background-repeat: no-repeat;      /* 不重复 */
+            background-size: cover;            /* 覆盖整个容器，可能裁剪 */
+            /* 或者 background-size: contain; 完整显示，可能留白 */
+            border-radius: 12px;
+        }
+        .gradient-demo {
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(145deg, #f97316, #a855f7);
+            border-radius: 12px;
+        }
+        .multi-bg-demo {
+            width: 200px;
+            height: 100px;
+            background: 
+                linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="20" height="20"%3E%3Crect width="20" height="20" fill="%23f1f5f9"/%3E%3Ccircle cx="10" cy="10" r="4" fill="%233b82f6"/%3E%3C/svg%3E');
+            border-radius: 12px;
+        }
+        .color-demo {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .color-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        /* ----- 新增样式：图片居中 & 按钮浮于图片 ----- */
+        .image-center-demo {
+            width: 150px;
+            height: 100px;
+            background-color: #f1f5f9;   /* 浅灰背景，方便观察容器 */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;      /* 水平居中 */
+            align-items: center;          /* 垂直居中 */
+        }
+
+        .image-overlay-demo {
+            position: relative;            /* 作为绝对定位的参照 */
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;              /* 保证圆角裁切 */
+        }
+        .overlay-image {
+            width: 100%;
+            height: 100%;
+            display: block;                /* 移除图片底部的空隙 */
+        }
+        .overlay-button {
+            position: absolute;             /* 绝对定位，浮于图片上方 */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 偏移自身宽高的一半，实现居中 */
+            padding: 6px 14px;
+            background-color: #a855f7;
+            color: white;
+            border: none;
+            border-radius: 20px;            /* 圆角按钮 */
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+        }
+        .overlay-button:hover {
+            background-color: #9333ea;       /* 悬停加深 */
+        }
+
+        /* ----- 新增：z-index 演示样式 ----- */
+        .z-demo-container {
+            position: relative;   /* 为内部绝对定位元素提供参考 */
+            height: 100px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .z-demo-box {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+        .z-demo-absolute {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎨 CSS 背景与颜色 · 图片布局</h1>
+        <p>背景色、背景图像、渐变、颜色表示法 + 图片居中与浮动按钮</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">🌈 颜色表示</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>颜色关键字</code></div>
+                <div class="card-code">color: red; background: blue;</div>
+                <div class="card-effect"><span style="color:red;">红色</span> / <span style="background:blue; color:white;">蓝色背景</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>HEX</code></div>
+                <div class="card-code">#3b82f6</div>
+                <div class="card-effect"><span style="color:#3b82f6;">#3b82f6</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>RGB(A)</code></div>
+                <div class="card-code">rgb(59,130,246) / rgba(59,130,246,0.5)</div>
+                <div class="card-effect"><span style="color:rgb(59,130,246);">rgb</span> / <span style="color:rgba(59,130,246,0.5);">半透明</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>HSL(A)</code></div>
+                <div class="card-code">hsl(217,91%,60%) / hsla(217,91%,60%,0.5)</div>
+                <div class="card-effect"><span style="color:hsl(217,91%,60%);">hsl</span> / <span style="color:hsla(217,91%,60%,0.5);">半透明</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">🖼️ 背景属性</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>background-color</code></div>
+                <div class="card-code">background-color: #3b82f6;</div>
+                <div class="card-effect"><div class="bg-demo">背景色</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>background-image</code></div>
+                <div class="card-code">background-image: url(...); background-repeat: repeat;</div>
+                <div class="card-effect"><div class="bg-image-demo"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>渐变</code></div>
+                <div class="card-code">background: linear-gradient(145deg, #f97316, #a855f7);</div>
+                <div class="card-effect"><div class="gradient-demo"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>多重背景</code></div>
+                <div class="card-code">background: 渐变 + 图像</div>
+                <div class="card-effect"><div class="multi-bg-demo"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 新增：图片布局示例 ===== -->
+    <section class="section">
+        <h2 class="section-title">🖼️ 图片布局示例</h2>
+        <div class="card-grid">
+            <!-- 图片居中（Flexbox） -->
+            <div class="card">
+                <div class="card-header"><code>图片居中 (flex)</code></div>
+                <div class="card-code">display: flex;<br>justify-content: center;<br>align-items: center;</div>
+                <div class="card-effect">
+                    <div class="image-center-demo">
+                        <!-- 使用内联SVG生成一个橙色圆形作为图片 -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='20' fill='%23f97316'/%3E%3C/svg%3E" alt="示例图片">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按钮浮于图片（绝对定位） -->
+            <div class="card">
+                <div class="card-header"><code>按钮浮于图片</code></div>
+                <div class="card-code">position: relative; (父)<br>position: absolute; (按钮)<br>top/left/transform居中</div>
+                <div class="card-effect">
+                    <div class="image-overlay-demo">
+                        <!-- 背景图片（蓝色矩形） -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='100' viewBox='0 0 150 100'%3E%3Crect width='150' height='100' fill='%233b82f6'/%3E%3C/svg%3E" alt="背景图片" class="overlay-image">
+                        <!-- 浮动按钮 -->
+                        <button class="overlay-button">点击</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 补充说明 -->
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #4b5563;">
+            💡 左侧卡片：Flexbox 实现图片在容器内完全居中；右侧卡片：相对/绝对定位使按钮浮于图片上方，并通过 <code>transform: translate(-50%, -50%)</code> 精确居中。
+        </p>
+    </section>
+    <!-- 新增：背景图片填充容器演示 -->
+<section class="section">
+    <h2 class="section-title">🧩 背景图片填充容器</h2>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-header"><code>background-size: cover</code></div>
+            <div class="card-code">background-repeat: no-repeat;<br>background-size: cover;</div>
+            <div class="card-effect">
+                <div style="width:200px; height:100px; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23f97316\'/%3E%3C/svg%3E'); background-repeat: no-repeat; background-size: cover; border-radius:12px;"></div>
+                <p style="margin:0.5rem 0 0; font-size:0.8rem;">图片裁剪，但填满容器</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><code>background-size: contain</code></div>
+            <div class="card-code">background-repeat: no-repeat;<br>background-size: contain;<br>background-color: #f1f5f9;</div>
+            <div class="card-effect">
+                <div style="width:200px; height:100px; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%233b82f6\'/%3E%3C/svg%3E'); background-repeat: no-repeat; background-size: contain; background-color: #f1f5f9; border-radius:12px;"></div>
+                <p style="margin:0.5rem 0 0; font-size:0.8rem;">完整显示，左右留白</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><code>background-size: 100% 100%</code></div>
+            <div class="card-code">background-repeat: no-repeat;<br>background-size: 100% 100%;</div>
+            <div class="card-effect">
+                <div style="width:200px; height:100px; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23a855f7\'/%3E%3C/svg%3E'); background-repeat: no-repeat; background-size: 100% 100%; border-radius:12px;"></div>
+                <p style="margin:0.5rem 0 0; font-size:0.8rem;">拉伸填满，可能变形</p>
+            </div>
+        </div>
+    </div>
+        <p style="margin-top:1rem; font-size:0.9rem; color:#4b5563;">
+            ⚠️ 注意：<code>cover</code> 和 <code>contain</code> 都会保持图片原始比例，区别在于是否裁剪或留白。你可以根据实际需求选择。
+        </p>
+    </section>
+
+    <!-- ===== 新增：层叠顺序与 z-index 演示 ===== -->
+    <section class="section">
+        <h2 class="section-title">📐 层叠顺序与 z-index</h2>
+        <div class="card-grid">
+            <!-- 无定位 + z-index 无效 -->
+            <div class="card">
+                <div class="card-header"><code>无定位 + z-index</code></div>
+                <div class="card-code">z-index 无效（需配合定位）</div>
+                <div class="card-effect">
+                    <div style="position: relative; height: 90px; background: #f8fafc; border-radius: 8px;">
+                        <div class="z-demo-box" style="background: #f97316; position: relative; top: 10px; left: 10px; z-index: 2;">2</div>
+                        <div class="z-demo-box" style="background: #3b82f6; position: relative; top: -20px; left: 30px; z-index: 1;">1</div>
+                        <div style="font-size:0.7rem; margin-top: -5px;">后写的蓝色实际在上层（无视z-index）</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 定位 + z-index 生效 -->
+            <div class="card">
+                <div class="card-header"><code>定位 + z-index</code></div>
+                <div class="card-code">z-index 大的在上层</div>
+                <div class="card-effect">
+                    <div class="z-demo-container">
+                        <div class="z-demo-box z-demo-absolute" style="background: #f97316; top: 15px; left: 20px; z-index: 2;">2</div>
+                        <div class="z-demo-box z-demo-absolute" style="background: #3b82f6; top: 35px; left: 40px; z-index: 1;">1</div>
+                        <div class="z-demo-box z-demo-absolute" style="background: #a855f7; top: 55px; left: 60px; z-index: 3;">3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.9rem; color:#4b5563;">
+            💡 只有定位元素（<code>position</code> 非 <code>static</code>）的 <code>z-index</code> 才生效。默认层叠顺序：定位元素 > 浮动 > 普通流。同一堆叠上下文中，<code>z-index</code> 值越大越靠前。
+        </p>
+    </section>
+
+    <footer>
+        ⚡ 背景与颜色是视觉设计的基础，灵活运用可创造丰富效果。新增图片布局示例，直观展示居中与浮动按钮。
+    </footer>
+</div>
+</body>
+</html>

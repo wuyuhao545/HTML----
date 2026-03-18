@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件处理 · 监听、委托、流、移除 + 错误处理</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⚙️ JavaScript 事件处理机制 + ⚠️ 错误处理</h1>
+        <p>监听方式 · 事件对象 · 捕获与冒泡 · 委托 · 移除 · try/catch/throw/debug</p>
+    </div>
+
+    <!-- 事件监听方式对比 -->
+    <section class="section">
+        <div class="section-title"><span>🎧 监听方式</span> 内联 · DOM0 · DOM2</div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>内联事件 (HTML)</code></div>
+                <div class="card-description">直接在标签中使用 <code>onclick</code> 属性，this 指向 window，可传参。</div>
+                <pre class="card-code"><code>&lt;button onclick="handler(this)"&gt;点击&lt;/button&gt;</code></pre>
+                <div class="card-effect">
+                    <button onclick="alert('内联触发\n按钮ID: '+this.id)" id="inlineBtn">内联按钮</button>
+                </div>
+                <div class="card-example">点击弹出提示，注意 this 指向 window，但传参可获取元素。</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>DOM0 (属性赋值)</code></div>
+                <div class="card-description">通过 <code>element.onclick = fn</code> 绑定，后覆盖前。</div>
+                <pre class="card-code"><code>btn.onclick = function() { alert('第一次'); };
+btn.onclick = function() { alert('第二次'); };</code></pre>
+                <div class="card-effect">
+                    <button id="dom0Btn">点我 (覆盖演示)</button>
+                    <script>
+                        const btn = document.getElementById('dom0Btn');
+                        btn.onclick = function() { alert('第一次 (不会出现)'); };
+                        btn.onclick = function() { alert('第二次 (覆盖)'); };
+                    </script>
+                </div>
+                <div class="card-example">只会弹出“第二次”，说明被覆盖。</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>DOM2 addEventListener</code></div>
+                <div class="card-description">可绑定多个监听器，顺序执行，支持捕获/冒泡控制。</div>
+                <pre class="card-code"><code>btn.addEventListener('click', fn1);
+btn.addEventListener('click', fn2);</code></pre>
+                <div class="card-effect">
+                    <button id="dom2Btn">点我 (多监听)</button>
+                    <script>
+                        const btn2 = document.getElementById('dom2Btn');
+                        btn2.addEventListener('click', () => alert('监听器 1'));
+                        btn2.addEventListener('click', () => alert('监听器 2'));
+                    </script>
+                </div>
+                <div class="card-example">依次弹出 1 和 2，共存不覆盖。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 事件对象（完整版） -->
+    <section class="section">
+        <div class="section-title"><span>📦 事件对象</span> 常用属性与方法</div>
+        <div class="card-grid">
+
+            <!-- 1. target / currentTarget (增强交互) -->
+            <div class="card">
+                <div class="card-header"><code>target / currentTarget</code></div>
+                <div class="card-description">target 是实际触发事件的元素，currentTarget 是绑定监听器的元素。</div>
+                <pre class="card-code"><code>parent.addEventListener('click', (e) => {
+    console.log('target:', e.target.tagName);
+    console.log('currentTarget:', e.currentTarget.tagName);
+});</code></pre>
+                <div class="card-effect">
+                    <div id="targetDemoParent" style="padding:15px; background:#b3d0f0; border-radius:0.5rem;">
+                        父元素 (点击此处或按钮)
+                        <button id="targetDemoChild" style="display:block; margin-top:8px;">点击我（子元素）</button>
+                    </div>
+                    <p id="targetDemoDisplay" style="margin-top:8px; font-size:0.9rem;"></p>
+                    <script>
+                        const targetParent = document.getElementById('targetDemoParent');
+                        const targetDisplay = document.getElementById('targetDemoDisplay');
+                        targetParent.addEventListener('click', function(e) {
+                            targetDisplay.innerHTML = `🎯 target: ${e.target.tagName} (id: ${e.target.id || '无'})<br>🔰 currentTarget: ${e.currentTarget.tagName} (id: ${e.currentTarget.id || '无'})`;
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击按钮或父元素空白区域，观察 target 与 currentTarget 的区别。</div>
+            </div>
+
+            <!-- 2. preventDefault (原有) -->
+            <div class="card">
+                <div class="card-header"><code>preventDefault()</code></div>
+                <div class="card-description">阻止默认行为，如链接跳转、表单提交。</div>
+                <pre class="card-code"><code>link.addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('链接被阻止');
+});</code></pre>
+                <div class="card-effect">
+                    <a href="#" id="preventLink" style="display:block; margin-bottom:8px;">点击此链接 (默认跳转被阻止)</a>
+                    <script>
+                        document.getElementById('preventLink').addEventListener('click', (e) => {
+                            e.preventDefault();
+                            alert('preventDefault 生效，不会跳转');
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击链接不会跳转，弹出提示。</div>
+            </div>
+
+            <!-- 3. stopPropagation (原有) -->
+            <div class="card">
+                <div class="card-header"><code>stopPropagation()</code></div>
+                <div class="card-description">阻止事件冒泡（或捕获）进一步传播。</div>
+                <pre class="card-code"><code>child.addEventListener('click', (e) => {
+    e.stopPropagation();
+    console.log('子元素点击');
+});</code></pre>
+                <div class="card-effect">
+                    <div id="propParent" style="padding:15px; background:#b3d0f0; border-radius:0.5rem;">
+                        父元素
+                        <button id="propChild" style="display:block; margin-top:8px;">子按钮 (点击停止传播)</button>
+                    </div>
+                    <script>
+                        document.getElementById('propParent').addEventListener('click', () => alert('父元素触发'));
+                        document.getElementById('propChild').addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            alert('子元素触发，但父元素不会收到');
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击子按钮只弹出子元素消息，父元素监听器未触发。</div>
+            </div>
+
+            <!-- 4. 鼠标坐标与修饰键 -->
+            <div class="card">
+                <div class="card-header"><code>clientX / clientY · 修饰键</code></div>
+                <div class="card-description">鼠标事件中获取光标位置，并检测 Ctrl / Shift / Alt 是否按下。</div>
+                <pre class="card-code"><code>element.addEventListener('click', (e) => {
+    console.log(`X: ${e.clientX}, Y: ${e.clientY}`);
+    console.log(`Ctrl: ${e.ctrlKey}, Shift: ${e.shiftKey}`);
+});</code></pre>
+                <div class="card-effect">
+                    <div id="coordArea" style="padding:20px; background:#e0e7ff; border-radius:0.5rem; text-align:center; cursor:crosshair;">
+                        点击此区域查看坐标和按键状态
+                    </div>
+                    <p id="coordDisplay" style="margin-top:8px; font-size:0.9rem; color:#333;">点击后显示结果</p>
+                    <script>
+                        const coordArea = document.getElementById('coordArea');
+                        const coordDisplay = document.getElementById('coordDisplay');
+                        coordArea.addEventListener('click', function(e) {
+                            const ctrl = e.ctrlKey ? '✔️ Ctrl' : '❌ Ctrl';
+                            const shift = e.shiftKey ? '✔️ Shift' : '❌ Shift';
+                            const alt = e.altKey ? '✔️ Alt' : '❌ Alt';
+                            coordDisplay.innerHTML = `📌 坐标 (${e.clientX}, ${e.clientY}) &nbsp; | &nbsp; ${ctrl} ${shift} ${alt}`;
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击区域，下方显示鼠标坐标及当时按下的功能键（可配合 Ctrl/Shift/Alt 测试）。</div>
+            </div>
+
+            <!-- 5. 鼠标按键 button / buttons -->
+            <div class="card">
+                <div class="card-header"><code>button / buttons (鼠标按键)</code></div>
+                <div class="card-description"><code>button</code> 表示按下的具体按钮（0左键，1中键，2右键）；<code>buttons</code> 表示同时按下的按钮组合（位掩码）。</div>
+                <pre class="card-code"><code>element.addEventListener('mousedown', (e) => {
+    console.log('button:', e.button);
+    console.log('buttons:', e.buttons);
+});</code></pre>
+                <div class="card-effect">
+                    <div id="mouseButtonArea" style="padding:20px; background:#f0e7db; border-radius:0.5rem; text-align:center; cursor:pointer;">
+                        在此区域按下鼠标左/中/右键
+                    </div>
+                    <p id="mouseButtonDisplay" style="margin-top:8px; font-size:0.9rem;"></p>
+                    <script>
+                        const mouseArea = document.getElementById('mouseButtonArea');
+                        const mouseDisplay = document.getElementById('mouseButtonDisplay');
+                        mouseArea.addEventListener('mousedown', function(e) {
+                            let btnStr = '';
+                            switch(e.button) {
+                                case 0: btnStr = '左键'; break;
+                                case 1: btnStr = '中键'; break;
+                                case 2: btnStr = '右键'; break;
+                                default: btnStr = '其他键';
+                            }
+                            const buttons = e.buttons;
+                            mouseDisplay.innerHTML = `🖱️ button: ${e.button} (${btnStr}) &nbsp; | &nbsp; buttons掩码: ${buttons} (${buttons & 1 ? '左' : ''} ${buttons & 2 ? '右' : ''} ${buttons & 4 ? '中' : ''})`;
+                            e.preventDefault(); // 防止选中文本
+                        });
+                    </script>
+                </div>
+                <div class="card-example">在不同按键按下时，观察 button 值和 buttons 掩码的变化。</div>
+            </div>
+
+            <!-- 6. 键盘事件 key / code -->
+            <div class="card">
+                <div class="card-header"><code>key / code (键盘事件)</code></div>
+                <div class="card-description"><code>key</code> 表示输入的字符（考虑Shift等），<code>code</code> 表示物理按键代码。</div>
+                <pre class="card-code"><code>input.addEventListener('keydown', (e) => {
+    console.log('key:', e.key, 'code:', e.code);
+});</code></pre>
+                <div class="card-effect">
+                    <input type="text" id="keyInput" placeholder="按下任意键" style="width:100%; padding:8px; box-sizing:border-box;">
+                    <p id="keyDisplay" style="margin-top:8px; font-size:0.9rem;"></p>
+                    <script>
+                        const keyInput = document.getElementById('keyInput');
+                        const keyDisplay = document.getElementById('keyDisplay');
+                        keyInput.addEventListener('keydown', (e) => {
+                            keyDisplay.innerHTML = `🔤 key: ${e.key} &nbsp; | &nbsp; ⌨️ code: ${e.code}`;
+                        });
+                    </script>
+                </div>
+                <div class="card-example">在输入框中按键，下方显示 <code>key</code>（输入的字符）和 <code>code</code>（物理按键）。</div>
+            </div>
+
+            <!-- 7. 事件阶段 eventPhase -->
+            <div class="card">
+                <div class="card-header"><code>eventPhase (事件阶段)</code></div>
+                <div class="card-description">表示事件当前处于哪个阶段：1捕获，2目标，3冒泡。</div>
+                <pre class="card-code"><code>element.addEventListener('click', (e) => {
+    console.log('phase:', e.eventPhase);
+}, true); // 捕获</code></pre>
+                <div class="card-effect">
+                    <div id="phaseParent" style="padding:15px; background:#c1d9cd; border-radius:0.5rem;">
+                        父元素
+                        <button id="phaseChild" style="display:block; margin-top:8px;">点击我 (查看阶段)</button>
+                    </div>
+                    <p id="phaseDisplay" style="margin-top:8px; font-size:0.9rem;"></p>
+                    <script>
+                        const phaseParent = document.getElementById('phaseParent');
+                        const phaseChild = document.getElementById('phaseChild');
+                        const phaseDisplay = document.getElementById('phaseDisplay');
+                        function showPhase(e) {
+                            let phaseName = '';
+                            switch(e.eventPhase) {
+                                case 1: phaseName = '捕获 (CAPTURING_PHASE)'; break;
+                                case 2: phaseName = '目标 (AT_TARGET)'; break;
+                                case 3: phaseName = '冒泡 (BUBBLING_PHASE)'; break;
+                                default: phaseName = '未知';
+                            }
+                            phaseDisplay.innerHTML = `🧩 阶段: ${e.eventPhase} - ${phaseName}<br>触发元素: ${e.target.tagName} (#${e.target.id})`;
+                        }
+                        // 在捕获阶段监听
+                        phaseParent.addEventListener('click', showPhase, true);
+                        // 在冒泡阶段监听
+                        phaseParent.addEventListener('click', showPhase, false);
+                        phaseChild.addEventListener('click', showPhase, false); // 目标阶段
+                    </script>
+                </div>
+                <div class="card-example">点击按钮，观察事件流在不同阶段（父捕获、目标、父冒泡）显示的事件阶段值。</div>
+            </div>
+
+            <!-- 8. 时间戳与默认阻止状态 -->
+            <div class="card">
+                <div class="card-header"><code>timeStamp · defaultPrevented</code></div>
+                <div class="card-description"><code>timeStamp</code> 事件创建的时间戳（毫秒），<code>defaultPrevented</code> 表示是否调用过 preventDefault。</div>
+                <pre class="card-code"><code>element.addEventListener('click', (e) => {
+    console.log('timeStamp:', e.timeStamp);
+    console.log('defaultPrevented:', e.defaultPrevented);
+});</code></pre>
+                <div class="card-effect">
+                    <a href="#" id="timestampLink" style="display:inline-block; padding:8px 16px; background:#007bff; color:white; border-radius:4px; text-decoration:none;">点击链接 (阻止跳转)</a>
+                    <p id="timestampDisplay" style="margin-top:8px; font-size:0.9rem;"></p>
+                    <script>
+                        const link = document.getElementById('timestampLink');
+                        const tsDisplay = document.getElementById('timestampDisplay');
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault(); // 阻止默认跳转
+                            tsDisplay.innerHTML = `⏱️ timeStamp: ${e.timeStamp} ms<br>🚫 defaultPrevented: ${e.defaultPrevented}`;
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击链接，显示事件时间戳和 preventDefault 调用状态。</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 事件流：捕获与冒泡 -->
+    <section class="section">
+        <div class="section-title"><span>🌊 事件流</span> 捕获与冒泡顺序</div>
+        <div class="card-grid">
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-header"><code>addEventListener 的第三个参数</code></div>
+                <div class="card-description">true = 捕获阶段，false/省略 = 冒泡阶段。</div>
+                <pre class="card-code"><code>parent.addEventListener('click', fn, true);  // 捕获
+parent.addEventListener('click', fn, false); // 冒泡</code></pre>
+                <div class="card-effect" style="text-align: center;">
+                    <div id="outerFlow" style="padding:20px; background:#b3d0f0; border-radius:1rem;">
+                        outer (外层)
+                        <div id="innerFlow" style="padding:20px; background:#f9c6b3; border-radius:1rem; margin-top:10px;">
+                            inner (内层) —— 点击我
+                        </div>
+                    </div>
+                    <script>
+                        const outer = document.getElementById('outerFlow');
+                        const inner = document.getElementById('innerFlow');
+                        outer.addEventListener('click', function() { alert('outer 捕获'); }, true);
+                        outer.addEventListener('click', function() { alert('outer 冒泡'); }, false);
+                        inner.addEventListener('click', function() { alert('inner 捕获'); }, true);
+                        inner.addEventListener('click', function() { alert('inner 冒泡'); }, false);
+                    </script>
+                </div>
+                <div class="card-example">点击内层，弹出顺序：outer 捕获 → inner 捕获 → inner 冒泡 → outer 冒泡。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 事件委托 -->
+    <section class="section">
+        <div class="section-title"><span>🤝 事件委托</span> 利用冒泡处理动态元素</div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>委托模式</code></div>
+                <div class="card-description">将监听器加到父元素，通过 target 判断子元素，动态添加的元素也能响应。</div>
+                <pre class="card-code"><code>parent.addEventListener('click', (e) => {
+    if (e.target.matches('li')) {
+        console.log('点击了', e.target.textContent);
+    }
+});</code></pre>
+                <div class="card-effect">
+                    <ul id="delegateList">
+                        <li>项目 1</li>
+                        <li>项目 2</li>
+                        <li>项目 3</li>
+                    </ul>
+                    <button id="addItemBtn">添加新项目</button>
+                    <script>
+                        const list = document.getElementById('delegateList');
+                        list.addEventListener('click', (e) => {
+                            if (e.target.tagName === 'LI') {
+                                alert('你点击了: ' + e.target.textContent);
+                            }
+                        });
+                        document.getElementById('addItemBtn').addEventListener('click', () => {
+                            const newLi = document.createElement('li');
+                            newLi.textContent = '项目 ' + (list.children.length + 1);
+                            list.appendChild(newLi);
+                        });
+                    </script>
+                </div>
+                <div class="card-example">点击现有项目弹出提示；新添加的项目无需重新绑定，同样有效。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 移除事件 -->
+    <section class="section">
+        <div class="section-title"><span>🧹 移除事件</span> removeEventListener</div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>必须传入相同函数引用</code></div>
+                <div class="card-description">匿名函数无法移除，需使用具名函数。</div>
+                <pre class="card-code"><code>const handler = () => {};
+btn.addEventListener('click', handler);
+btn.removeEventListener('click', handler);</code></pre>
+                <div class="card-effect">
+                    <button id="removeBtn">点我 (可移除)</button>
+                    <button id="removeActionBtn">移除上面按钮的事件</button>
+                    <script>
+                        const rmBtn = document.getElementById('removeBtn');
+                        function rmHandler() {
+                            alert('事件触发了！');
+                        }
+                        rmBtn.addEventListener('click', rmHandler);
+                        document.getElementById('removeActionBtn').addEventListener('click', () => {
+                            rmBtn.removeEventListener('click', rmHandler);
+                            alert('已移除事件，再点击上方按钮无反应');
+                        });
+                    </script>
+                </div>
+                <div class="card-example">先点击上方按钮弹出提示；点击“移除”后，再点击上方按钮不再弹出。</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>总结对比</code></div>
+                <div class="card-description">
+                    <ul style="list-style-type: none; padding-left:0;">
+                        <li>✅ DOM0：简单但后覆盖前</li>
+                        <li>✅ DOM2：多监听、事件流控制</li>
+                        <li>✅ 事件对象：提供丰富信息</li>
+                        <li>✅ 事件委托：减少监听器、动态友好</li>
+                    </ul>
+                </div>
+                <div class="card-effect">
+                    <p style="margin:0;">推荐使用 <code>addEventListener</code> 进行事件处理。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 新增：错误处理 ========== -->
+    <section class="section">
+        <div class="section-title"><span>⚠️ 错误处理</span> try/catch · throw · 调试</div>
+        <div class="card-grid">
+            <!-- try/catch -->
+            <div class="card">
+                <div class="card-header"><code>try/catch 捕获异常</code></div>
+                <div class="card-description">将可能出错的代码放在 try 块，catch 中处理错误。</div>
+                <pre class="card-code"><code>try {
+    throw new Error('演示错误');
+} catch(e) {
+    console.log(e.message);
+}</code></pre>
+                <div class="card-effect">
+                    <button onclick="try { throw new Error('演示错误'); } catch(e) { alert('捕获到: ' + e.message); }">
+                        触发错误并捕获
+                    </button>
+                </div>
+                <div class="card-example">点击按钮，try 中抛出错误，catch 捕获后弹出提示。</div>
+            </div>
+
+            <!-- throw 自定义错误 -->
+            <div class="card">
+                <div class="card-header"><code>throw 自定义错误</code></div>
+                <div class="card-description">手动抛出错误（可以是任何类型，通常用 Error 对象）。</div>
+                <pre class="card-code"><code>if(x < 0) {
+    throw new Error('x不能为负数');
+}</code></pre>
+                <div class="card-effect">
+                    <button onclick="try { let x = -5; if(x < 0) throw new Error('负数无效'); } catch(e) { alert(e.message); }">
+                        检查负数
+                    </button>
+                </div>
+                <div class="card-example">模拟检查负数，小于0则抛出错误并被捕获。</div>
+            </div>
+
+            <!-- 调试技巧 -->
+            <div class="card">
+                <div class="card-header"><code>调试技巧 (console)</code></div>
+                <div class="card-description">使用 <code>console.log</code>、<code>console.error</code>、<code>console.table</code> 等输出信息。</div>
+                <pre class="card-code"><code>console.log('普通日志');
+console.error('错误样式');
+console.table([{a:1}]);</code></pre>
+                <div class="card-effect">
+                    <button onclick="console.log('普通日志'); console.error('错误样式'); console.table([{a:1,b:2}]); alert('查看控制台 (F12)')">
+                        打开控制台查看
+                    </button>
+                </div>
+                <div class="card-example">点击后打开浏览器开发者工具（Console）查看不同级别的输出。</div>
+            </div>
+        </div>
+    </section>
+    <!-- ========== 错误处理结束 ========== -->
+
+    <footer>
+        ⚡ 掌握事件处理与错误处理，写出更健壮的交互代码
+    </footer>
+</div>
+</body>
+</html>

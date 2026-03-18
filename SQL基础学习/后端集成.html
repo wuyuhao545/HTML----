@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL · 后端集成</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #eef2f5;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,20,30,0.25);
+            padding: 2.5rem 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.2rem;
+        }
+        .nav-home {
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 500;
+            border: 1px solid #cbd5e1;
+        }
+        .nav-home:hover { background: #2563eb; color: white; }
+        h2 {
+            font-size: 1.9rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 3px solid #e2e8f0;
+            color: #0f172a;
+        }
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            background: #f1f5f9;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+        }
+        pre {
+            background: #0f1825;
+            color: #e3eaf3;
+            padding: 1.4rem 1.6rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            margin: 1.2rem 0;
+            box-shadow: inset 0 0 0 1px #2a3748;
+        }
+        .example-note {
+            background: #ecfdf5;
+            border-left: 5px solid #10b981;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            margin: 0.8rem 0;
+            color: #065f46;
+            font-weight: 500;
+        }
+        .warning-note {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            margin: 0.8rem 0;
+            color: #9a3412;
+            font-weight: 500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        th { background: #f1f5f9; padding: 0.8rem 1.2rem; text-align: left; }
+        td { padding: 0.8rem 1.2rem; border-bottom: 1px solid #e9eef3; }
+        .back2top { text-align: right; margin-top: 2rem; }
+        .back2top a { color: #64748b; text-decoration: none; border-bottom: 1px dashed; }
+        footer { margin-top: 3rem; text-align: center; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 2rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="nav-home">🏠 返回主页</a>
+    <h1>⚙️ 后端集成 · 在程序中执行 SQL</h1>
+    <p class="example-note">Python · Node.js · Java 连接数据库、执行查询/更新、使用参数化查询防止注入</p>
+
+    <h2>🔷 Python (以 pymysql + sqlite3 为例)</h2>
+    <h3>连接与查询</h3>
+    <pre><code>import pymysql
+
+# 建立连接
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    database='test',
+    charset='utf8mb4'
+)
+
+try:
+    with conn.cursor() as cursor:
+        # 执行查询 (参数化查询，避免注入)
+        sql = "SELECT id, name, salary FROM employees WHERE dept_id = %s"
+        cursor.execute(sql, (5,))
+        results = cursor.fetchall()
+        for row in results:
+            print(row)
+
+        # 执行插入
+        insert_sql = "INSERT INTO employees (name, salary, dept_id) VALUES (%s, %s, %s)"
+        cursor.execute(insert_sql, ('王小明', 7500, 3))
+        conn.commit()  # 提交事务
+        print("插入成功，影响行数:", cursor.rowcount)
+finally:
+    conn.close()</code></pre>
+
+    <h3>使用 sqlite3 (内置)</h3>
+    <pre><code>import sqlite3
+
+conn = sqlite3.connect('company.db')
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM employees WHERE salary > ?", (5000,))
+rows = cursor.fetchall()
+conn.close()</code></pre>
+
+    <h2>🔷 Node.js (使用 mysql2 或 pg)</h2>
+    <pre><code>const mysql = require('mysql2/promise');
+
+async function main() {
+    const conn = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '123456',
+        database: 'test'
+    });
+
+    // 参数化查询 (用 ? 占位)
+    const [rows] = await conn.execute(
+        'SELECT id, name, salary FROM employees WHERE dept_id = ?',
+        [5]
+    );
+    console.log(rows);
+
+    // 插入并获取影响行数
+    const [result] = await conn.execute(
+        'INSERT INTO employees (name, salary, dept_id) VALUES (?, ?, ?)',
+        ['李芳', 8200, 4]
+    );
+    console.log('插入行数:', result.affectedRows);
+
+    await conn.end();
+}
+main();</code></pre>
+
+    <h2>🔷 Java (JDBC)</h2>
+    <pre><code>import java.sql.*;
+
+public class JdbcExample {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/test";
+        String user = "root";
+        String password = "123456";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            // 参数化查询
+            String sql = "SELECT id, name, salary FROM employees WHERE dept_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, 5);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + ", " + rs.getString("name"));
+            }
+
+            // 插入
+            String insertSql = "INSERT INTO employees (name, salary, dept_id) VALUES (?, ?, ?)";
+            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+            insertStmt.setString(1, "张伟");
+            insertStmt.setDouble(2, 9000);
+            insertStmt.setInt(3, 2);
+            int affected = insertStmt.executeUpdate();
+            System.out.println("插入行数: " + affected);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+
+    <div class="warning-note">
+        ⚠️ 重要安全实践：<strong>永远使用参数化查询（预处理语句）</strong>，避免拼接 SQL 字符串，防止注入攻击。
+    </div>
+
+    <h2>🌐 通用步骤总结</h2>
+    <table>
+        <tr><th>步骤</th><th>说明</th></tr>
+        <tr><td>1. 引入驱动/库</td><td>根据语言和数据库选择对应驱动（如 pymysql、mysql2、JDBC）</td></tr>
+        <tr><td>2. 建立连接</td><td>提供主机、端口、用户名、密码、数据库名</td></tr>
+        <tr><td>3. 创建语句对象</td><td>通常使用 cursor 或 preparedStatement</td></tr>
+        <tr><td>4. 执行SQL</td><td>传递 SQL 字符串和参数（占位符方式）</td></tr>
+        <tr><td>5. 处理结果</td><td>遍历结果集或获取影响行数</td></tr>
+        <tr><td>6. 关闭连接</td><td>释放资源（或使用 try-with-resources / with 语句自动关闭）</td></tr>
+    </table>
+
+    <div class="back2top"><a href="#">⬆ 回到顶部</a></div>
+    <footer>← 返回主页可切换其他模块</footer>
+</div>
+</body>
+</html>

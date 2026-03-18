@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 文本与字体 · 代码与效果</title>
+    <!-- Font Awesome 图标库（今日所学） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- 外部样式文件：演示 CSS 组织（今日所学） -->
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <style>
+        /* 原有样式 */
+        .font-demo {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .text-demo {
+            text-align: center;
+            text-decoration: underline wavy #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 2;
+        }
+        .shadow-demo {
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+            font-size: 1.5rem;
+        }
+
+        /* 今日所学：新增演示样式 */
+        /* 按钮样式优化 */
+        .btn-plain {
+            background: transparent;
+            border: 1px solid #ccc;
+            padding: 0.3rem 1rem;
+            cursor: pointer;
+        }
+        .btn-optimized {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-optimized:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        /* 选择器优先级演示 */
+        .priority-box {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+        }
+        /* 外部样式可能定义 .external-style，这里我们在内部再定义一个同名类用于对比 */
+        .external-style {
+            background: #f1f5f9;  /* 内部定义，后面用优先级说明 */
+            border: 2px solid #3b82f6;
+        }
+        /* 内部高优先级选择器 */
+        #special-box.external-style {
+            background: #fef08a;
+            border-color: #eab308;
+        }
+
+        /* 演示 .sr-only 未定义的问题 */
+        .sr-only-missing {
+            /* 故意不定义样式，文字可见 */
+        }
+        .sr-only-fixed {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>✍️ CSS 文本与字体</h1>
+        <p>字体、大小、粗细、样式、行高、对齐、装饰、阴影</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">🔤 字体属性</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>font-family</code></div>
+                <div class="card-code">font-family: 'Courier New', monospace;</div>
+                <div class="card-effect"><div style="font-family:'Courier New', monospace;">等宽字体示例</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>font-size</code></div>
+                <div class="card-code">font-size: 1.5rem;</div>
+                <div class="card-effect"><div style="font-size:1.5rem;">大号字</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>font-weight</code></div>
+                <div class="card-code">font-weight: bold; (或 700)</div>
+                <div class="card-effect"><span style="font-weight:bold;">粗体</span> · <span style="font-weight:300;">细体</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>font-style</code></div>
+                <div class="card-code">font-style: italic;</div>
+                <div class="card-effect"><span style="font-style:italic;">斜体</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">📐 文本属性</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>text-align</code></div>
+                <div class="card-code">text-align: center;</div>
+                <div class="card-effect"><div style="text-align:center;">居中文本</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>text-decoration</code></div>
+                <div class="card-code">text-decoration: underline wavy #3b82f6;</div>
+                <div class="card-effect"><span style="text-decoration:underline wavy #3b82f6;">波浪下划线</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>text-transform</code></div>
+                <div class="card-code">text-transform: uppercase;</div>
+                <div class="card-effect"><span style="text-transform:uppercase;">小写变大写</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>letter-spacing</code></div>
+                <div class="card-code">letter-spacing: 4px;</div>
+                <div class="card-effect"><span style="letter-spacing:4px;">字间距</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>line-height</code></div>
+                <div class="card-code">line-height: 2;</div>
+                <div class="card-effect"><div style="line-height:2; background:#f1f5f9;">第一行<br>第二行 (行高较大)</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>text-shadow</code></div>
+                <div class="card-code">text-shadow: 3px 3px 5px rgba(0,0,0,0.3);</div>
+                <div class="card-effect"><span class="shadow-demo">有阴影的文字</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 今日所学：图标库、按钮、CSS组织、选择器优先级 ===== -->
+    <section class="section">
+        <h2 class="section-title">📚 今日所学：图标库 · 按钮优化 · CSS组织 · 优先级</h2>
+        <div class="card-grid">
+            <!-- 卡片1：图标库使用 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-star" style="color:#f59e0b;"></i> 图标库 Font Awesome</div>
+                <div class="card-code">
+                    &lt;i class="fa-solid fa-star"&gt;&lt;/i&gt; 实心星<br>
+                    &lt;i class="fa-regular fa-star"&gt;&lt;/i&gt; 空心星（需Pro或免费版可用）<br>
+                    &lt;i class="fa-solid fa-heart" style="color:#ef4444;"&gt;&lt;/i&gt; 红色心形
+                </div>
+                <div class="card-effect">
+                    <div style="font-size:1.5rem; display:flex; gap:1rem; align-items:center;">
+                        <i class="fa-solid fa-star" style="color:#f59e0b;"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-solid fa-heart" style="color:#ef4444;"></i>
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-solid fa-bell"></i>
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <p class="note">注意：<code>fa-regular</code> 中的部分图标（如空心星）在免费版中可用，但有些图标仅限 <code>fa-solid</code>。使用前需查阅文档。</p>
+                </div>
+            </div>
+
+            <!-- 卡片2：按钮样式优化 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-paint-brush"></i> 按钮样式优化</div>
+                <div class="card-code">
+                    &lt;button class="btn-plain"&gt;原始按钮&lt;/button&gt;<br>
+                    &lt;button class="btn-optimized"&gt;优化按钮&lt;/button&gt;
+                </div>
+                <div class="card-effect">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <button class="btn-plain">原始按钮</button>
+                        <button class="btn-optimized">优化按钮</button>
+                    </div>
+                    <p class="note">优化后：背景色、圆角、悬停缩放、过渡，提升可见性和交互体验。</p>
+                </div>
+            </div>
+
+            <!-- 卡片3：CSS组织（外部样式文件） -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-file-code"></i> CSS 组织</div>
+                <div class="card-code">
+                    &lt;link rel="stylesheet" href="style.css"&gt;  <!-- 外部文件 -->
+                </div>
+                <div class="card-effect">
+                    <p class="external-style" style="padding:0.5rem; border-radius:8px;">
+                        这段文字样式来自外部 <code>style.css</code>（假设定义了浅灰背景和蓝色边框）。
+                    </p>
+                    <p class="note">将样式提取到外部文件，便于维护、复用，减少页面体积，避免内联样式混乱。</p>
+                </div>
+            </div>
+
+            <!-- 卡片4：选择器优先级与.sr-only问题排查 -->
+            <div class="card">
+                <div class="card-header"><i class="fa-solid fa-magnifying-glass"></i> 选择器优先级 & .sr-only</div>
+                <div class="card-code">
+                    /* 错误：未定义 .sr-only，文字可见 */<br>
+                    &lt;span class="sr-only-missing"&gt;隐藏文字(可见)&lt;/span&gt;<br><br>
+                    /* 正确：定义 .sr-only-fixed */<br>
+                    &lt;span class="sr-only-fixed"&gt;隐藏文字(不可见)&lt;/span&gt;
+                </div>
+                <div class="card-effect">
+                    <div>
+                        <span class="sr-only-missing">❌ 我本应隐藏，但 .sr-only 未定义样式，所以可见</span>
+                    </div>
+                    <div>
+                        <span class="sr-only-fixed">✅ 我真正隐藏了（屏幕阅读器可读）</span> 后面文字正常
+                    </div>
+                    <div style="margin-top:0.8rem; padding:0.5rem; background:#f1f5f9; border-radius:8px;">
+                        <p><strong>优先级示例：</strong></p>
+                        <div class="priority-box external-style" id="special-box">
+                            这个盒子同时有类 <code>.external-style</code> 和 ID <code>#special-box</code>。<br>
+                            ID 选择器优先级更高，所以背景为黄色（内部样式定义），而非类定义的灰色。
+                        </div>
+                    </div>
+                    <p class="note">排查样式未生效：检查选择器优先级、样式是否被覆盖、类名是否正确定义（如 .sr-only 缺失）。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 文本与字体控制可读性和美感，组合使用能产生丰富排版效果。<br>
+        🆕 今日新增：图标库、按钮优化、CSS组织、优先级与.sr-only调试。
+    </footer>
+</div>
+</body>
+</html>

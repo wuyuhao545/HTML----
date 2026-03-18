@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 选择器 · 详细代码与效果</title>
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <style>
+        /* ----- 基础重置与卡片样式 (沿用原风格) ----- */
+        .demo-box {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        [data-demo] {
+            background: #fef9c3;
+            border-left: 4px solid #eab308;
+        }
+        /* ----- 伪类演示原有样式 (保留并扩展) ----- */
+        .pseudo-list li:first-child {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+        .pseudo-list li:last-child {
+            color: #166534;
+        }
+        .pseudo-list li:nth-child(2) {
+            background: #f1f5f9;
+        }
+        /* 新增：nth-of-type 演示 */
+        .nth-type-demo p:nth-of-type(odd) {
+            background: #fbcfe8;
+        }
+        .nth-type-demo p:nth-of-type(even) {
+            background: #bfdbfe;
+        }
+        /* 新增：first-of-type / last-of-type */
+        .type-demo p:first-of-type {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+        .type-demo p:last-of-type {
+            color: #166534;
+            font-style: italic;
+        }
+        /* 新增：only-child */
+        .only-child-demo p:only-child {
+            background: #fbbf24;
+            padding: 0.25rem;
+        }
+        /* 新增：empty */
+        .empty-demo:empty {
+            background: #9ca3af;
+            height: 30px;
+            border-radius: 6px;
+        }
+        /* 新增：not() 演示 */
+        .not-demo li:not(.special) {
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        /* 新增：:checked + 相邻兄弟 */
+        .toggle-demo:checked + label {
+            background: #3b82f6;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+        }
+        /* 新增：:enabled / :disabled */
+        .enable-demo input:enabled {
+            background: #86efac;
+            border: 2px solid #15803d;
+        }
+        .enable-demo input:disabled {
+            background: #e5e7eb;
+            border: 2px solid #6b7280;
+        }
+        /* 新增：:target 高亮 */
+        .target-demo:target {
+            background: #fde047;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        /* 新增：:root 演示 (整个文档根, 此处仅展示变量定义效果) */
+        :root {
+            --root-bg: #f1f5f9;
+        }
+        .root-demo {
+            background: var(--root-bg);
+            padding: 0.5rem;
+        }
+        /* 新增：:is() / :where() 演示 */
+        .is-where-demo :is(h3, p) {
+            border-left: 4px solid #3b82f6;
+            padding-left: 8px;
+        }
+        .is-where-demo :where(h3, p) {
+            background: #f1f5f9;  /* 较低优先级 */
+        }
+        /* ----- 伪元素演示扩展 ----- */
+        .demo-pseudo::before {
+            content: "⚡ ";
+            color: #2563eb;
+            font-weight: bold;
+        }
+        .demo-pseudo::after {
+            content: " ✨";
+            color: #a855f7;
+        }
+        /* first-line / first-letter */
+        .first-line-demo::first-line {
+            background: #fde68a;
+            font-weight: 600;
+        }
+        .first-letter-demo::first-letter {
+            font-size: 2rem;
+            color: #b91c1c;
+            float: left;
+            margin-right: 0.2rem;
+        }
+        /* selection 自定义选中样式 */
+        .selection-demo::selection {
+            background: #3b82f6;
+            color: white;
+        }
+        /* placeholder 演示 */
+        .placeholder-demo::placeholder {
+            color: #a855f7;
+            font-style: italic;
+            opacity: 0.8;
+        }
+        /* marker 演示 (针对列表项) */
+        .marker-demo li::marker {
+            color: #f97316;
+            font-size: 1.2rem;
+        }
+        /* ----- 属性选择器扩展 ----- */
+        /* [attr^=value] */
+        [data-type^="warning"] {
+            background: #fecaca;
+            border-left: 4px solid #b91c1c;
+        }
+        /* [attr$=value] */
+        [data-type$="note"] {
+            background: #d9f99d;
+            border-left: 4px solid #3f6212;
+        }
+        /* [attr*=value] */
+        [data-type*="important"] {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        /* ----- 组合器已有保留，新增 :is / :where 示例见上 ----- */
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔍 CSS 选择器 · 详细示例</h1>
+        <p>基础选择器、属性选择器、伪类、伪元素、组合器 —— 附带实际效果</p>
+    </div>
+
+    <!-- 基础选择器 (原有 + 扩展) -->
+    <section class="section">
+        <h2 class="section-title">📌 基础选择器</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>元素选择器</code></div>
+                <div class="card-code">p { color: #1e40af; }</div>
+                <div class="card-effect"><p style="color:#1e40af;">所有段落都受影响</p></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>类选择器</code></div>
+                <div class="card-code">.demo-box { background: #dbeafe; }</div>
+                <div class="card-effect"><div class="demo-box">带有 class="demo-box" 的元素</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>ID选择器</code></div>
+                <div class="card-code">#special { background: #fef9c3; }</div>
+                <div class="card-effect"><div id="special" style="background:#fef9c3;">ID为special的元素</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>属性选择器 [attr]</code></div>
+                <div class="card-code">[data-demo] { background: #fef9c3; }</div>
+                <div class="card-effect"><div data-demo>带有 data-demo 属性</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>[attr^="value"]</code></div>
+                <div class="card-code">[data-type^="warning"] { background: #fecaca; }</div>
+                <div class="card-effect"><div data-type="warning-alert">以 "warning" 开头</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>[attr$="value"]</code></div>
+                <div class="card-code">[data-type$="note"] { background: #d9f99d; }</div>
+                <div class="card-effect"><div data-type="reminder-note">以 "note" 结尾</div></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>[attr*="value"]</code></div>
+                <div class="card-code">[data-type*="important"] { font-weight: bold; }</div>
+                <div class="card-effect"><div data-type="very-important-info">包含 "important"</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 伪类选择器 (大幅扩充) -->
+    <section class="section">
+        <h2 class="section-title">🧬 伪类选择器</h2>
+        <div class="card-grid">
+            <!-- 原有 :first-child -->
+            <div class="card">
+                <div class="card-header"><code>:first-child</code></div>
+                <div class="card-code">li:first-child { color: #b91c1c; }</div>
+                <div class="card-effect">
+                    <ul class="pseudo-list">
+                        <li>第一个 (红色)</li>
+                        <li>第二个 (背景灰)</li>
+                        <li>第三个</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- :last-child 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:last-child</code></div>
+                <div class="card-code">li:last-child { color: #166534; }</div>
+                <div class="card-effect">
+                    <ul class="pseudo-list">
+                        <li>第一个</li>
+                        <li>第二个 (背景灰)</li>
+                        <li>第三个 (绿色)</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- :nth-child 原有 -->
+            <div class="card">
+                <div class="card-header"><code>:nth-child(2)</code></div>
+                <div class="card-code">li:nth-child(2) { background: #f1f5f9; }</div>
+                <div class="card-effect">
+                    <ul class="pseudo-list">
+                        <li>第一</li>
+                        <li>第二 (背景灰)</li>
+                        <li>第三</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- :nth-of-type 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:nth-of-type(odd)</code></div>
+                <div class="card-code">p:nth-of-type(odd) { background: #fbcfe8; }</div>
+                <div class="card-effect">
+                    <div class="nth-type-demo">
+                        <p>奇数段 (粉)</p>
+                        <p>偶数段 (蓝)</p>
+                        <p>奇数段 (粉)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- :first-of-type 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:first-of-type</code></div>
+                <div class="card-code">p:first-of-type { color: #b91c1c; }</div>
+                <div class="card-effect">
+                    <div class="type-demo">
+                        <p>第一个p (红色)</p>
+                        <span>中间span</span>
+                        <p>第二个p (无)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- :last-of-type 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:last-of-type</code></div>
+                <div class="card-code">p:last-of-type { color: #166534; }</div>
+                <div class="card-effect">
+                    <div class="type-demo">
+                        <p>第一个p</p>
+                        <span>span</span>
+                        <p>最后一个p (绿色斜体)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- :only-child 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:only-child</code></div>
+                <div class="card-code">p:only-child { background: #fbbf24; }</div>
+                <div class="card-effect">
+                    <div class="only-child-demo">
+                        <p>唯一的子元素 (黄底)</p>
+                    </div>
+                    <div class="only-child-demo">
+                        <p>第一个</p>
+                        <p>第二个 (无效果)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- :empty 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:empty</code></div>
+                <div class="card-code">.empty-demo:empty { background: #9ca3af; height: 30px; }</div>
+                <div class="card-effect">
+                    <div class="empty-demo">非空 (无灰底)</div>
+                    <div class="empty-demo"></div> <!-- 空元素，显示灰底 -->
+                </div>
+            </div>
+            <!-- :not() 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:not()</code></div>
+                <div class="card-code">li:not(.special) { color: #6b7280; text-decoration: line-through; }</div>
+                <div class="card-effect">
+                    <ul class="not-demo">
+                        <li>普通项 (灰/删除线)</li>
+                        <li class="special">特殊项 (无效果)</li>
+                        <li>普通项 (灰/删除线)</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- :hover 已有简单示例，但保留原样 -->
+            <div class="card">
+                <div class="card-header"><code>:hover</code></div>
+                <div class="card-code">.hover-demo:hover { background: #3b82f6; color: white; }</div>
+                <div class="card-effect">
+                    <div class="hover-demo" style="transition:0.2s; padding:0.3rem; border-radius:8px;" onmouseover="this.style.background='#3b82f6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color=''">鼠标移到这里</div>
+                </div>
+            </div>
+            <!-- :checked 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:checked + label</code></div>
+                <div class="card-code">.toggle-demo:checked + label { background: #3b82f6; color: white; }</div>
+                <div class="card-effect">
+                    <input type="checkbox" id="check1" class="toggle-demo">
+                    <label for="check1">点击复选框试试</label>
+                </div>
+            </div>
+            <!-- :enabled / :disabled 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:enabled / :disabled</code></div>
+                <div class="card-code">input:enabled { background: #86efac; } input:disabled { background: #e5e7eb; }</div>
+                <div class="card-effect">
+                    <div class="enable-demo">
+                        <input value="可用的"><br>
+                        <input value="禁用的" disabled>
+                    </div>
+                </div>
+            </div>
+            <!-- :target 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:target</code></div>
+                <div class="card-code">.target-demo:target { background: #fde047; }</div>
+                <div class="card-effect">
+                    <a href="#target1">跳转到目标</a>
+                    <div id="target1" class="target-demo">被锚点指向时高亮</div>
+                </div>
+            </div>
+            <!-- :root 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:root</code></div>
+                <div class="card-code">:root { --root-bg: #f1f5f9; } .root-demo { background: var(--root-bg); }</div>
+                <div class="card-effect">
+                    <div class="root-demo">根变量背景色</div>
+                </div>
+            </div>
+            <!-- :is() / :where() 新增 -->
+            <div class="card">
+                <div class="card-header"><code>:is() / :where()</code></div>
+                <div class="card-code">:is(h3,p) { border-left: 4px solid #3b82f6; } :where(h3,p) { background: #f1f5f9; }</div>
+                <div class="card-effect">
+                    <div class="is-where-demo">
+                        <h3>标题 (蓝边+灰底)</h3>
+                        <p>段落 (蓝边+灰底)</p>
+                        <span>span (无效果)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 伪元素选择器 (扩展) -->
+    <section class="section">
+        <h2 class="section-title">✍️ 伪元素</h2>
+        <div class="card-grid">
+            <!-- ::before / ::after 原有 -->
+            <div class="card">
+                <div class="card-header"><code>::before / ::after</code></div>
+                <div class="card-code">.demo-pseudo::before { content: "⚡ "; } .demo-pseudo::after { content: " ✨"; }</div>
+                <div class="card-effect"><span class="demo-pseudo">伪元素演示</span></div>
+            </div>
+            <!-- ::first-line 新增 -->
+            <div class="card">
+                <div class="card-header"><code>::first-line</code></div>
+                <div class="card-code">.first-line-demo::first-line { background: #fde68a; }</div>
+                <div class="card-effect">
+                    <div class="first-line-demo">这是第一行文字，背景黄色。<br>这是第二行，无背景。</div>
+                </div>
+            </div>
+            <!-- ::first-letter 新增 -->
+            <div class="card">
+                <div class="card-header"><code>::first-letter</code></div>
+                <div class="card-code">.first-letter-demo::first-letter { font-size: 2rem; color: #b91c1c; }</div>
+                <div class="card-effect">
+                    <p class="first-letter-demo">首字下沉效果。</p>
+                </div>
+            </div>
+            <!-- ::selection 新增 -->
+            <div class="card">
+                <div class="card-header"><code>::selection</code></div>
+                <div class="card-code">.selection-demo::selection { background: #3b82f6; color: white; }</div>
+                <div class="card-effect">
+                    <p class="selection-demo">尝试选中这段文字，背景会变成蓝色。</p>
+                </div>
+            </div>
+            <!-- ::placeholder 新增 -->
+            <div class="card">
+                <div class="card-header"><code>::placeholder</code></div>
+                <div class="card-code">.placeholder-demo::placeholder { color: #a855f7; font-style: italic; }</div>
+                <div class="card-effect">
+                    <input class="placeholder-demo" placeholder="紫色斜体提示">
+                </div>
+            </div>
+            <!-- ::marker 新增 -->
+            <div class="card">
+                <div class="card-header"><code>::marker</code></div>
+                <div class="card-code">.marker-demo li::marker { color: #f97316; font-size: 1.2rem; }</div>
+                <div class="card-effect">
+                    <ul class="marker-demo">
+                        <li>列表项1</li>
+                        <li>列表项2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 组合器 (原有保留，但可略增说明) -->
+    <section class="section">
+        <h2 class="section-title">🔗 组合器</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>后代选择器</code> (空格)</div>
+                <div class="card-code">.parent-desc p { background: #e0f2fe; }</div>
+                <div class="card-effect">
+                    <div class="parent-desc"><p>后代段落</p><div><p>嵌套后代也受影响</p></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>子代选择器</code> (> )</div>
+                <div class="card-code">.parent-child > p { border: 2px solid #0284c7; }</div>
+                <div class="card-effect">
+                    <div class="parent-child"><p>直接子元素</p><div><p>非直接子元素(无边框)</p></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>相邻兄弟</code> (+)</div>
+                <div class="card-code">.sibling-adjacent h3 + p { color: #c2410c; }</div>
+                <div class="card-effect">
+                    <div class="sibling-adjacent"><h3>标题</h3><p>紧接的p变橙色</p><p>第二个p不变</p></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>通用兄弟</code> (~)</div>
+                <div class="card-code">.sibling-general h3 ~ p { font-style: italic; background: #f1f5f9; }</div>
+                <div class="card-effect">
+                    <div class="sibling-general"><h3>标题</h3><p>斜体p</p><p>也是斜体</p></div>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top:1rem; font-size:0.9rem; color:#4b5563;">
+            💡 组合器可以链式使用，例如 <code>.parent > .child + .sibling ~ *</code> 等，实现精准控制。
+        </p>
+    </section>
+
+    <footer>
+        ⚡ CSS 选择器大全 · 包含常用及部分实验性伪类 · 实际效果可交互体验
+    </footer>
+</div>
+</body>
+</html>

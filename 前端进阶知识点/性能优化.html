@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 CSS合并 & 图片优化 · 防抖节流</title>
+    <!-- Font Awesome 图标库（用于美化） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 CSS合并 & 图片优化 · 防抖节流</h1>
+            <p>减少HTTP请求 · 避免图片拉伸 · 提升性能与体验 · 控制高频事件</p>
+        </div>
+
+        <!-- ===== 第一部分：CSS合并 ===== -->
+        <section class="section">
+            <h2 class="section-title">📦 CSS合并 <span style="font-size:1rem; margin-left:1rem; color:#64748b;">减少HTTP请求</span></h2>
+            <div class="card-grid">
+                <!-- 问题描述 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-exclamation-triangle" style="color:#eab308;"></i>
+                        <span>多个CSS文件的问题</span>
+                    </div>
+                    <div class="card-code">
+&lt;link rel="stylesheet" href="reset.css"&gt;
+&lt;link rel="stylesheet" href="typography.css"&gt;
+&lt;link rel="stylesheet" href="layout.css"&gt;
+&lt;link rel="stylesheet" href="theme.css"&gt;
+                    </div>
+                    <div class="card-effect">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <span class="badge">reset.css</span>
+                            <span class="badge">typography.css</span>
+                            <span class="badge">layout.css</span>
+                            <span class="badge">theme.css</span>
+                        </div>
+                        <p style="margin-top:0.8rem;"><i class="fa-solid fa-circle-exclamation" style="color:#ef4444;"></i> 4个CSS文件 = 4次HTTP请求，增加页面加载时间，尤其在移动网络下。</p>
+                    </div>
+                </div>
+
+                <!-- 解决方案 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
+                        <span>合并成一个文件</span>
+                    </div>
+                    <div class="card-code">
+&lt;link rel="stylesheet" href="style.css"&gt;
+                    </div>
+                    <div class="card-effect">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <span class="badge" style="background:#10b981; color:white;">style.css (合并后)</span>
+                        </div>
+                        <p style="margin-top:0.8rem;"><i class="fa-solid fa-check" style="color:#10b981;"></i> 1次HTTP请求，减少延迟，利用HTTP/2的 multiplexing 效果更好，但合并仍有意义。</p>
+                        <div style="background:#f1f5f9; padding:0.5rem; border-radius:8px; margin-top:0.5rem;">
+                            <span class="request-badge">1请求</span> vs 之前 <span style="background:#ef4444; color:white; padding:0.2rem 0.8rem; border-radius:20px;">4请求</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 构建工具示例 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-tools"></i>
+                        <span>自动化合并（构建工具）</span>
+                    </div>
+                    <div class="card-code">
+// webpack / vite 配置
+import './reset.css';
+import './typography.css';
+import './layout.css';
+import './theme.css';
+                    </div>
+                    <div class="card-effect">
+                        <p>现代前端工具（Webpack、Vite、Gulp）会自动将多个CSS合并成一个文件，并压缩优化。</p>
+                        <p class="note">也可手动合并，但推荐使用构建工具自动化处理。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 第二部分：图片优化 ===== -->
+        <section class="section">
+            <h2 class="section-title">🖼️ 图片优化 <span style="font-size:1rem; margin-left:1rem; color:#64748b;">尺寸适当 · 避免变形</span></h2>
+            <div class="card-grid">
+                <!-- 图片拉伸问题 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-image" style="color:#eab308;"></i>
+                        <span>拉伸变形的常见原因</span>
+                    </div>
+                    <div class="card-code">
+&lt;img src="photo.jpg" width="200" height="100"&gt;
+&lt;!-- 但原图可能是 400x400，强制拉伸 --&gt;
+                    </div>
+                    <div class="card-effect">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <strong>原图 (400x400)</strong>
+                                <div style="width:100px; height:100px; background:#3b82f6; color:white; display:flex; align-items:center; justify-content:center; border-radius:8px;">400x400</div>
+                            </div>
+                            <div>
+                                <strong>强制拉伸显示 (200x100)</strong>
+                                <div style="width:200px; height:100px; background: linear-gradient(145deg, #3b82f6, #1e40af); display:flex; align-items:center; justify-content:center; color:white; border-radius:8px;">变形了</div>
+                            </div>
+                        </div>
+                        <p class="note">设置固定宽高但比例与原图不符导致变形。</p>
+                    </div>
+                </div>
+
+                <!-- 正确做法：只设宽度，高度自适应 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
+                        <span>保持宽高比</span>
+                    </div>
+                    <div class="card-code">
+&lt;img src="photo.jpg" style="width:200px; height:auto;"&gt;
+&lt;!-- 或设置 max-width: 100%; height: auto; --&gt;
+                    </div>
+                    <div class="card-effect">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div><strong>高度自动，比例不变</strong></div>
+                            <div style="width:200px; background:#3b82f6; color:white; padding:0.5rem; text-align:center; border-radius:8px;">200x200 (等比例)</div>
+                        </div>
+                        <p class="note">只设置宽度，高度自适应，或使用 <code>object-fit</code> 控制。</p>
+                    </div>
+                </div>
+
+                <!-- 响应式图片：不同尺寸 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-display"></i>
+                        <span>响应式图片 (srcset)</span>
+                    </div>
+                    <div class="card-code">
+&lt;img srcset="small.jpg 400w,
+             medium.jpg 800w,
+             large.jpg 1200w"
+     sizes="(max-width: 600px) 400px,
+            (max-width: 1200px) 800px,
+            1200px"
+     src="fallback.jpg"&gt;
+                    </div>
+                    <div class="card-effect">
+                        <p>根据屏幕宽度加载不同尺寸图片，避免移动端加载超大图。</p>
+                        <div style="background:#f1f5f9; padding:0.5rem; border-radius:8px;">
+                            📱 小屏加载 small.jpg (400w)<br>
+                            💻 大屏加载 large.jpg (1200w)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 使用 object-fit 控制 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-crop"></i>
+                        <span>object-fit 解决拉伸</span>
+                    </div>
+                    <div class="card-code">
+.img-container {
+  width: 200px;
+  height: 100px;
+}
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 或 contain */
+}
+                    </div>
+                    <div class="card-effect">
+                        <div style="display: flex; gap: 1rem;">
+                            <div>
+                                <div style="width:100px; height:100px; background:#3b82f6; border-radius:8px; overflow:hidden;">
+                                    <div style="width:100%; height:100%; background: linear-gradient(145deg, #3b82f6, #1e40af); display:flex; align-items:center; justify-content:center; color:white;">cover</div>
+                                </div>
+                                <span>cover (裁剪)</span>
+                            </div>
+                            <div>
+                                <div style="width:100px; height:100px; background:#3b82f6; border-radius:8px; overflow:hidden;">
+                                    <div style="width:100%; height:100%; background: linear-gradient(145deg, #3b82f6, #1e40af); display:flex; align-items:center; justify-content:center; color:white;">contain</div>
+                                </div>
+                                <span>contain (留白)</span>
+                            </div>
+                        </div>
+                        <p class="note">object-fit 可控制图片在固定容器内的显示方式，避免变形。</p>
+                    </div>
+                </div>
+
+                <!-- 图片格式与压缩 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-file-image"></i>
+                        <span>格式选择与压缩</span>
+                    </div>
+                    <div class="card-code">
+- 照片 → JPEG / WebP
+- 图标/插画 → PNG / SVG
+- 动图 → GIF / WebP
+- 压缩工具：TinyPNG, ImageOptim
+                    </div>
+                    <div class="card-effect">
+                        <p>选择合适的格式可大幅减小体积。例如使用 WebP 替代 JPEG 可减少 25-35% 大小。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 新增：防抖与节流 ===== -->
+        <section class="section">
+            <h2 class="section-title">⏱️ 防抖与节流 <span style="font-size:1rem; margin-left:1rem; color:#64748b;">控制高频事件，提升性能</span></h2>
+            <div class="card-grid">
+                <!-- 防抖卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-bolt" style="color:#eab308;"></i>
+                        <span>防抖 (Debounce)</span>
+                    </div>
+                    <div class="card-description">
+                        将多次高频操作合并为一次，只在最后一次操作后的延迟时间后执行。适合输入框搜索、窗口resize结束等场景。
+                    </div>
+                    <div class="card-code">
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+// 使用
+input.addEventListener('input', debounce(function(e) {
+  console.log('搜索:', e.target.value);
+}, 500));
+                    </div>
+                    <div class="card-effect">
+                        <p>📝 连续输入时，只在停止输入500ms后触发一次搜索请求。</p>
+                        <div style="background:#f1f5f9; padding:0.5rem; border-radius:8px;">
+                            <i class="fa-solid fa-keyboard"></i> 输入 "hello" 快速敲击 → 只触发一次搜索
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 节流卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-water" style="color:#3b82f6;"></i>
+                        <span>节流 (Throttle)</span>
+                    </div>
+                    <div class="card-description">
+                        保证一段时间内只执行一次，稀释执行频率。适合滚动事件、鼠标移动、频繁点击等。
+                    </div>
+                    <div class="card-code">
+function throttle(fn, interval) {
+  let lastTime = 0;
+  return function(...args) {
+    const now = Date.now();
+    if (now - lastTime >= interval) {
+      fn.apply(this, args);
+      lastTime = now;
+    }
+  };
+}
+
+// 使用
+window.addEventListener('scroll', throttle(function() {
+  console.log('滚动位置:', window.scrollY);
+}, 200));
+                    </div>
+                    <div class="card-effect">
+                        <p>🖱️ 滚动时，每200ms最多触发一次，避免频繁计算。</p>
+                        <div style="background:#f1f5f9; padding:0.5rem; border-radius:8px;">
+                            <i class="fa-solid fa-computer-mouse"></i> 快速滚动 → 控制台打印频率降低
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 对比卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>对比与选择</span>
+                    </div>
+                    <div style="padding:0.5rem;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <tr><th style="text-align:left; padding:0.3rem;">防抖</th><td>只执行最后一次</td><td>输入、调整窗口</td></tr>
+                            <tr><th style="text-align:left; padding:0.3rem;">节流</th><td>均匀稀释执行</td><td>滚动、鼠标移动</td></tr>
+                        </table>
+                        <p style="margin-top:0.8rem;">⚠️ 两者都用于性能优化，防止高频回调阻塞主线程。</p>
+                        <div class="note">Lodash 提供了现成的 <code>_.debounce</code> 和 <code>_.throttle</code>，可直接使用。</div>
+                    </div>
+                    <div class="card-effect">
+                        <p>✅ 推荐在实际项目中引入 lodash 或自己实现简单的工具函数。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 综合示例：实际效果对比 ===== -->
+        <section class="section">
+            <h2 class="section-title">⚖️ 实际效果对比</h2>
+            <div class="card" style="grid-column:1/-1;">
+                <div class="card-header">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <span>正确优化 vs 未优化</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+                    <!-- 未优化 -->
+                    <div style="flex:1; min-width:250px;">
+                        <h3>❌ 未优化</h3>
+                        <ul style="margin-left:1.2rem;">
+                            <li>多个CSS文件：4次请求</li>
+                            <li>图片强制拉伸：400x400显示为200x100</li>
+                            <li>使用巨大原图，未压缩</li>
+                            <li>高频事件无处理：滚动/输入频繁触发</li>
+                        </ul>
+                        <div style="margin-top:1rem;">
+                            <div style="background:#fee2e2; padding:0.5rem; border-radius:8px;">加载慢 · 变形 · 卡顿 · 体验差</div>
+                        </div>
+                    </div>
+                    <!-- 优化后 -->
+                    <div style="flex:1; min-width:250px;">
+                        <h3>✅ 优化后</h3>
+                        <ul style="margin-left:1.2rem;">
+                            <li>合并CSS：1次请求</li>
+                            <li>等比例图片：200x200</li>
+                            <li>使用响应式图片，WebP格式</li>
+                            <li>防抖/节流控制高频事件</li>
+                        </ul>
+                        <div style="margin-top:1rem;">
+                            <div style="background:#d1fae5; padding:0.5rem; border-radius:8px;">快速加载 · 清晰 · 流畅 · 体验佳</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:2rem; text-align:center;">
+                    <button onclick="alert('实际项目中，可使用构建工具合并CSS，用srcset提供多尺寸图片，用压缩工具优化，并针对高频事件应用防抖节流。')">了解更多</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            ⚡ 今日学习：CSS合并减少HTTP请求 · 图片优化避免拉伸 · 防抖节流控制高频事件 · 提升网页性能<br>
+            <span style="font-size:0.8rem;">所有演示仅为示意，真实项目需结合构建工具和现代图片格式及性能优化策略</span>
+        </footer>
+    </div>
+</body>
+</html>

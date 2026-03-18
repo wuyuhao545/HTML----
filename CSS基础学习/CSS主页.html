@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 CSS 学习中心 · 主页</title>
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <style>
+        /* 主页特有样式（微调卡片描述区域） */
+        .card-description {
+            color: #334155;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .card-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.2s;
+            align-self: flex-start;
+        }
+        .card-button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎨 CSS 学习中心</h1>
+        <p>点击下方卡片，打开对应的CSS主题教学页面。每个页面都包含核心概念、重要属性、代码示例与实际效果。</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">📚 所有CSS模块 <span>共11个主题</span></h2>
+        <div class="card-grid">
+            <a class="card" href="CSS选择器.html" target="_blank">
+                <div class="card-header">
+                    <code>选择器</code>
+                    <span class="card-title">基础 · 伪类 · 组合器</span>
+                </div>
+                <div class="card-description">
+                    元素选择器、类、ID、属性选择器、伪类、伪元素、后代/子代/相邻兄弟选择器。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS盒模型.html" target="_blank">
+                <div class="card-header">
+                    <code>盒模型</code>
+                    <span class="card-title">margin · padding · border · box-sizing</span>
+                </div>
+                <div class="card-description">
+                    内容区、内边距、边框、外边距、怪异盒模型、外边距折叠。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS背景和颜色.html" target="_blank">
+                <div class="card-header">
+                    <code>背景与颜色</code>
+                    <span class="card-title">background · 渐变色 · 颜色表示</span>
+                </div>
+                <div class="card-description">
+                    背景颜色、背景图像、渐变、多重背景、颜色关键字、hex、rgb、hsl。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS样式与布局.html" target="_blank">
+                <div class="card-header">
+                    <code>文本与字体</code>
+                    <span class="card-title">font · text · line-height</span>
+                </div>
+                <div class="card-description">
+                    字体系列、字号、粗细、行高、文本对齐、装饰、阴影、间距。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="FlexBox.html" target="_blank">
+                <div class="card-header">
+                    <code>Flexbox</code>
+                    <span class="card-title">弹性布局 · 容器 · 项目</span>
+                </div>
+                <div class="card-description">
+                    display:flex、主轴/侧轴、flex-direction、justify-content、align-items、flex属性。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="Grid.html" target="_blank">
+                <div class="card-header">
+                    <code>Grid</code>
+                    <span class="card-title">网格布局 · 轨道 · 区域</span>
+                </div>
+                <div class="card-description">
+                    display:grid、grid-template、gap、fr单位、grid-area、对齐方式。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS动画和过渡.html" target="_blank">
+                <div class="card-header">
+                    <code>动画与过渡</code>
+                    <span class="card-title">transition · animation · keyframes</span>
+                </div>
+                <div class="card-description">
+                    过渡属性、缓动函数、关键帧动画、动画属性、循环与方向。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS响应式设计.html" target="_blank">
+                <div class="card-header">
+                    <code>响应式设计</code>
+                    <span class="card-title">媒体查询 · 视口 · 相对单位</span>
+                </div>
+                <div class="card-description">
+                    @media、视口设置、em/rem/vw/vh、响应式图片、断点设计。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS变换和滤镜.html" target="_blank">
+                <div class="card-header">
+                    <code>变换与滤镜</code>
+                    <span class="card-title">transform · filter</span>
+                </div>
+                <div class="card-description">
+                    平移、旋转、缩放、倾斜、3D变换、模糊、亮度、对比度等滤镜。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+            <a class="card" href="CSS变量和函数.html" target="_blank">
+                <div class="card-header">
+                    <code>CSS变量与函数</code>
+                    <span class="card-title">自定义属性 · calc · var</span>
+                </div>
+                <div class="card-description">
+                    定义与使用变量、calc()计算、min()/max()/clamp()、attr()等函数。
+                </div>
+                <span class="card-button">开始学习 →</span>
+            </a>
+        </div>
+        <div class="note" style="margin-top: 2rem; display: block; text-align: center; background: #e0f2fe;">
+            💡 提示：请将主页与所有教学文件放在同一目录下，文件命名如 css-selectors.html 等。
+        </div>
+    </section>
+
+    <footer>
+        ⚡ CSS 学习中心 · 点击卡片在新窗口打开详细教学页面<br>
+        每个页面均包含代码片段与实际渲染效果，适合零基础入门与复习。
+    </footer>
+</div>
+</body>
+</html>

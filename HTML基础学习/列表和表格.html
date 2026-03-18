@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 表格 · 列表 标签与效果展示</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📋 表格 · 列表 HTML标签大全</h1>
+        <p>每个卡片展示一组相关标签的代码 + 实际渲染效果。包括表格、无序列表、有序列表、自定义列表等</p>
+    </div>
+
+    <!-- ==================== 表格部分 ==================== -->
+    <section class="section">
+        <div class="section-title">📊 表格标签 <span>&lt;table&gt; &lt;tr&gt; &lt;th&gt; &lt;td&gt; &lt;caption&gt; &lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt; &lt;colgroup&gt; &lt;col&gt;</span></div>
+        <div class="card-grid">
+            <!-- 卡片1：基础表格 + th/td/tr -->
+            <div class="card">
+                <div class="card-header"><code>&lt;table&gt; + tr/th/td</code><span class="card-title">简单表格</span></div>
+                <div class="card-code">&lt;table border="1"&gt;<br>  &lt;tr&gt;<br>    &lt;th&gt;姓名&lt;/th&gt;&lt;th&gt;年龄&lt;/th&gt;<br>  &lt;/tr&gt;<br>  &lt;tr&gt;<br>    &lt;td&gt;张三&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;<br>  &lt;/tr&gt;<br>  &lt;tr&gt;<br>    &lt;td&gt;李四&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;<br>  &lt;/tr&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <table class="bordered">
+                        <tr><th>姓名</th><th>年龄</th></tr>
+                        <tr><td>张三</td><td>25</td></tr>
+                        <tr><td>李四</td><td>30</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片2：带标题 caption -->
+            <div class="card">
+                <div class="card-header"><code>&lt;caption&gt;</code><span class="card-title">表格标题</span></div>
+                <div class="card-code">&lt;table&gt;<br>  &lt;caption&gt;学生成绩表&lt;/caption&gt;<br>  &lt;tr&gt;&lt;th&gt;科目&lt;/th&gt;&lt;th&gt;分数&lt;/th&gt;&lt;/tr&gt;<br>  &lt;tr&gt;&lt;td&gt;数学&lt;/td&gt;&lt;td&gt;98&lt;/td&gt;&lt;/tr&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <table class="bordered">
+                        <caption>学生成绩表</caption>
+                        <tr><th>科目</th><th>分数</th></tr>
+                        <tr><td>数学</td><td>98</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片3：结构标签 thead, tbody, tfoot -->
+            <div class="card">
+                <div class="card-header"><code>&lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt;</code><span class="card-title">表结构分组</span></div>
+                <div class="card-code">&lt;table&gt;<br>  &lt;thead&gt;<br>    &lt;tr&gt;&lt;th&gt;项目&lt;/th&gt;&lt;th&gt;收入&lt;/th&gt;&lt;/tr&gt;<br>  &lt;/thead&gt;<br>  &lt;tbody&gt;<br>    &lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;td&gt;1200&lt;/td&gt;&lt;/tr&gt;<br>    &lt;tr&gt;&lt;td&gt;B&lt;/td&gt;&lt;td&gt;800&lt;/td&gt;&lt;/tr&gt;<br>  &lt;/tbody&gt;<br>  &lt;tfoot&gt;<br>    &lt;tr&gt;&lt;td&gt;总计&lt;/td&gt;&lt;td&gt;2000&lt;/td&gt;&lt;/tr&gt;<br>  &lt;/tfoot&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <table class="bordered">
+                        <thead><tr><th>项目</th><th>收入</th></tr></thead>
+                        <tbody><tr><td>A</td><td>1200</td></tr><tr><td>B</td><td>800</td></tr></tbody>
+                        <tfoot><tr><td>总计</td><td>2000</td></tr></tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片4：合并单元格 colspan / rowspan -->
+            <div class="card">
+                <div class="card-header"><code>colspan / rowspan</code><span class="card-title">合并单元格</span></div>
+                <div class="card-code">&lt;table&gt;<br>  &lt;tr&gt;<br>    &lt;th&gt;姓名&lt;/th&gt;<br>    &lt;th colspan="2"&gt;联系方式&lt;/th&gt;<br>  &lt;/tr&gt;<br>  &lt;tr&gt;<br>    &lt;td rowspan="2"&gt;王五&lt;/td&gt;<br>    &lt;td&gt;手机&lt;/td&gt;&lt;td&gt;138****0000&lt;/td&gt;<br>  &lt;/tr&gt;<br>  &lt;tr&gt;<br>    &lt;td&gt;邮箱&lt;/td&gt;&lt;td&gt;wang@ex.com&lt;/td&gt;<br>  &lt;/tr&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <table class="bordered">
+                        <tr><th>姓名</th><th colspan="2">联系方式</th></tr>
+                        <tr><td rowspan="2">王五</td><td>手机</td><td>138****0000</td></tr>
+                        <tr><td>邮箱</td><td>wang@ex.com</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片5：列分组 colgroup / col -->
+            <div class="card">
+                <div class="card-header"><code>&lt;colgroup&gt; &lt;col&gt;</code><span class="card-title">列样式控制</span></div>
+                <div class="card-code">&lt;table&gt;<br>  &lt;colgroup&gt;<br>    &lt;col style="background:#e6f2ff"&gt;<br>    &lt;col span="2" style="background:#f0f7da"&gt;<br>  &lt;/colgroup&gt;<br>  &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;品名&lt;/th&gt;&lt;th&gt;价格&lt;/th&gt;&lt;/tr&gt;<br>  &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;苹果&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;/tr&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果（背景色变化）</div>
+                    <table class="bordered">
+                        <colgroup><col style="background:#e6f2ff;"><col span="2" style="background:#f0f7da;"></colgroup>
+                        <tr><th>ID</th><th>品名</th><th>价格</th></tr>
+                        <tr><td>1</td><td>苹果</td><td>6</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 列表部分 ==================== -->
+    <section class="section">
+        <div class="section-title">📌 列表标签 <span>&lt;ul&gt; &lt;ol&gt; &lt;li&gt; &lt;dl&gt; &lt;dt&gt; &lt;dd&gt; &lt;menu&gt;</span></div>
+        <div class="card-grid">
+            <!-- 卡片6：无序列表及type示例 (通过CSS) -->
+            <div class="card">
+                <div class="card-header"><code>&lt;ul&gt; &lt;li&gt; (列表样式)</code><span class="card-title">无序列表及type示例</span></div>
+                <div class="card-code">&lt;!-- 使用CSS list-style-type (替代废弃的type属性) --&gt;<br>
+                    &lt;ul style="list-style-type: disc;"&gt;<br>  &lt;li&gt;苹果 (disc)&lt;/li&gt;&lt;li&gt;香蕉&lt;/li&gt;&lt;li&gt;橘子&lt;/li&gt;<br>&lt;/ul&gt;<br>
+                    &lt;ul style="list-style-type: circle;"&gt;<br>  &lt;li&gt;苹果 (circle)&lt;/li&gt;&lt;li&gt;香蕉&lt;/li&gt;&lt;li&gt;橘子&lt;/li&gt;<br>&lt;/ul&gt;<br>
+                    &lt;ul style="list-style-type: square;"&gt;<br>  &lt;li&gt;苹果 (square)&lt;/li&gt;&lt;li&gt;香蕉&lt;/li&gt;&lt;li&gt;橘子&lt;/li&gt;<br>&lt;/ul&gt;<br>
+                    &lt;ul style="list-style-type: none;"&gt;<br>  &lt;li&gt;苹果 (none)&lt;/li&gt;&lt;li&gt;香蕉&lt;/li&gt;&lt;li&gt;橘子&lt;/li&gt;<br>&lt;/ul&gt;
+                </div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <ul style="list-style-type: disc;"><li>苹果 (disc)</li><li>香蕉</li><li>橘子</li></ul>
+                    <ul style="list-style-type: circle;"><li>苹果 (circle)</li><li>香蕉</li><li>橘子</li></ul>
+                    <ul style="list-style-type: square;"><li>苹果 (square)</li><li>香蕉</li><li>橘子</li></ul>
+                    <ul style="list-style-type: none;"><li>苹果 (none)</li><li>香蕉</li><li>橘子</li></ul>
+                    <p style="font-size:0.8rem; color:#3a6ea5;">✔️ HTML5中&lt;ul&gt;的type属性已废弃，推荐使用CSS list-style-type。</p>
+                </div>
+            </div>
+
+            <!-- 卡片7：有序列表完整属性示例 (type, start, reversed, value) -->
+            <div class="card">
+                <div class="card-header"><code>&lt;ol&gt; 属性: type, start, reversed, value</code><span class="card-title">有序列表编号样式完全示例</span></div>
+                <div class="card-code">
+                    &lt;!-- type 取值: 1, A, a, I, i --&gt;<br>
+                    &lt;ol type="1"&gt;<br>  &lt;li&gt;数字 1&lt;/li&gt;&lt;li&gt;数字 2&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol type="A" start="3"&gt;<br>  &lt;li&gt;从C开始&lt;/li&gt;&lt;li&gt;D&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol type="a"&gt;<br>  &lt;li&gt;小写a&lt;/li&gt;&lt;li&gt;b&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol type="I"&gt;<br>  &lt;li&gt;罗马大写 I&lt;/li&gt;&lt;li&gt;II&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol type="i" start="4"&gt;<br>  &lt;li&gt;罗马小写 iv&lt;/li&gt;&lt;li&gt;v&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol reversed&gt;<br>  &lt;li&gt;反转第一项(原为3)&lt;/li&gt;&lt;li&gt;第二项(原为2)&lt;/li&gt;&lt;li&gt;第三项(原为1)&lt;/li&gt;<br>&lt;/ol&gt;<br>
+                    &lt;ol&gt;<br>  &lt;li&gt;第一项&lt;/li&gt;<br>  &lt;li value="10"&gt;自定义值10&lt;/li&gt;<br>  &lt;li&gt;接着11&lt;/li&gt;<br>&lt;/ol&gt;
+                </div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <ol type="1"><li>数字 1</li><li>数字 2</li></ol>
+                    <ol type="A" start="3"><li>从C开始</li><li>D</li></ol>
+                    <ol type="a"><li>小写a</li><li>b</li></ol>
+                    <ol type="I"><li>罗马大写 I</li><li>II</li></ol>
+                    <ol type="i" start="4"><li>罗马小写 iv</li><li>v</li></ol>
+                    <ol reversed><li>反转第一项(原为3)</li><li>第二项(原为2)</li><li>第三项(原为1)</li></ol>
+                    <ol><li>第一项</li><li value="10">自定义值10</li><li>接着11</li></ol>
+                </div>
+            </div>
+
+            <!-- 卡片8：嵌套列表 -->
+            <div class="card">
+                <div class="card-header"><code>嵌套列表</code><span class="card-title">ul + ol 混合</span></div>
+                <div class="card-code">&lt;ul&gt;<br>  &lt;li&gt;水果<br>    &lt;ol&gt;<br>      &lt;li&gt;热带&lt;/li&gt;<br>      &lt;li&gt;温带&lt;/li&gt;<br>    &lt;/ol&gt;<br>  &lt;/li&gt;<br>  &lt;li&gt;蔬菜<br>    &lt;ul&gt;<br>      &lt;li&gt;叶菜&lt;/li&gt;<br>      &lt;li&gt;根茎&lt;/li&gt;<br>    &lt;/ul&gt;<br>  &lt;/li&gt;<br>&lt;/ul&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <ul>
+                        <li>水果
+                            <ol><li>热带</li><li>温带</li></ol>
+                        </li>
+                        <li>蔬菜
+                            <ul><li>叶菜</li><li>根茎</li></ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 卡片9：自定义列表 dl / dt / dd -->
+            <div class="card">
+                <div class="card-header"><code>&lt;dl&gt; &lt;dt&gt; &lt;dd&gt;</code><span class="card-title">描述列表</span></div>
+                <div class="card-code">&lt;dl&gt;<br>  &lt;dt&gt;HTML&lt;/dt&gt;<br>  &lt;dd&gt;超文本标记语言&lt;/dd&gt;<br>  &lt;dt&gt;CSS&lt;/dt&gt;<br>  &lt;dd&gt;层叠样式表&lt;/dd&gt;<br>&lt;/dl&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果</div>
+                    <dl>
+                        <dt>HTML</dt><dd>超文本标记语言</dd>
+                        <dt>CSS</dt><dd>层叠样式表</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 卡片10：菜单列表 &lt;menu&gt; (与ul类似) -->
+            <div class="card">
+                <div class="card-header"><code>&lt;menu&gt;</code><span class="card-title">菜单列表 (语义)</span></div>
+                <div class="card-code">&lt;menu&gt;<br>  &lt;li&gt;复制&lt;/li&gt;<br>  &lt;li&gt;粘贴&lt;/li&gt;<br>  &lt;li&gt;剪切&lt;/li&gt;<br>&lt;/menu&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果 (通常与ul同)</div>
+                    <menu style="margin:0; padding-left:1.5rem;"><li>复制</li><li>粘贴</li><li>剪切</li></menu>
+                </div>
+            </div>
+
+            <!-- 卡片11：速度生成快捷键 (Emmet) -->
+            <div class="card">
+                <div class="card-header"><code>⚡ Emmet 快捷键</code><span class="card-title">快速生成列表/表格</span></div>
+                <div class="card-code">&lt;!-- 输入 "ul>li*4" 按Tab展开 --&gt;<br>&lt;ul&gt;<br>  &lt;li&gt;项目 1&lt;/li&gt;<br>  &lt;li&gt;项目 2&lt;/li&gt;<br>  &lt;li&gt;项目 3&lt;/li&gt;<br>  &lt;li&gt;项目 4&lt;/li&gt;<br>&lt;/ul&gt;<br><br>&lt;!-- 输入 "table>tr*2>td{内容 $}*2" --&gt;<br>&lt;table class="bordered"&gt;<br>  &lt;tr&gt;&lt;td&gt;内容 1&lt;/td&gt;&lt;td&gt;内容 2&lt;/td&gt;&lt;/tr&gt;<br>  &lt;tr&gt;&lt;td&gt;内容 3&lt;/td&gt;&lt;td&gt;内容 4&lt;/td&gt;&lt;/tr&gt;<br>&lt;/table&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果 (由Emmet缩写生成)</div>
+                    <ul>
+                        <li>项目 1</li>
+                        <li>项目 2</li>
+                        <li>项目 3</li>
+                        <li>项目 4</li>
+                    </ul>
+                    <table class="bordered" style="margin-top:0.5rem;">
+                        <tr><td>内容 1</td><td>内容 2</td></tr>
+                        <tr><td>内容 3</td><td>内容 4</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 卡片12：列表横置 (水平列表) -->
+            <div class="card">
+                <div class="card-header"><code>🔄 列表横置</code><span class="card-title">水平列表 (Flex方法)</span></div>
+                <div class="card-code">&lt;ul style="display: flex; gap: 1rem; list-style: none; padding: 0;"&gt;<br>  &lt;li&gt;🌰 栗子&lt;/li&gt;<br>  &lt;li&gt;🍎 苹果&lt;/li&gt;<br>  &lt;li&gt;🍌 香蕉&lt;/li&gt;<br>&lt;/ul&gt;<br><br>&lt;!-- 也可用 inline-block 或 grid --&gt;</div>
+                <div class="card-effect">
+                    <div class="card-effect-label">渲染效果 (水平排列)</div>
+                    <ul style="display: flex; gap: 1rem; list-style: none; padding: 0;" class="horizontal-demo">
+                        <li>🌰 栗子</li>
+                        <li>🍎 苹果</li>
+                        <li>🍌 香蕉</li>
+                    </ul>
+                    <div style="font-size:0.85rem; margin-top:0.5rem; color:#3a6ea5;">✔️ 可用 flex | inline-block | grid 实现</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 完整展示 HTML 表格 (table/tr/th/td/caption/thead/tbody/tfoot/colgroup) 和 列表 (ul/ol/dl/menu) 标签。<br>
+        ⭐ 每个卡片都包含代码片段 + 实际渲染效果。
+    </footer>
+</div>
+</body>
+</html>

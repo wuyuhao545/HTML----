@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS DOM 操作 · 代码与效果</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🪄 JavaScript DOM 操作</h1>
+        <p>样式 · 节点 · 事件 · 定时器</p>
+    </div>
+
+    <!-- ========= 样式 & 类操作 ========= -->
+    <section class="section">
+        <h2 class="section-title">🎨 样式与类操作</h2>
+        <div class="card-grid">
+            <!-- card 1.1 修改样式 (fontSize, color) -->
+            <div class="card">
+                <div class="card-header"><code>style.fontSize / color</code></div>
+                <div class="card-code">
+                    // fontSize 等价于 CSS font-size<br>
+                    element.style.fontSize = '28px';<br>
+                    element.style.color = 'crimson';
+                </div>
+                <div class="card-effect">
+                    <div id="styleDemoText" class="demo-box" style="font-size:1.2rem;">✏️ 这段文字会被修改</div>
+                    <button id="styleBtnLarger">加大字号 (30px)</button>
+                    <button id="styleBtnRed">变红色</button>
+                    <script>
+                        (function() {
+                            const txt = document.getElementById('styleDemoText');
+                            if (!txt) return;
+                            document.getElementById('styleBtnLarger')?.addEventListener('click', function() {
+                                txt.style.fontSize = '30px';      // 等价于 font-size
+                            });
+                            document.getElementById('styleBtnRed')?.addEventListener('click', function() {
+                                txt.style.color = '#c7254e';      // style.样式名 = 值
+                            });
+                        })();
+                    </script>
+                    <div class="small-note">⭐ style.fontSize 对应CSS font-size</div>
+                </div>
+            </div>
+
+            <!-- card 1.2 className 添加类 -->
+            <div class="card">
+                <div class="card-header"><code>className 添加/移除类</code></div>
+                <div class="card-code">
+                    element.className = 'highlight';   // 添加类<br>
+                    element.className = '';            // 移除类
+                </div>
+                <div class="card-effect">
+                    <div id="classDemoDiv" class="demo-box">🍎 轻触按钮给我加高亮</div>
+                    <button id="addClassBtn">添加 highlight 类</button>
+                    <button id="removeClassBtn">移除类</button>
+                    <script>
+                        (function() {
+                            const box = document.getElementById('classDemoDiv');
+                            if (!box) return;
+                            document.getElementById('addClassBtn')?.addEventListener('click', function() {
+                                box.className = 'demo-box highlight';   // 保留原基础类，加上新类
+                            });
+                            document.getElementById('removeClassBtn')?.addEventListener('click', function() {
+                                box.className = 'demo-box';   // 重置
+                            });
+                        })();
+                    </script>
+                </div>
+            </div>
+
+            <!-- card 1.3 innerHTML vs textContent -->
+            <div class="card">
+                <div class="card-header"><code>innerHTML / textContent</code></div>
+                <div class="card-code">
+                    innerHTML = '&lt;strong&gt;文本&lt;/strong&gt;';  // 解析标签<br>
+                    textContent = '&lt;strong&gt;文本&lt;/strong&gt;'; // 纯文本
+                </div>
+                <div class="card-effect">
+                    <div id="innerVsText" class="demo-box">📦 初始内容</div>
+                    <button id="innerBtn">innerHTML 插入加粗</button>
+                    <button id="textBtn">textContent 插入纯文本</button>
+                    <script>
+                        (function() {
+                            const target = document.getElementById('innerVsText');
+                            if (!target) return;
+                            document.getElementById('innerBtn')?.addEventListener('click', function() {
+                                target.innerHTML = '<strong>✨ 加粗文字</strong> (标签生效)';
+                            });
+                            document.getElementById('textBtn')?.addEventListener('click', function() {
+                                target.textContent = '<strong>纯文本</strong> 标签不解析';
+                            });
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 获取元素与遍历 ========= -->
+    <section class="section">
+        <h2 class="section-title">🔍 获取元素 · 选择器</h2>
+        <div class="card-grid">
+            <!-- card 2.1 getElementById, getElementsByTagName, querySelectorAll, querySelector -->
+            <div class="card">
+                <div class="card-header"><code>多种选择方式</code></div>
+                <div class="card-code">
+                    getElementById('title')<br>
+                    getElementsByTagName('li')<br>
+                    querySelectorAll('.item')<br>
+                    querySelector('.list')
+                </div>
+                <div class="card-effect">
+                    <ul id="fruitList" style="padding-left:1.2rem; margin-bottom:0.5rem;">
+                        <li id="apple" class="item">🍎 苹果</li>
+                        <li class="item">🍌 香蕉</li>
+                        <li class="item">🍊 橘子</li>
+                    </ul>
+                    <div id="selectorOutput" class="small-note" style="background:#d9eaf3;">点击按钮查看结果</div>
+                    <button id="btnGetId">getElementById (苹果)</button>
+                    <button id="btnGetTag">getElementsByTagName (li个数)</button>
+                    <button id="btnQueryAll">querySelectorAll (所有.item)</button>
+                    <button id="btnQuery">querySelector (第一个.item)</button>
+                    <script>
+                        (function() {
+                            const out = document.getElementById('selectorOutput');
+                            if (!out) return;
+                            document.getElementById('btnGetId')?.addEventListener('click', function() {
+                                const el = document.getElementById('apple');
+                                out.innerHTML = `✅ getElementById: "${el.textContent}"`;
+                            });
+                            document.getElementById('btnGetTag')?.addEventListener('click', function() {
+                                const items = document.getElementsByTagName('li');
+                                out.innerHTML = `✅ 共有 ${items.length} 个 &lt;li&gt; 元素`;
+                            });
+                            document.getElementById('btnQueryAll')?.addEventListener('click', function() {
+                                const qall = document.querySelectorAll('.item');
+                                out.innerHTML = `✅ querySelectorAll 找到 ${qall.length} 个 .item`;
+                            });
+                            document.getElementById('btnQuery')?.addEventListener('click', function() {
+                                const first = document.querySelector('.item');
+                                out.innerHTML = `✅ querySelector 第一个: ${first.textContent}`;
+                            });
+                        })();
+                    </script>
+                </div>
+            </div>
+
+            <!-- card 2.2 节点关系: parent, children, siblings -->
+            <div class="card">
+                <div class="card-header"><code>节点关系</code></div>
+                <div class="card-code">
+                    parentNode, children<br>
+                    previousElementSibling<br>
+                    nextElementSibling
+                </div>
+                <div class="card-effect">
+                    <div id="familyTree" style="border:1px solid #bad7e9; padding:0.8rem; border-radius:20px;">
+                        <span>🌿 兄 · A</span>
+                        <span id="currentMe" style="background:#f3c7ae; padding:0.2rem 0.8rem; border-radius:30px;">🐚 当前 (我)</span>
+                        <span>🌱 弟 · C</span>
+                    </div>
+                    <div><small>父级是div (id=fFamily)</small></div>
+                    <div id="relationOut" class="small-note" style="margin-top:0.5rem;">🖱️ 点击按钮查看关系</div>
+                    <button id="btnParent">parentNode (父元素)</button>
+                    <button id="btnPrev">previousElementSibling (前一个)</button>
+                    <button id="btnNext">nextElementSibling (后一个)</button>
+                    <button id="btnChildren">children (父元素的子节点个数)</button>
+                    <script>
+                        (function() {
+                            const me = document.getElementById('currentMe');
+                            const out = document.getElementById('relationOut');
+                            if (!me || !out) return;
+                            document.getElementById('btnParent')?.addEventListener('click', function() {
+                                const parent = me.parentNode;
+                                out.innerHTML = `👨‍👧 父节点: &lt;${parent.tagName}&gt; (id=${parent.id})`;
+                            });
+                            document.getElementById('btnPrev')?.addEventListener('click', function() {
+                                const prev = me.previousElementSibling;
+                                out.innerHTML = prev ? `⬅️ 前一个兄弟: ${prev.textContent.trim()}` : '没有前一个元素';
+                            });
+                            document.getElementById('btnNext')?.addEventListener('click', function() {
+                                const next = me.nextElementSibling;
+                                out.innerHTML = next ? `➡️ 后一个兄弟: ${next.textContent.trim()}` : '没有后一个元素';
+                            });
+                            document.getElementById('btnChildren')?.addEventListener('click', function() {
+                                const parent = me.parentNode;
+                                const kids = parent.children; // 子元素集合
+                                out.innerHTML = `👧 父元素有 ${kids.length} 个直接子元素 (含文本节点不统计)`;
+                            });
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 事件监听 ========= -->
+    <section class="section">
+        <h2 class="section-title">⚡ 事件处理 · onclick vs addEventListener</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>onclick 覆盖 / addEventListener叠加</code></div>
+                <div class="card-code">
+                    // onclick 赋两次会覆盖<br>
+                    btn.onclick = fn1;<br>
+                    btn.onclick = fn2; // 只有fn2生效<br><br>
+                    // addEventListener 不覆盖<br>
+                    btn.addEventListener('click', fn1);<br>
+                    btn.addEventListener('click', fn2); // 都执行
+                </div>
+                <div class="card-effect">
+                    <button id="onclickBtn">测试 onclick (覆盖)</button>
+                    <button id="addBtn">测试 addEventListener (叠加)</button>
+                    <div id="eventOutput" class="demo-box" style="margin-top:0.8rem; min-height:4rem;">📋 点击日志</div>
+                    <script>
+                        (function() {
+                            const out = document.getElementById('eventOutput');
+                            const btnOn = document.getElementById('onclickBtn');
+                            const btnAdd = document.getElementById('addBtn');
+                            
+                            if (btnOn) {
+                                btnOn.onclick = function() { out.innerHTML += '🍀 第一个onclick (将被覆盖)<br>'; };
+                                btnOn.onclick = function() { out.innerHTML += '🔥 第二个onclick —— 只有我执行<br>'; }; // 覆盖
+                            }
+                            
+                            if (btnAdd) {
+                                btnAdd.addEventListener('click', function() {
+                                    out.innerHTML += '🎧 addListener 第1个 (触发)<br>';
+                                });
+                                btnAdd.addEventListener('click', function() {
+                                    out.innerHTML += '🎤 addListener 第2个 (也触发)<br>';
+                                });
+                            }
+                            // 清空显示辅助 (点击前最好清一下，但保留演示)
+                            out.innerHTML = '点击按钮观察消息：<br>';
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 定时器 ========= -->
+    <section class="section">
+        <h2 class="section-title">⏱️ 定时器 · setTimeout / setInterval</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>setTimeout / setInterval + clearInterval</code></div>
+                <div class="card-code">
+                    setTimeout(() => {}, 毫秒)   // 延时执行一次<br>
+                    setInterval(() => {}, 毫秒)  // 间隔执行<br>
+                    clearInterval(变量) 停止
+                </div>
+                <div class="card-effect">
+                    <div>
+                        <span id="timerDisplay" style="font-size:2rem; font-weight:600; background:#1f3d51; color:white; padding:0.3rem 1.2rem; border-radius:60px;">0</span>
+                        <p style="margin:0.5rem 0;">计数器 (每秒+1)</p>
+                    </div>
+                    <button id="startInterval">开始 setInterval</button>
+                    <button id="stopInterval">停止 (clearInterval)</button>
+                    <button id="demoSetTimeout">点我 (延时2秒弹窗提醒)</button>
+                    <div id="timerMsg" class="small-note" style="margin-top:0.8rem;"></div>
+                    <script>
+                        (function() {
+                            let intervalId = null;
+                            let count = 0;
+                            const display = document.getElementById('timerDisplay');
+                            const msg = document.getElementById('timerMsg');
+                            
+                            function resetInterval() {
+                                if (intervalId) {
+                                    clearInterval(intervalId);
+                                    intervalId = null;
+                                }
+                            }
+                            
+                            document.getElementById('startInterval')?.addEventListener('click', function() {
+                                resetInterval();        // 避免多个叠加
+                                count = 0;
+                                display.textContent = count;
+                                intervalId = setInterval(() => {
+                                    count++;
+                                    display.textContent = count;
+                                }, 1000);
+                                if (msg) msg.innerHTML = '⏳ 计时器运行中 (每秒递增)';
+                            });
+                            
+                            document.getElementById('stopInterval')?.addEventListener('click', function() {
+                                resetInterval();
+                                if (msg) msg.innerHTML = '🛑 计时器已停止';
+                            });
+                            
+                            document.getElementById('demoSetTimeout')?.addEventListener('click', function() {
+                                setTimeout(() => {
+                                    alert('⏰ setTimeout 延时2秒弹窗');
+                                }, 2000);
+                                if (msg) msg.innerHTML = '⏲️ setTimeout 已设定，2秒后弹窗';
+                            });
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 额外知识点块：快速汇总 -->
+    <section class="section">
+        <div style="background: #cbe0ed; border-radius: 60px; padding: 1.5rem 2rem; text-align: center;">
+            <p style="font-size:1.2rem; margin-bottom:0.5rem;">📌 涉及DOM核心方法</p>
+            <p style="display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center;">
+                <span class="effect-tag">style.fontSize</span>
+                <span class="effect-tag">.className</span>
+                <span class="effect-tag">innerHTML / textContent</span>
+                <span class="effect-tag">getElementById</span>
+                <span class="effect-tag">getElementsByTagName</span>
+                <span class="effect-tag">querySelectorAll</span>
+                <span class="effect-tag">querySelector</span>
+                <span class="effect-tag">parentNode</span>
+                <span class="effect-tag">children</span>
+                <span class="effect-tag">previousElementSibling</span>
+                <span class="effect-tag">nextElementSibling</span>
+                <span class="effect-tag">onclick vs addEventListener</span>
+                <span class="effect-tag">setTimeout</span>
+                <span class="effect-tag">setInterval/clearInterval</span>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        ⚡ 简单DOM操作演示 · 涵盖样式、节点、事件、定时器
+    </footer>
+</div>
+<!-- 所有演示均使用addEventListener，避免了onclick覆盖 (除了特意演示覆盖的按钮)  -->
+</body>
+</html>

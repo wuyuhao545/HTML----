@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加载图 - 圆点排队轮流弹跳</title>
+    <style>
+        /* 整体容器：固定在右下角，使用 Flex 布局水平排列子元素 */
+        .loader-group {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;    /* 垂直居中对齐 */
+            gap: 15px;              /* 方块与圆点之间的间距 */
+            background: transparent; /* 无背景 */
+            z-index: 9999;
+        }
+
+        /* 方块样式（保持不变） */
+        .loading {
+            width: 50px;
+            height: 50px;
+            border: 6px solid aqua;
+            border-radius: 4px;
+            box-shadow: 0 0 8px aqua, 0 0 8px aqua inset;
+            animation: 2s loading linear infinite;
+        }
+
+        /* 圆点通用样式 */
+        .loading-dot {
+            width: 10px;
+            height: 10px;
+            border: 3px solid aqua;
+            border-radius: 50%;
+            /* 不再使用 fixed 定位，由 Flex 布局排列 */
+            animation: 2s bounce ease-in-out infinite;
+        }
+
+        /* 第一个圆点：正常弹跳，无延迟 */
+        .loading-dot:nth-child(2) {
+            animation-delay: 0s;
+        }
+
+        /* 第二个圆点：延迟 1 秒开始弹跳，实现轮流效果 */
+        .loading-dot:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        /* 旋转动画（方块） */
+        @keyframes loading {
+            0% { transform: rotateZ(0); }
+            50% { transform: rotateZ(180deg); }
+            100% { transform: rotateZ(360deg); }
+        }
+
+        /* 弹跳动画（圆点） */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 用一个容器包裹方块和两个圆点，实现 Flex 布局 -->
+    <div class="loader-group">
+        <div class="loading"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+    </div>
+</body>
+</html>

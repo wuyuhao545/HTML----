@@ -3,179 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS 动画与过渡 · 优化演示</title>
-    <!-- 外部样式（使用正斜杠路径） -->
-    <link rel="stylesheet" href="../CSS/style.css">
+    <title>CSS 动画与过渡 · 优化演示（外链样式版）</title>
+    <!-- 引入外部 style.css（基于您提供的 CSS） -->
+    <link rel="stylesheet" href="..\CSS\style.css">
+    <!-- 内部样式：仅保留外部 CSS 中未定义的演示专用规则，包括新增动画卡片所需 -->
     <style>
-        /* ---------- 基础重置与卡片样式（保持原风格） ---------- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .section {
-            margin-bottom: 2.5rem;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            border-left: 6px solid #3b82f6;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border: 1px solid #e9eef2;
-            transition: box-shadow 0.2s;
-        }
-        .card:hover {
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
-        }
-        .card-header {
-            background: #f8fafc;
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 1.1rem;
-        }
-        .card-code {
-            background: #1e293b;
-            color: #facc15;
-            padding: 1rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            border-bottom: 1px solid #334155;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
+        /* ===== 卡片效果区布局：外部 CSS 未定义 flex，此处补充 ===== */
         .card-effect {
-            padding: 2rem 1rem;
-            background: #ffffff;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
             flex-wrap: wrap;
-            min-height: 160px;
-        }
-        .note {
-            font-size: 0.85rem;
-            color: #475569;
-            background: #f1f5f9;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            margin: 0.5rem 0 0;
-        }
-        footer {
-            margin-top: 3rem;
-            padding: 1.5rem;
-            text-align: center;
-            background: #f1f5f9;
-            border-radius: 40px;
-            color: #334155;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+            margin: 1.2rem 0 1rem;
         }
 
-        /* ---------- 过渡演示小方块 ---------- */
+        /* ===== 通用演示方块 ===== */
         .demo-square {
-            width: 100px;
-            height: 100px;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            background-color: #2563eb;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            border-radius: 16px;
             font-weight: bold;
-            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            box-shadow: 0 8px 14px -4px #00000055;
+            transition-property: transform, background-color, color;
+            transition-duration: 0.3s;
             transition-timing-function: ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: default;
+            line-height: 1.2;
+            padding: 0 4px;
         }
 
-        /* 特定方块：分别设置过渡属性（用 ID 以便清晰） */
-        #demo-all {
-            background-color: #3b82f6;
-            transition-property: all;
-            transition-duration: 0.5s;
-        }
-        #demo-bg-only {
-            background-color: #10b981;
-            transition-property: background-color;
-            transition-duration: 0.5s;
-        }
-
-        /* 悬停效果：宽度、背景、旋转同时改变 */
-        #demo-all:hover,
-        #demo-bg-only:hover {
-            width: 120px;
-            transform: rotate(10deg);
-        }
-        #demo-bg-only:hover {
-            background-color: #ef4444; /* 背景过渡，其他立即改变 */
-        }
-
-        /* ---------- 平移演示 (带过渡) ---------- */
+        /* ===== 原有的 transition 卡片样式 ===== */
         #translate-demo {
-            width: 100px;
-            height: 100px;
-            background-color: #f97316;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            background-color: #2563eb;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            border-radius: 16px;
             font-weight: bold;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
         }
         #translate-demo:hover {
+            transform: translateY(-20px);
+            background-color: #3b82f6;
+        }
+
+        .duration-fast, .duration-slow {
+            width: 70px;
+            height: 70px;
+            background-color: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-weight: bold;
+            transition-property: transform;
+            transition-timing-function: ease;
+        }
+        .duration-fast { transition-duration: 0.2s; }
+        .duration-slow { transition-duration: 1.2s; }
+        .duration-fast:hover, .duration-slow:hover {
+            transform: translateY(-20px);
+            background-color: #3b82f6;
+        }
+
+        #demo-all, #demo-bg-only {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-weight: bold;
+            background-color: #2563eb;
+            color: white;
+        }
+        #demo-all { transition: all 0.5s ease; }
+        #demo-all:hover {
+            background-color: #ef4444;
+            color: #1e293b;
+            transform: translateY(-15px);
+        }
+        #demo-bg-only { transition: background-color 0.5s ease; }
+        #demo-bg-only:hover {
+            background-color: #ef4444;
+            color: #1e293b;
             transform: translateY(-15px);
         }
 
-        /* ---------- 关键帧动画 ---------- */
+        /* delay 卡片 */
+        .delay-group {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .delay-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .delay-square {
+            width: 70px;
+            height: 70px;
+            background-color: #8b5cf6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            font-weight: bold;
+            transition: transform 0.4s, background-color 0.4s;
+            box-shadow: 0 8px 12px #00000066;
+        }
+        .delay-square.delay-on { transition-delay: 0s; }
+        .delay-square.delay-05 { transition-delay: 0.5s; }
+        .delay-square:hover {
+            transform: translateY(-20px);
+            background-color: #f97316;
+            color: #0b1120;
+        }
+        .delay-badge {
+            background: #374151;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #facc15;
+        }
+
+        /* ===== 旋转动画 keyframes ===== */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* 水平移动动画（用于 direction/fill-mode/缓动卡片） */
+        @keyframes moveLR {
+            from { transform: translateX(0); }
+            to { transform: translateX(160px); }
+        }
+
+        /* 旋转卡片 */
+        .rotate-demo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: spin 2s linear infinite;
+        }
+
+        /* 弹跳卡片 */
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-30px); }
         }
         .animation-bounce {
-            width: 100px;
-            height: 100px;
-            background: #a855f7;
-            border-radius: 16px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #f97316, #d97706);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
             animation: bounce 1s infinite ease-in-out;
+            box-shadow: 0 15px 20px -8px #f9731650;
+        }
+
+        /* animation-name + iteration-count 卡片 */
+        .iter-name-demo {
+            width: 70px;
+            height: 70px;
+            background-color: #0ea5e9;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            font-weight: bold;
+        }
+        .iter-name1 {
+            animation: spin 1s linear 2;
+        }
+        .iter-name2 {
+            animation: bounce 1s ease infinite;
+        }
+
+        /* direction + fill-mode 卡片 */
+        .dir-fill-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+        }
+        .dir-item, .fill-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .dir-square {
+            width: 70px;
+            height: 70px;
+            background-color: #e11d48;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-weight: bold;
+            animation: moveLR 1s ease 2;
+        }
+        .dir-normal { animation-direction: normal; }
+        .dir-reverse { animation-direction: reverse; }
+        .dir-alternate { animation-direction: alternate; }
+        .dir-alternate-reverse { animation-direction: alternate-reverse; }
+
+        .fill-square {
+            width: 70px;
+            height: 70px;
+            background-color: #0891b2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-weight: bold;
+            animation: moveLR 1s ease 1;
+        }
+        .fill-forwards { animation-fill-mode: forwards; }
+        .fill-backwards { animation-fill-mode: backwards; }
+        .fill-item small { font-size: 0.7rem; color: #cbd5e1; }
+
+        /* play-state 卡片 */
+        .play-state-box {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .play-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .play-square {
+            width: 80px;
+            height: 80px;
+            background-color: #7c3aed;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            font-weight: bold;
+            animation: spin 2s linear infinite;
+        }
+        .play-running { animation-play-state: running; }
+        .play-paused { animation-play-state: paused; }
+        .play-badge {
+            background: #2d3748;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #fbbf24;
+        }
+
+        /* ===== 四种缓动曲线专用卡片（轨道+圆圈） ===== */
+        .track {
+            position: relative;
+            width: 220px;
+            height: 60px;
+            background: #1e2b3a;
+            border-radius: 40px;
+            border: 1px solid #4b5e77;
+            margin: 0 auto;
+        }
+        .circle {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: #f97316;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: moveLR 3s infinite alternate;
+        }
+        .circle-ease { animation-timing-function: ease; }
+        .circle-linear { animation-timing-function: linear; }
+        .circle-ease-in { animation-timing-function: ease-in; }
+        .circle-ease-out { animation-timing-function: ease-out; }
+
+        /* ===== 第三部分新增：@keyframes + animation-name 专用卡片 ===== */
+        /* 定义一个新的滑动关键帧，展示 name 的使用 */
+        @keyframes slideName {
+            from { transform: translate(0, -50%); }
+            to { transform: translate(150px, -50%); }
+        }
+        .name-demo-track {
+            position: relative;
+            width: 220px;
+            height: 60px;
+            background: #1e2b3a;
+            border-radius: 40px;
+            border: 1px solid #4b5e77;
+            margin: 0 auto;
+        }
+        .name-demo-circle {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: #f97316;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            /* 使用 animation-name 单独设置，展示组合 */
+            animation-name: slideName;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            /* 不设置 timing-function，默认 ease */
         }
 
-        /* 动画属性说明区域样式 */
-        .props-panel {
-            background: #f1f5f9;
-            border-radius: 1rem;
-            padding: 1.5rem;
+        /* 微调卡片效果区内边距，确保轨道可见 */
+        .card-effect {
+            padding: 1rem 0.5rem;
         }
-        .props-panel pre {
-            background: #1e293b;
-            color: #f8fafc;
-            padding: 0.8rem 1.2rem;
-            border-radius: 14px;
-            overflow-x: auto;
-            font-family: 'Fira Code', monospace;
+
+        .card-effect pre {
+            margin: 0;
         }
     </style>
 </head>
@@ -188,92 +379,302 @@
 
     <!-- ========= 第一部分：过渡基础 ========= -->
     <section class="section">
-        <h2 class="section-title">⏳ 过渡 (transition)</h2>
+        <h2 class="section-title">⏳ 过渡 (transition)  ·  duration / property / timing / delay</h2>
         <div class="card-grid">
-            <!-- 卡片1：translate 移动 (带过渡) -->
+            <!-- 卡片1：基础移动 + 过渡 -->
             <div class="card">
-                <div class="card-header"><code>transform: translateY()</code> + 过渡</div>
-                <div class="card-code">
-                    #translate-demo {<br>
-                    &nbsp;&nbsp;transition: transform 0.3s ease;<br>
-                    }<br>
-                    #translate-demo:hover {<br>
-                    &nbsp;&nbsp;transform: translateY(-15px);<br>
-                    }
-                </div>
+                <div class="card-header"><code>transform + transition</code> 平滑移动</div>
+                <div class="card-code">#translate-demo { transition: transform 0.35s cubic-bezier(0.2,0.9,0.3,1.2); }<br>#translate-demo:hover { transform: translateY(-20px); }</div>
                 <div class="card-effect">
                     <div id="translate-demo">悬停↑</div>
                 </div>
-                <p class="note">✅ 添加 <code>transition</code> 后，悬停时平滑上移。</p>
+                <p class="note">✅ 添加平滑过渡，缓动曲线轻微弹跳感。</p>
             </div>
 
-            <!-- 卡片2：transition-property 对比演示 (all vs 单一属性) -->
+            <!-- 卡片2：transition-duration 对比 -->
             <div class="card">
-                <div class="card-header"><code>transition-property</code> 对比</div>
+                <div class="card-header"><code>transition-duration</code> 时长对比</div>
+                <div class="card-code">.duration-fast { transition-duration: 0.2s; }<br>.duration-slow { transition-duration: 1.2s; }</div>
+                <div class="card-effect">
+                    <div class="duration-fast">0.2s</div>
+                    <div class="duration-slow">1.2s</div>
+                </div>
+                <p class="note">⏱️ 左:0.2秒瞬移感；右:1.2秒慢动作。</p>
+            </div>
+
+            <!-- 卡片3：transition-property 对比 -->
+            <div class="card">
+                <div class="card-header"><code>transition-property</code> 精细控制</div>
                 <div class="card-code">
-                    /* 左：transition-property: all */<br>
-                    #demo-all { transition: all 0.5s; }<br>
-                    #demo-all:hover { background: #f97316; width: 120px; transform: rotate(10deg); }<br><br>
-                    /* 右：transition-property: background-color */<br>
-                    #demo-bg-only { transition: background-color 0.5s; }<br>
-                    #demo-bg-only:hover { background: #ef4444; width: 120px; transform: rotate(10deg); }
+/* 左: all — 所有属性平滑过渡 */<br>
+#demo-all { transition: all 0.5s; }<br>
+/* 右: background-color — 仅背景过渡 */<br>
+#demo-bg-only { transition: background-color 0.5s; }
                 </div>
                 <div class="card-effect">
                     <div id="demo-all" class="demo-square">all</div>
                     <div id="demo-bg-only" class="demo-square">bg only</div>
                 </div>
-                <p class="note">👉 左边所有变化平滑过渡；右边只有背景色过渡，宽度和旋转瞬间变化。</p>
+                <p class="note">👉 左边所有变化平滑；右边只有背景色过渡。</p>
+            </div>
+
+            <!-- 卡片4：ease 曲线 (独立卡片) -->
+            <div class="card">
+                <div class="card-header"><code>ease</code> 缓动曲线</div>
+                <div class="card-code">
+@keyframes moveLR {<br>
+&nbsp;&nbsp;from { transform: translateX(0); }<br>
+&nbsp;&nbsp;to { transform: translateX(160px); }<br>
+}<br>
+.circle-ease { animation: moveLR 3s ease infinite alternate; }
+                </div>
+                <div class="card-effect">
+                    <div class="track">
+                        <div class="circle circle-ease">ease</div>
+                    </div>
+                </div>
+                <p class="note">〰️ ease: 慢-快-慢，3秒往返。</p>
+            </div>
+
+            <!-- 卡片5：linear 曲线 (独立卡片) -->
+            <div class="card">
+                <div class="card-header"><code>linear</code> 匀速</div>
+                <div class="card-code">
+.circle-linear { animation: moveLR 3s linear infinite alternate; }
+                </div>
+                <div class="card-effect">
+                    <div class="track">
+                        <div class="circle circle-linear">linear</div>
+                    </div>
+                </div>
+                <p class="note">〰️ linear: 匀速移动，节奏恒定。</p>
+            </div>
+
+            <!-- 卡片6：ease-in 曲线 (独立卡片) -->
+            <div class="card">
+                <div class="card-header"><code>ease-in</code> 加速</div>
+                <div class="card-code">
+.circle-ease-in { animation: moveLR 3s ease-in infinite alternate; }
+                </div>
+                <div class="card-effect">
+                    <div class="track">
+                        <div class="circle circle-ease-in">ease-in</div>
+                    </div>
+                </div>
+                <p class="note">〰️ ease-in: 慢速启动，逐渐加速。</p>
+            </div>
+
+            <!-- 卡片7：ease-out 曲线 (独立卡片) -->
+            <div class="card">
+                <div class="card-header"><code>ease-out</code> 减速</div>
+                <div class="card-code">
+.circle-ease-out { animation: moveLR 3s ease-out infinite alternate; }
+                </div>
+                <div class="card-effect">
+                    <div class="track">
+                        <div class="circle circle-ease-out">ease-out</div>
+                    </div>
+                </div>
+                <p class="note">〰️ ease-out: 快速启动，逐渐减速。</p>
+            </div>
+
+            <!-- 卡片8：transition-delay 演示 -->
+            <div class="card">
+                <div class="card-header"><code>transition-delay</code> 延迟启动</div>
+                <div class="card-code">
+.delay-on { transition-delay: 0s; }<br>
+.delay-05 { transition-delay: 0.5s; }
+                </div>
+                <div class="card-effect">
+                    <div class="delay-group">
+                        <div class="delay-item">
+                            <div class="delay-square delay-on">0s</div>
+                            <span class="delay-badge">无延迟</span>
+                        </div>
+                        <div class="delay-item">
+                            <div class="delay-square delay-05">0.5s</div>
+                            <span class="delay-badge">延迟0.5s</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="note">⏰ 同时悬停：右侧方块变化滞后半秒。</p>
             </div>
         </div>
     </section>
 
     <!-- ========= 第二部分：关键帧动画 ========= -->
     <section class="section">
-        <h2 class="section-title">🔄 关键帧动画 (animation + keyframes)</h2>
+        <h2 class="section-title">🔄 关键帧动画 (animation + keyframes)  —— 包含 rotate, name, count, direction, fill-mode, play-state</h2>
         <div class="card-grid">
+            <!-- 第1张卡片：旋转动画 (按要求放在第一) -->
             <div class="card">
-                <div class="card-header"><code>@keyframes bounce</code></div>
+                <div class="card-header"><code>@keyframes</code> + <code>rotate()</code> 旋转</div>
                 <div class="card-code">
-                    @keyframes bounce {<br>
-                    &nbsp;&nbsp;0%, 100% { transform: translateY(0); }<br>
-                    &nbsp;&nbsp;50% { transform: translateY(-30px); }<br>
-                    }<br>
-                    .animation-bounce {<br>
-                    &nbsp;&nbsp;animation: bounce 1s infinite ease-in-out;<br>
-                    }
+@keyframes spin {<br>
+&nbsp;&nbsp;from { transform: rotate(0deg); }<br>
+&nbsp;&nbsp;to { transform: rotate(360deg); }<br>
+}<br>
+.rotate-demo { animation: spin 2s linear infinite; }
+                </div>
+                <div class="card-effect">
+                    <div class="rotate-demo">↻</div>
+                </div>
+                <p class="note">🌀 无限旋转，展示 <code>@keyframes</code> 与 <code>transform: rotate()</code>。</p>
+            </div>
+
+            <!-- 第2张卡片：弹跳动画 -->
+            <div class="card">
+                <div class="card-header"><code>@keyframes bounce</code> 弹跳</div>
+                <div class="card-code">
+@keyframes bounce {<br>
+&nbsp;&nbsp;0%,100%{ transform:translateY(0); }<br>
+&nbsp;&nbsp;50%{ transform:translateY(-30px); }<br>
+}<br>
+.animation-bounce { animation: bounce 1s infinite ease-in-out; }
                 </div>
                 <div class="card-effect">
                     <div class="animation-bounce">弹跳</div>
                 </div>
-                <p class="note">⚡ 无限循环弹跳动画，使用 <code>ease-in-out</code> 缓动。</p>
+                <p class="note">⚡ 无限循环弹跳动画，ease-in-out 缓动。</p>
             </div>
 
-            <!-- 可以再加一个卡片展示动画属性组合 -->
+            <!-- 第3张卡片：animation-name + iteration-count 卡片 -->
             <div class="card">
-                <div class="card-header"><code>animation</code> 简写属性</div>
+                <div class="card-header"><code>animation-name</code> + <code>iteration-count</code></div>
                 <div class="card-code">
-                    animation: name duration timing-function delay iteration-count direction fill-mode;
+.iter-name1 { animation: spin 1s linear 2; }<br>
+.iter-name2 { animation: bounce 1s ease infinite; }
                 </div>
-                <div class="card-effect" style="flex-direction: column; align-items: flex-start;">
-                    <pre style="background:#1e293b; color:#facc15; padding:0.8rem; border-radius:12px; width:100%;">animation: bounce 1s ease 0.5s infinite alternate;</pre>
-                    <p style="margin:0.5rem 0 0;">→ 延迟0.5s开始，交替反向，无限次</p>
+                <div class="card-effect">
+                    <div class="iter-name-demo iter-name1">2次</div>
+                    <div class="iter-name-demo iter-name2">∞弹跳</div>
                 </div>
+                <p class="note">🎯 左: spin 旋转2次；右: bounce 无限弹跳。</p>
+            </div>
+
+            <!-- 第4张卡片：direction + fill-mode 卡片 -->
+            <div class="card">
+                <div class="card-header"><code>direction</code> + <code>fill-mode</code></div>
+                <div class="card-code">
+/* direction 变体 */<br>
+.dir-normal { animation-direction: normal; }<br>
+.dir-reverse { reverse; }<br>
+.dir-alternate { alternate; }<br>
+/* fill-mode */<br>
+.fill-forwards { animation-fill-mode: forwards; }<br>
+.fill-backwards { backwards; }
+                </div>
+                <div class="card-effect">
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center;">
+                        <!-- direction 四个小方块 -->
+                        <div style="display: flex; gap: 0.8rem;">
+                            <div class="dir-item">
+                                <div class="dir-square dir-normal">N</div>
+                                <span class="timing-label">normal</span>
+                            </div>
+                            <div class="dir-item">
+                                <div class="dir-square dir-reverse">R</div>
+                                <span class="timing-label">reverse</span>
+                            </div>
+                            <div class="dir-item">
+                                <div class="dir-square dir-alternate">A</div>
+                                <span class="timing-label">alternate</span>
+                            </div>
+                            <div class="dir-item">
+                                <div class="dir-square dir-alternate-reverse">AR</div>
+                                <span class="timing-label">alt-rev</span>
+                            </div>
+                        </div>
+                        <!-- fill-mode 两个小方块 -->
+                        <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+                            <div class="fill-item">
+                                <div class="fill-square fill-forwards">F</div>
+                                <span class="delay-badge">forwards</span>
+                                <small>结束后停在40px</small>
+                            </div>
+                            <div class="fill-item">
+                                <div class="fill-square fill-backwards">B</div>
+                                <span class="delay-badge">backwards</span>
+                                <small>开始前在0px</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="note">↔️ direction影响移动方向；fill-mode决定动画前后状态。</p>
+            </div>
+
+            <!-- 第5张卡片：play-state 卡片 -->
+            <div class="card">
+                <div class="card-header"><code>animation-play-state</code> 暂停/运行</div>
+                <div class="card-code">
+.play-running { animation-play-state: running; }<br>
+.play-paused { animation-play-state: paused; }
+                </div>
+                <div class="card-effect">
+                    <div class="play-state-box">
+                        <div class="play-item">
+                            <div class="play-square play-running">▶</div>
+                            <span class="play-badge">running</span>
+                        </div>
+                        <div class="play-item">
+                            <div class="play-square play-paused">⏸️</div>
+                            <span class="play-badge">paused</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="note">⏯️ 左侧持续旋转，右侧静止（暂停状态）。</p>
             </div>
         </div>
     </section>
 
-    <!-- ========= 第三部分：动画属性详解（独立区域） ========= -->
+    <!-- ========= 第三部分：动画属性详解 ========= -->
     <section class="section">
         <h2 class="section-title">📋 动画属性组合详解</h2>
-        <div class="props-panel">
-            <pre>animation: name duration timing-function delay iteration-count direction fill-mode;</pre>
-            <p class="note">✨ 常用示例：<code>animation: bounce 1s ease 0.5s infinite alternate;</code><br>表示弹跳动画持续1秒，缓动，延迟0.5秒，无限次播放，交替方向。</p>
+        <div class="card-grid">
+            <!-- 新增第一个卡片：@keyframes 定义 + animation-name 组合 -->
+            <div class="card">
+                <div class="card-header"><code>@keyframes</code> 与 <code>animation-name</code></div>
+                <div class="card-code">
+/* 定义关键帧 */<br>
+@keyframes slideName {<br>
+&nbsp;&nbsp;from { transform: translate(0, -50%); }<br>
+&nbsp;&nbsp;to { transform: translate(150px, -50%); }<br>
+}<br>
+<br>
+/* 使用 animation-name 单独指定 */<br>
+.name-demo-circle {<br>
+&nbsp;&nbsp;animation-name: slideName;<br>
+&nbsp;&nbsp;animation-duration: 2s;<br>
+&nbsp;&nbsp;animation-iteration-count: infinite;<br>
+&nbsp;&nbsp;animation-direction: alternate;<br>
+}
+                </div>
+                <div class="card-effect">
+                    <div class="name-demo-track">
+                        <div class="name-demo-circle">name</div>
+                    </div>
+                </div>
+                <p class="note">🎯 独立使用 <code>animation-name</code> 引用关键帧，便于拆分控制。</p>
+            </div>
+
+            <!-- 原有简写卡片，现在作为第二个 -->
+            <div class="card">
+                <div class="card-header"><code>animation</code> 简写属性</div>
+                <div class="card-code">
+animation: name duration timing-function delay iteration-count direction fill-mode;
+                </div>
+                <div class="card-effect" style="flex-direction: column; align-items: flex-start;">
+                    <pre>animation: bounce 1s ease 0.5s infinite alternate;</pre>
+                    <p style="margin:0.5rem 0 0; color:#b0c4de;">→ 延迟0.5s，交替反向，无限次</p>
+                </div>
+                <p class="note">✨ 简写将所有子属性合并，方便快速声明。</p>
+            </div>
         </div>
     </section>
 
     <footer>
-        ⚡ 优化后：结构更清晰，所有演示卡片统一布局，过渡对比明显，动画平滑。<br>
-        🧹 移除了未使用的样式，修复了悬停过渡，统一使用正斜杠路径。
+        ⚡ 外链样式 + 极简内联样式：所有卡片布局、配色由外部 style.css 统一控制。<br>
+        🧹 已将旋转动画置于第二部分首位，第三部分新增 <code>@keyframes + animation-name</code> 演示卡片。
     </footer>
 </div>
 </body>

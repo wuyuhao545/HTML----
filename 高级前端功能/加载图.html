@@ -1,72 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加载图 - 圆点排队轮流弹跳</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>流光幻影 · 排队弹跳加载器</title>
     <style>
-        /* 整体容器：固定在右下角，使用 Flex 布局水平排列子元素 */
+        /* 全局重置 —— 保证组件独立且优雅 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* 避免拖动时误选，提升体验 */
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 30%, #0a0f1e, #03060c);
+            /* 深邃星空背景，让加载组件更突出，同时保留页面可扩展性 */
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Roboto', sans-serif;
+        }
+
+        /* 主容器：固定在右下角，现代毛玻璃面板 + 动态边框呼吸感 */
         .loader-group {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 28px;
+            right: 28px;
             display: flex;
-            align-items: center;    /* 垂直居中对齐 */
-            gap: 15px;              /* 方块与圆点之间的间距 */
-            background: transparent; /* 无背景 */
+            align-items: center;
+            gap: 20px;
+            background: rgba(12, 20, 30, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 68px;
+            padding: 14px 24px 14px 22px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 255, 255, 0.2) inset, 0 0 12px rgba(0, 255, 255, 0.2);
+            transition: box-shadow 0.2s ease;
             z-index: 9999;
         }
 
-        /* 方块样式（保持不变） */
-        .loading {
-            width: 50px;
-            height: 50px;
-            border: 6px solid aqua;
-            border-radius: 4px;
-            box-shadow: 0 0 8px aqua, 0 0 8px aqua inset;
-            animation: 2s loading linear infinite;
+        /* 悬浮时轻微光效增强 —— 提升交互细腻感 */
+        .loader-group:hover {
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4), 0 0 0 1.5px rgba(0, 255, 255, 0.5) inset, 0 0 18px rgba(0, 255, 255, 0.4);
         }
 
-        /* 圆点通用样式 */
-        .loading-dot {
-            width: 10px;
-            height: 10px;
-            border: 3px solid aqua;
+        /* 方块 —— 未来科技旋转核心 */
+        .loading-cube {
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border: 3.5px solid #0ff;
+            border-radius: 12px;
+            box-shadow: 0 0 8px #0ff, 0 0 12px #0ff inset, 0 0 4px rgba(0, 255, 255, 0.6);
+            animation: cubeSpin 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            transition: all 0.2s;
+        }
+
+        /* 圆点容器独立，但 flex 自然排布 */
+        .dots-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* 圆点基础样式 —— 实心光晕，排队弹跳主角 */
+        .bounce-dot {
+            width: 14px;
+            height: 14px;
+            background: #0ff;
             border-radius: 50%;
-            /* 不再使用 fixed 定位，由 Flex 布局排列 */
-            animation: 2s bounce ease-in-out infinite;
+            box-shadow: 0 0 10px #0ff, 0 0 6px #0ff, 0 2px 4px rgba(0,0,0,0.2);
+            animation: bounceQueue 0.9s cubic-bezier(0.45, 1.2, 0.6, 1) infinite;
+            will-change: transform;
+            transition: box-shadow 0.1s ease;
         }
 
-        /* 第一个圆点：正常弹跳，无延迟 */
-        .loading-dot:nth-child(2) {
+        /* 动态微光 —— 弹跳顶点更亮 */
+        @keyframes bounceQueue {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 0 5px #0ff, 0 0 8px #0ff;
+                background: #0ff;
+            }
+            45% {
+                box-shadow: 0 0 16px #4effff, 0 0 24px #0ff;
+                background: #8effff;
+            }
+            55% {
+                transform: translateY(-28px);
+                box-shadow: 0 0 20px #2effff, 0 0 28px #0ff;
+                background: #afffff;
+            }
+            100% {
+                transform: translateY(0px);
+                box-shadow: 0 0 5px #0ff, 0 0 8px #0ff;
+                background: #0ff;
+            }
+        }
+
+        /* 排队轮流延迟 —— 三个圆点依次弹跳，形成优雅波浪 */
+        .bounce-dot:nth-child(1) {
             animation-delay: 0s;
         }
-
-        /* 第二个圆点：延迟 1 秒开始弹跳，实现轮流效果 */
-        .loading-dot:nth-child(3) {
-            animation-delay: 1s;
+        .bounce-dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .bounce-dot:nth-child(3) {
+            animation-delay: 0.6s;
         }
 
-        /* 旋转动画（方块） */
-        @keyframes loading {
-            0% { transform: rotateZ(0); }
-            50% { transform: rotateZ(180deg); }
-            100% { transform: rotateZ(360deg); }
+        /* 方块旋转动画 —— 沉稳且富有科技感 */
+        @keyframes cubeSpin {
+            0% {
+                transform: rotate(0deg) scale(1);
+                border-color: #0ff;
+                box-shadow: 0 0 6px #0ff, 0 0 12px #0ff inset;
+            }
+            25% {
+                border-color: #2effff;
+                box-shadow: 0 0 12px #2effff, 0 0 20px #0ff inset;
+            }
+            50% {
+                transform: rotate(180deg) scale(0.96);
+                border-color: #6effff;
+                box-shadow: 0 0 18px #0ff, 0 0 28px #2effff inset;
+            }
+            75% {
+                border-color: #2effff;
+                box-shadow: 0 0 12px #2effff, 0 0 20px #0ff inset;
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+                border-color: #0ff;
+                box-shadow: 0 0 6px #0ff, 0 0 12px #0ff inset;
+            }
         }
 
-        /* 弹跳动画（圆点） */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+        /* 优雅适配移动端：缩小间距但保留视觉冲击 */
+        @media (max-width: 560px) {
+            .loader-group {
+                bottom: 18px;
+                right: 18px;
+                gap: 14px;
+                padding: 10px 18px 10px 16px;
+            }
+            .loading-cube {
+                width: 38px;
+                height: 38px;
+                border-width: 3px;
+                border-radius: 10px;
+            }
+            .bounce-dot {
+                width: 10px;
+                height: 10px;
+            }
+            .dots-wrapper {
+                gap: 10px;
+            }
+            @keyframes bounceQueue {
+                55% {
+                    transform: translateY(-22px);
+                }
+            }
+        }
+
+        /* 极窄设备微调 (折叠屏/小屏手机) */
+        @media (max-width: 420px) {
+            .loader-group {
+                gap: 10px;
+                padding: 8px 14px 8px 12px;
+            }
+            .loading-cube {
+                width: 32px;
+                height: 32px;
+            }
+            .bounce-dot {
+                width: 8px;
+                height: 8px;
+            }
+            .dots-wrapper {
+                gap: 8px;
+            }
+            @keyframes bounceQueue {
+                55% {
+                    transform: translateY(-18px);
+                }
+            }
+        }
+
+        /* 可选: 让加载图更有“呼吸感” + 辅助文本 (保持美观且无干扰) */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
         }
     </style>
 </head>
 <body>
-    <!-- 用一个容器包裹方块和两个圆点，实现 Flex 布局 -->
-    <div class="loader-group">
-        <div class="loading"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
+    <!-- 视觉增强: 右下角排队轮流弹跳加载器 + 旋转方块 
+         三个圆点依次轻盈跃起，队列鲜明，科技光效融合 -->
+    <div class="loader-group" aria-label="加载动画，方块旋转，三个圆点排队轮流弹跳">
+        <!-- 旋转方块：炫酷棱镜质感 -->
+        <div class="loading-cube" aria-hidden="true"></div>
+        
+        <!-- 圆点队列: 排队轮流弹跳核心区域 -->
+        <div class="dots-wrapper" aria-hidden="true">
+            <div class="bounce-dot"></div>
+            <div class="bounce-dot"></div>
+            <div class="bounce-dot"></div>
+        </div>
     </div>
+    <!-- 辅助隐藏文本增强无障碍 -->
+    <div class="sr-only">内容加载中，旋转方块与三个圆点依次弹跳，表示排队轮流加载状态</div>
+
+    <!-- 注：本加载图完全使用CSS3动画，无JS依赖，高性能且圆润。
+         优化亮点：
+         1. 圆点从2个升级为3个，延迟分别0s, 0.3s, 0.6s，清晰展示排队轮流弹跳的波浪效果。
+         2. 弹跳动画采用cubic-bezier弹性曲线，顶部瞬间亮度加强，动感十足且优雅。
+         3. 右下角毛玻璃背景 + 动态光晕边框，提升视觉层次，与深色背景完美融合。
+         4. 方块旋转增加呼吸缩放与色彩过渡，强化科技感，与圆点队列节奏互补。
+         5. 响应式尺寸适配手机/平板，始终保持精致交互。
+         6. 保留"排队轮流"精髓，圆点依次跃起落下，节奏分明，完全满足加载图需求 -->
 </body>
 </html>

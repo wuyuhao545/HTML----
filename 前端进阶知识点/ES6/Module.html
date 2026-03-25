@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 ES6 模块化 · 导入导出全解析</h1>
+        <p>export / import · 动态导入 · 默认导出 · 命名空间 · 模块作用域</p>
+        <div class="subnote" style="margin-top: 0.6rem; font-size: 0.9rem;">✨ 基于标准 ES Modules，现代前端工程基石</div>
+    </div>
+
+    <!-- 命名导出与导入 -->
+    <section class="section">
+        <h2 class="section-title">📤 命名导出 · import 指定</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>命名导出 (Named Export)</code><span class="badge">基础用法</span></div>
+                <div class="card-code">
+                    // module: math.js<br>
+                    export const PI = 3.14159;<br>
+                    export function square(x) { return x * x; }<br>
+                    export class Calculator { ... }<br>
+                    <br>
+                    // import<br>
+                    import { PI, square } from './math.js';
+                </div>
+                <div class="card-desc">📌 导出多个成员，导入时需使用相同的名称（可重命名）。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="namedBtn">🧮 导入命名模块</button>
+                    <div id="namedResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>重命名导入</code><span class="badge">as 关键字</span></div>
+                <div class="card-code">
+                    import { PI as piValue, square as sq } from './math.js';<br>
+                    console.log(piValue, sq(5));
+                </div>
+                <div class="card-desc">✏️ 使用 `as` 避免命名冲突或简化名称。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="renameBtn">🔁 演示重命名导入</button>
+                    <div id="renameResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>命名空间导入</code><span class="badge">* as</span></div>
+                <div class="card-code">
+                    import * as MathLib from './math.js';<br>
+                    console.log(MathLib.PI);<br>
+                    console.log(MathLib.square(4));
+                </div>
+                <div class="card-desc">🌐 将模块所有导出挂载到一个对象上，避免重复导入。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="namespaceBtn">📦 命名空间导入</button>
+                    <div id="namespaceResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 默认导出与混合 -->
+    <section class="section">
+        <h2 class="section-title">🎯 默认导出 · 混合导出</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>默认导出 (Default Export)</code><span class="badge">每个模块仅一个</span></div>
+                <div class="card-code">
+                    // module: logger.js<br>
+                    export default function log(msg) {<br>
+                    &nbsp;&nbsp;console.log(`[LOG] ${msg}`);<br>
+                    }<br>
+                    // import<br>
+                    import log from './logger.js';
+                </div>
+                <div class="card-desc">📢 默认导出可使用任意名称导入，无需花括号。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="defaultBtn">📢 导入默认模块</button>
+                    <div id="defaultResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>混合导出</code><span class="badge">命名 + 默认</span></div>
+                <div class="card-code">
+                    // module: utils.js<br>
+                    export const version = '1.0';<br>
+                    export default function init() { ... }<br>
+                    // import<br>
+                    import init, { version } from './utils.js';
+                </div>
+                <div class="card-desc">🔀 一个模块可以同时包含默认导出和命名导出。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="mixedBtn">🔀 导入混合模块</button>
+                    <div id="mixedResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>重新导出 (Re-export)</code><span class="badge">聚合模块</span></div>
+                <div class="card-code">
+                    // index.js<br>
+                    export { PI, square } from './math.js';<br>
+                    export { default as log } from './logger.js';
+                </div>
+                <div class="card-desc">📚 将其他模块的导出集中转发，便于统一入口。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="reexportBtn">📚 演示重新导出</button>
+                    <div id="reexportResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 动态导入与模块作用域 -->
+    <section class="section">
+        <h2 class="section-title">⚡ 动态导入 · 模块作用域 · 加载顺序</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>动态导入 (Dynamic Import)</code><span class="badge">按需加载</span></div>
+                <div class="card-code">
+                    import('./module.js').then(module => {<br>
+                    &nbsp;&nbsp;module.doSomething();<br>
+                    });<br>
+                    // 或 await import('./module.js')
+                </div>
+                <div class="card-desc">🚀 运行时异步加载，用于代码分割、懒加载。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="dynamicBtn">⚡ 动态导入模块</button>
+                    <div id="dynamicResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>模块作用域</code><span class="badge">变量隔离</span></div>
+                <div class="card-code">
+                    // 模块内部声明的变量不会污染全局<br>
+                    const secret = "模块私有";<br>
+                    export const api = "公开";
+                </div>
+                <div class="card-desc">🛡️ 每个模块拥有独立作用域，顶层 `this` 为 undefined。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="scopeBtn">🔍 检查模块作用域</button>
+                    <div id="scopeResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>模块加载顺序</code><span class="badge">深度优先</span></div>
+                <div class="card-code">
+                    // a.js → b.js → c.js<br>
+                    // 执行顺序按照依赖关系深度优先，静态分析确保无循环依赖
+                </div>
+                <div class="card-desc">📈 ES Module 在编译时确定依赖，保证执行顺序可预测。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="orderBtn">📜 演示加载顺序</button>
+                    <div id="orderResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        💡 ES Module 是 JavaScript 官方标准化模块系统，支持静态分析、Tree Shaking，现代开发必备。
+    </footer>
+</div>
+
+<script type="module">
+    // 本文件内部演示动态导入，使用 Blob URL 构建虚拟模块，避免外部文件
+    // 工具函数：创建 Blob 模块并返回 URL
+    function createBlobModule(code) {
+        const blob = new Blob([code], { type: 'application/javascript' });
+        return URL.createObjectURL(blob);
+    }
+
+    // 1. 命名导出模块示例
+    const mathModuleCode = `
+        export const PI = 3.1415926;
+        export function square(x) { return x * x; }
+        export class Circle {
+            constructor(r) { this.r = r; }
+            area() { return PI * this.r * this.r; }
+        }
+    `;
+    const mathUrl = createBlobModule(mathModuleCode);
+
+    // 2. 默认导出模块
+    const loggerModuleCode = `
+        export default function log(msg) {
+            return "[LOG] " + msg;
+        }
+    `;
+    const loggerUrl = createBlobModule(loggerModuleCode);
+
+    // 3. 混合导出模块
+    const mixedModuleCode = `
+        export const version = "2.1.0";
+        export default function init() {
+            return "Initialized!";
+        }
+    `;
+    const mixedUrl = createBlobModule(mixedModuleCode);
+
+    // 4. 重新导出模块（模拟聚合入口）
+    const reexportCode = `
+        export { PI, square } from '${mathUrl}';
+        export { default as log } from '${loggerUrl}';
+    `;
+    const reexportUrl = createBlobModule(reexportCode);
+
+    // 5. 模块作用域演示模块
+    const scopeModuleCode = `
+        const privateVar = "这是模块私有变量";
+        export const publicData = "公开数据";
+        export function getPrivate() { return privateVar; }
+        // 顶层 this 为 undefined
+        export const topThis = typeof this === 'undefined' ? 'undefined' : this;
+    `;
+    const scopeUrl = createBlobModule(scopeModuleCode);
+
+    // 6. 加载顺序演示模块 a, b, c
+    const aModuleCode = `
+        console.log("🟢 模块 A 执行");
+        export const a = "A";
+    `;
+    const bModuleCode = `
+        console.log("🔵 模块 B 执行");
+        export const b = "B";
+    `;
+    const cModuleCode = `
+        import { a } from '${createBlobModule(aModuleCode)}';
+        import { b } from '${createBlobModule(bModuleCode)}';
+        console.log("🟡 模块 C 执行 (依赖 A 和 B)");
+        export const c = "C";
+        export const message = \`依赖: \${a} 和 \${b}\`;
+    `;
+    const cUrl = createBlobModule(cModuleCode);
+
+    // 辅助显示结果函数
+    window.showCardResult = function(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#eef2ff';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:12px; padding:8px;">${content}</pre>`;
+        }
+    };
+
+    // 按钮绑定（由于是在 module 中，可以直接访问全局函数）
+    document.getElementById('namedBtn').addEventListener('click', async () => {
+        try {
+            const math = await import(mathUrl);
+            window.showCardResult('namedResult', 
+                `✅ 导入成功<br>PI = ${math.PI}<br>square(6) = ${math.square(6)}<br>Circle 面积(半径3) = ${new math.Circle(3).area().toFixed(4)}`);
+        } catch (err) {
+            window.showCardResult('namedResult', `❌ 导入失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('renameBtn').addEventListener('click', async () => {
+        try {
+            const { PI: piValue, square: sq } = await import(mathUrl);
+            window.showCardResult('renameResult', 
+                `✏️ 重命名导入<br>π = ${piValue}<br>square(5) 重命名为 sq → ${sq(5)}`);
+        } catch (err) {
+            window.showCardResult('renameResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('namespaceBtn').addEventListener('click', async () => {
+        try {
+            const MathLib = await import(mathUrl);
+            window.showCardResult('namespaceResult', 
+                `📦 命名空间对象: <br>MathLib.PI = ${MathLib.PI}<br>MathLib.square(7) = ${MathLib.square(7)}`);
+        } catch (err) {
+            window.showCardResult('namespaceResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('defaultBtn').addEventListener('click', async () => {
+        try {
+            const logFunc = (await import(loggerUrl)).default;
+            const msg = logFunc("Hello from default import!");
+            window.showCardResult('defaultResult', `📢 默认导出调用结果: "${msg}"`);
+        } catch (err) {
+            window.showCardResult('defaultResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('mixedBtn').addEventListener('click', async () => {
+        try {
+            const mixed = await import(mixedUrl);
+            const initFn = mixed.default;
+            const version = mixed.version;
+            window.showCardResult('mixedResult', 
+                `🔀 混合导入成功<br>version = ${version}<br>init() = ${initFn()}`);
+        } catch (err) {
+            window.showCardResult('mixedResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('reexportBtn').addEventListener('click', async () => {
+        try {
+            const reexported = await import(reexportUrl);
+            window.showCardResult('reexportResult', 
+                `📚 重新导出演示<br>PI = ${reexported.PI}<br>square(9) = ${reexported.square(9)}<br>log("test") = ${reexported.log("test")}`);
+        } catch (err) {
+            window.showCardResult('reexportResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('dynamicBtn').addEventListener('click', async () => {
+        try {
+            // 动态导入一个临时模块
+            const dynamicModuleCode = `
+                export const message = "这是动态导入的模块！";
+                export function greet(name) { return \`Hello, \${name}!\`; }
+            `;
+            const dynamicUrl = createBlobModule(dynamicModuleCode);
+            const module = await import(dynamicUrl);
+            window.showCardResult('dynamicResult', 
+                `⚡ 动态导入成功<br>message: ${module.message}<br>greet("模块化"): ${module.greet("模块化")}`);
+        } catch (err) {
+            window.showCardResult('dynamicResult', `❌ 动态导入失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('scopeBtn').addEventListener('click', async () => {
+        try {
+            const scopeModule = await import(scopeUrl);
+            window.showCardResult('scopeResult', 
+                `🛡️ 模块作用域演示<br>publicData = ${scopeModule.publicData}<br>getPrivate() = ${scopeModule.getPrivate()}<br>顶层 this = ${scopeModule.topThis}<br>全局无法访问 privateVar（模块私有）`);
+        } catch (err) {
+            window.showCardResult('scopeResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    document.getElementById('orderBtn').addEventListener('click', async () => {
+        try {
+            // 清空控制台提示
+            console.clear();
+            console.log("📜 开始演示模块加载顺序...");
+            const moduleC = await import(cUrl);
+            window.showCardResult('orderResult', 
+                `✅ 模块 C 加载完成<br>${moduleC.message}<br>控制台已输出执行顺序：<br>🟢 A → 🔵 B → 🟡 C`);
+        } catch (err) {
+            window.showCardResult('orderResult', `❌ 失败: ${err.message}`, true);
+        }
+    });
+
+    // 清理 Blob URL 以避免内存泄漏（可选，由于演示中可能多次创建，实际生产需要管理）
+    // 为简化，此处不自动清理，但演示无妨。
+    console.log("📦 module.html 已加载，点击按钮体验 ES 模块化");
+</script>
+</body>
+</html>

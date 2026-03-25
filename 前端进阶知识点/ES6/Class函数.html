@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6+ Class · 面向对象优雅语法</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🏛️ Class · 类语法全解析</h1>
+        <p>构造函数 · 继承 · 静态方法 · 私有字段 · Getter/Setter</p>
+        <div class="subnote">✨ 基于原型链的语法糖，让面向对象更优雅</div>
+    </div>
+
+    <!-- 基础类 -->
+    <section class="section">
+        <h2 class="section-title">📌 基础类 · 构造函数与方法</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>class 声明与构造函数</code><span class="badge">实例化</span></div>
+                <div class="card-code">class Animal {<br>&nbsp;&nbsp;constructor(name) {<br>&nbsp;&nbsp;&nbsp;&nbsp;this.name = name;<br>&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;speak() {<br>&nbsp;&nbsp;&nbsp;&nbsp;return `${this.name} 发出声音`;<br>&nbsp;&nbsp;}<br>}<br>const dog = new Animal("旺财");
+                </div>
+                <div class="card-desc">🐕 通过 constructor 初始化实例属性，方法自动添加至原型。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="basicBtn">🐾 创建实例并调用</button>
+                    <div id="basicResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>类表达式</code><span class="badge">匿名/命名</span></div>
+                <div class="card-code">const Person = class {<br>&nbsp;&nbsp;constructor(name) { this.name = name; }<br>&nbsp;&nbsp;greet() { return `Hi, I'm ${this.name}`; }<br>};<br>const me = new Person("Alice");
+                </div>
+                <div class="card-desc">📦 类也可以作为表达式使用，支持立即执行。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="exprBtn">👤 测试类表达式</button>
+                    <div id="exprResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Getter / Setter</code><span class="badge">属性拦截</span></div>
+                <div class="card-code">
+                    class Circle {<br>&nbsp;&nbsp;constructor(radius) { this._radius = radius; }<br>&nbsp;&nbsp;get area() { return Math.PI * this._radius ** 2; }<br>&nbsp;&nbsp;set radius(r) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;if (r > 0) this._radius = r;<br>&nbsp;&nbsp;}<br>
+                    }
+                </div>
+                <div class="card-desc">📏 通过 getter/setter 实现属性访问控制与计算属性。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="getterBtn">📐 演示 getter/setter</button>
+                    <div id="getterResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 继承与静态 -->
+    <section class="section">
+        <h2 class="section-title">🧬 继承 · super · 静态成员</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>extends 继承</code><span class="badge">super调用父类</span></div>
+                <div class="card-code">
+                    class Dog extends Animal {<br>
+                    &nbsp;&nbsp;constructor(name, breed) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;super(name);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;this.breed = breed;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;speak() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;return `${super.speak()} 汪汪！`;<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+                <div class="card-desc">🐕‍🦺 子类必须调用 super，可重写父类方法。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="extendsBtn">🐕 创建子类实例</button>
+                    <div id="extendsResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>静态方法 & 静态属性</code><span class="badge">类级别</span></div>
+                <div class="card-code">
+                    class MathUtils {<br>
+                    &nbsp;&nbsp;static PI = 3.14159;<br>
+                    &nbsp;&nbsp;static square(x) { return x * x; }<br>
+                    }<br>
+                    console.log(MathUtils.PI);      // 3.14159<br>
+                    console.log(MathUtils.square(5)); // 25
+                </div>
+                <div class="card-desc">🔧 静态成员属于类本身，无需实例化，常用于工具方法。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="staticBtn">⚙️ 调用静态方法</button>
+                    <div id="staticResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>静态继承中的 this</code><span class="badge">多态表现</span></div>
+                <div class="card-code">
+                    class Parent {<br>
+                    &nbsp;&nbsp;static name = "Parent";<br>
+                    &nbsp;&nbsp;static who() { return this.name; }<br>
+                    }<br>
+                    class Child extends Parent {<br>
+                    &nbsp;&nbsp;static name = "Child";<br>
+                    }<br>
+                    console.log(Parent.who()); // "Parent"<br>
+                    console.log(Child.who());  // "Child"
+                </div>
+                <div class="card-desc">🎯 静态方法中的 this 指向调用它的类（动态绑定），实现静态多态。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="staticThisBtn">🔍 演示静态继承 this</button>
+                    <div id="staticThisResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>instanceof 检查</code><span class="badge">原型链判断</span></div>
+                <div class="card-code">
+                    const dog = new Dog("旺财", "金毛");<br>
+                    console.log(dog instanceof Dog);    // true<br>
+                    console.log(dog instanceof Animal); // true
+                </div>
+                <div class="card-desc">🔍 判断对象是否属于某个类或其父类。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="instanceBtn">🔎 检查实例关系</button>
+                    <div id="instanceResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 高级特性 -->
+    <section class="section">
+        <h2 class="section-title">🔐 私有字段 & 高级特性</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>私有字段 (#)</code><span class="badge">ES2022</span></div>
+                <div class="card-code">
+                    class Wallet {<br>
+                    &nbsp;&nbsp;#balance = 0;<br>
+                    &nbsp;&nbsp;add(amount) { this.#balance += amount; }<br>
+                    &nbsp;&nbsp;getBalance() { return this.#balance; }<br>
+                    }<br>
+                    const myWallet = new Wallet();<br>
+                    myWallet.add(100);
+                </div>
+                <div class="card-desc">🔐 # 开头的字段为私有，外部无法直接访问，真正封装。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="privateBtn">💰 操作私有字段</button>
+                    <div id="privateResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>私有方法</code><span class="badge">内部使用</span></div>
+                <div class="card-code">
+                    class Counter {<br>
+                    &nbsp;&nbsp;#count = 0;<br>
+                    &nbsp;&nbsp;#validate() { return true; }<br>
+                    &nbsp;&nbsp;increment() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;if (this.#validate()) this.#count++;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;get value() { return this.#count; }<br>
+                    }
+                </div>
+                <div class="card-desc">📦 私有方法同样通过 # 前缀定义，外部不可调用。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="privateMethodBtn">🔢 计数器演示</button>
+                    <div id="privateMethodResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>类静态块</code><span class="badge">ES2022</span></div>
+                <div class="card-code">
+                    class Database {<br>
+                    &nbsp;&nbsp;static config;<br>
+                    &nbsp;&nbsp;static {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;this.config = { host: 'localhost' };<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+                <div class="card-desc">⚙️ 静态块用于初始化静态属性，执行复杂逻辑。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="staticBlockBtn">📀 展示静态块效果</button>
+                    <div id="staticBlockResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        💡 Class 语法让 JavaScript 的面向对象更加清晰，结合私有字段、静态成员等，构建健壮的应用。
+    </footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#f3ede5';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:12px; padding:8px;">${content}</pre>`;
+        }
+    }
+
+    // ---------- 基础类演示 ----------
+    class Animal {
+        constructor(name) {
+            this.name = name;
+        }
+        speak() {
+            return `${this.name} 发出声音`;
+        }
+    }
+
+    document.getElementById('basicBtn').addEventListener('click', () => {
+        const dog = new Animal("旺财");
+        showResult('basicResult', `🐶 实例化成功: ${dog.name}<br>🔊 speak(): ${dog.speak()}`);
+    });
+
+    // 类表达式
+    document.getElementById('exprBtn').addEventListener('click', () => {
+        const Person = class {
+            constructor(name) { this.name = name; }
+            greet() { return `Hi, I'm ${this.name}`; }
+        };
+        const me = new Person("Alice");
+        showResult('exprResult', `👤 类表达式创建: ${me.name}<br>💬 问候: ${me.greet()}`);
+    });
+
+    // Getter/Setter 演示
+    class Circle {
+        constructor(radius) { this._radius = radius; }
+        get area() { return Math.PI * this._radius ** 2; }
+        set radius(r) {
+            if (r > 0) this._radius = r;
+            else console.warn("半径必须为正数");
+        }
+    }
+    document.getElementById('getterBtn').addEventListener('click', () => {
+        const c = new Circle(5);
+        const area1 = c.area;
+        c.radius = 10;
+        const area2 = c.area;
+        showResult('getterResult', `🔴 半径5 → 面积: ${area1.toFixed(2)}<br>🔴 半径改为10 → 面积: ${area2.toFixed(2)}`);
+    });
+
+    // 继承演示
+    class Dog extends Animal {
+        constructor(name, breed) {
+            super(name);
+            this.breed = breed;
+        }
+        speak() {
+            return `${super.speak()} 汪汪！`;
+        }
+        getInfo() {
+            return `${this.name} (${this.breed})`;
+        }
+    }
+    document.getElementById('extendsBtn').addEventListener('click', () => {
+        const myDog = new Dog("旺财", "金毛");
+        showResult('extendsResult', `🐕 ${myDog.getInfo()}<br>🔊 speak(): ${myDog.speak()}<br>🧬 继承自 Animal: ${myDog instanceof Animal}`);
+    });
+
+    // 静态方法
+    class MathUtils {
+        static PI = 3.14159;
+        static square(x) { return x * x; }
+    }
+    document.getElementById('staticBtn').addEventListener('click', () => {
+        const pi = MathUtils.PI;
+        const sq = MathUtils.square(8);
+        showResult('staticResult', `📐 静态属性 PI = ${pi}<br>🔢 静态方法 square(8) = ${sq}`);
+    });
+
+    // 静态继承中的 this 演示
+    class Parent {
+        static name = "Parent";
+        static who() { return this.name; }
+    }
+    class Child extends Parent {
+        static name = "Child";
+    }
+    document.getElementById('staticThisBtn').addEventListener('click', () => {
+        const parentWho = Parent.who();
+        const childWho = Child.who();
+        const childInherited = Child.hasOwnProperty('who'); // true，继承自 Parent
+        showResult('staticThisResult', 
+            `🔹 Parent.who() = "${parentWho}"<br>` +
+            `🔸 Child.who() = "${childWho}"<br>` +
+            `📌 Child 继承了静态方法 who，但 this 指向 Child 类，所以返回 "Child"<br>` +
+            `💡 静态方法中的 this 是动态绑定的，实现了静态多态。`);
+    });
+
+    // instanceof 检查
+    document.getElementById('instanceBtn').addEventListener('click', () => {
+        const dog = new Dog("旺财", "金毛");
+        const isDog = dog instanceof Dog;
+        const isAnimal = dog instanceof Animal;
+        const isObject = dog instanceof Object;
+        showResult('instanceResult', `🔍 dog instanceof Dog → ${isDog}<br>🔍 dog instanceof Animal → ${isAnimal}<br>🔍 dog instanceof Object → ${isObject}`);
+    });
+
+    // 私有字段演示
+    class Wallet {
+        #balance = 0;
+        add(amount) { this.#balance += amount; }
+        getBalance() { return this.#balance; }
+    }
+    document.getElementById('privateBtn').addEventListener('click', () => {
+        const wallet = new Wallet();
+        wallet.add(100);
+        wallet.add(50);
+        const balance = wallet.getBalance();
+        showResult('privateResult', `💰 余额: ${balance}<br>🔐 私有字段 #balance 无法直接访问: wallet.#balance ❌`);
+    });
+
+    // 私有方法演示
+    class Counter {
+        #count = 0;
+        #validate() { return true; }
+        increment() {
+            if (this.#validate()) this.#count++;
+        }
+        get value() { return this.#count; }
+    }
+    document.getElementById('privateMethodBtn').addEventListener('click', () => {
+        const counter = new Counter();
+        counter.increment();
+        counter.increment();
+        const val = counter.value;
+        showResult('privateMethodResult', `🔢 计数器值: ${val}<br>📌 私有方法 #validate 被内部调用，外部无法访问`);
+    });
+
+    // 静态块演示
+    class Database {
+        static config;
+        static {
+            this.config = { host: 'localhost', port: 3306, user: 'admin' };
+        }
+    }
+    document.getElementById('staticBlockBtn').addEventListener('click', () => {
+        const config = Database.config;
+        showResult('staticBlockResult', `📀 静态块初始化配置: ${JSON.stringify(config)}`);
+    });
+</script>
+</body>
+</html>

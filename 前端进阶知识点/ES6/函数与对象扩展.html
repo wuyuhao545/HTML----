@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ES6+ 函数与对象扩展 | 现代 JavaScript 优雅进阶</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⚡ 函数 & 对象 · ES6+ 扩展精华</h1>
+        <p>箭头函数 · 参数增强 · 对象简写 · 安全访问 · 合并与复制</p>
+        <div class="subnote">✨ 更简洁的函数声明 · 更灵活的对象操作</div>
+    </div>
+
+    <!-- ========= 一、函数扩展 ========= -->
+    <section class="section">
+        <h2 class="section-title">➡️ 函数新特性 · 箭头函数 & 参数进化</h2>
+        <div class="card-grid">
+            <!-- 箭头函数：简洁语法 & 隐式返回 -->
+            <div class="card">
+                <div class="card-header"><code>箭头函数 · 极简语法</code> <span class="badge">隐式返回</span></div>
+                <div class="card-code">const double = n => n * 2;<br>const sum = (a, b) => a + b;<br>const greet = () => "Hello ES6+";<br>const getUser = (name, age) => ({ name, age });</div>
+                <div class="card-desc">🚀 单参数可省略括号，单表达式自动返回，返回对象需加括号。</div>
+                <div class="card-effect" id="arrow-demo"></div>
+            </div>
+            <!-- 箭头函数 this 词法绑定 -->
+            <div class="card">
+                <div class="card-header"><code>箭头函数 this · 词法绑定</code> <span class="badge">无自己的 this</span></div>
+                <div class="card-code">const counter = {<br>  count: 0,<br>  start: function() {<br>    setInterval(() => {<br>      this.count++;<br>      console.log(this.count);<br>    }, 500);<br>  }<br>};<br>// counter.start();</div>
+                <div class="card-desc">🎯 箭头函数继承外层 this，解决回调中 this 丢失问题。</div>
+                <div class="card-effect" id="arrow-this-demo"></div>
+            </div>
+            <!-- 函数参数默认值 -->
+            <div class="card">
+                <div class="card-header"><code>参数默认值 · 简化逻辑</code></div>
+                <div class="card-code">function greetUser(name = "访客", level = 1) {<br>  return `欢迎 ${name}，等级 ${level}`;<br>}<br>greetUser();<br>greetUser("Alice", 5);</div>
+                <div class="card-desc">📌 为参数提供默认值，避免 undefined 判断，代码更健壮。</div>
+                <div class="card-effect" id="default-params-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 函数剩余参数 & 参数解构 -->
+    <section class="section">
+        <h2 class="section-title">📦 函数高级参数 · 剩余参数 & 参数解构</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>剩余参数 ...args</code> 替代 arguments</div>
+                <div class="card-code">function sumAll(...numbers) {<br>  return numbers.reduce((acc, n) => acc + n, 0);<br>}<br>sumAll(2, 4, 6, 8);</div>
+                <div class="card-desc">➕ 收集剩余参数为真数组，支持任意数量参数。</div>
+                <div class="card-effect" id="rest-params-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>函数参数解构</code> 对象 & 数组解构</div>
+                <div class="card-code">function printUser({ name, age = 20, city = "未知" }) {<br>  return `${name} · ${age}岁 · 来自${city}`;<br>}<br>printUser({ name: "林青", age: 28 });</div>
+                <div class="card-desc">🧩 直接在参数中解构对象/数组，设置默认值，减少样板代码。</div>
+                <div class="card-effect" id="param-dest-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 二、对象扩展 ========= -->
+    <section class="section">
+        <h2 class="section-title">🏛️ 对象增强 · 简写 & 计算属性 & 新方法</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>属性简写 & 方法简写</code></div>
+                <div class="card-code">const name = "陈瑶";<br>const age = 26;<br>const user = { name, age };<br>const obj = {<br>  sayHi() { return "Hi"; }<br>};</div>
+                <div class="card-desc">📘 变量名直接作为属性，方法省略 :function，代码更清爽。</div>
+                <div class="card-effect" id="shorthand-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>计算属性名 · 动态 key</code></div>
+                <div class="card-code">const key = "dynamicKey";<br>const obj = {<br>  [key]: "动态值",<br>  [`prefix_${Math.random()}`]: 42<br>};</div>
+                <div class="card-desc">✨ 使用方括号动态定义对象属性名，灵活构建对象。</div>
+                <div class="card-effect" id="computed-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Object.assign · 合并/克隆</code></div>
+                <div class="card-code">const target = { a: 1 };<br>const source = { b: 2, c: 3 };<br>const result = Object.assign(target, source);<br>// result === target</div>
+                <div class="card-desc">🔗 浅拷贝合并对象，常用于复制或混入属性。</div>
+                <div class="card-effect" id="assign-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">🔐 对象安全与比较 · 扩展运算符 & 严格相等</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>对象扩展运算符 (ES2018)</code> 浅拷贝/合并</div>
+                <div class="card-code">const base = { x: 1, y: 2 };<br>const extra = { y: 99, z: 3 };<br>const merged = { ...base, ...extra };<br>const clone = { ...base };</div>
+                <div class="card-desc">📦 优雅合并对象，后覆盖前，创建新对象（浅拷贝）。</div>
+                <div class="card-effect" id="spread-obj-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Object.is · 严格相等增强</code></div>
+                <div class="card-code">Object.is(NaN, NaN);   // true<br>Object.is(+0, -0);      // false<br>Object.is(5, "5");      // false</div>
+                <div class="card-desc">⚖️ 比 === 更精确，识别 NaN 与 ±0 差异。</div>
+                <div class="card-effect" id="object-is-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>可选链 ?. & 空值合并 ??</code> 安全访问</div>
+                <div class="card-code">const userData = null;<br>console.log(userData?.profile?.name ?? "匿名");<br>const count = 0;<br>console.log(count ?? 100);  // 0</div>
+                <div class="card-desc">🛡️ 短路访问深层属性，?? 仅对 null/undefined 取默认值。</div>
+                <div class="card-effect" id="optional-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        🎯 函数与对象的扩展让 JavaScript 更加现代化 · 书写简洁而强大的代码
+    </footer>
+</div>
+
+<script>
+    // 通用渲染函数
+    function renderEffect(selector, contentOrFn) {
+        const el = document.querySelector(selector);
+        if (el) {
+            if (typeof contentOrFn === 'function') {
+                el.innerHTML = contentOrFn();
+            } else {
+                el.innerHTML = contentOrFn;
+            }
+        }
+    }
+
+    // ---------- 1. 箭头函数演示 ----------
+    (function arrowDemo() {
+        const double = n => n * 2;
+        const sum = (a, b) => a + b;
+        const greet = () => "Hello ES6+";
+        const getUser = (name, age) => ({ name, age });
+        const userObj = getUser("陈小星", 28);
+        renderEffect("#arrow-demo", `
+            <p>🚀 double(7) = ${double(7)}</p>
+            <p>➕ sum(12, 30) = ${sum(12, 30)}</p>
+            <p>👋 greet() = "${greet()}"</p>
+            <p>📦 返回对象: ${JSON.stringify(userObj)}</p>
+        `);
+    })();
+
+    // 箭头函数 this 演示 (模拟定时器效果，为避免无限运行，展示静态说明+模拟)
+    (function arrowThisDemo() {
+        // 模拟展示，不实际运行setInterval，使用静态示例
+        class MockCounter {
+            constructor() { this.count = 0; }
+            start() {
+                // 箭头函数继承 this 的示意
+                const self = this;
+                setTimeout(() => {
+                    self.count++;
+                    // 展示结果
+                    renderEffect("#arrow-this-demo", `
+                        <p>🎯 箭头函数继承外层 this，内部 count = ${self.count}</p>
+                        <p>✅ 传统 function 会导致 this 丢失，箭头函数完美解决。</p>
+                        <p>💡 实际场景: 异步回调、事件监听中保持上下文。</p>
+                    `);
+                }, 10);
+            }
+        }
+        const c = new MockCounter();
+        c.start();
+        // 初始占位
+        renderEffect("#arrow-this-demo", `<p>⏳ 正在演示 this 绑定效果…</p>`);
+    })();
+
+    // 参数默认值演示
+    (function defaultParams() {
+        function greetUser(name = "访客", level = 1) {
+            return `欢迎 ${name}，等级 ${level}`;
+        }
+        const defaultCall = greetUser();
+        const customCall = greetUser("Alice", 5);
+        renderEffect("#default-params-demo", `
+            <p>📌 无参调用: ${defaultCall}</p>
+            <p>📌 指定参数: ${customCall}</p>
+            <p>✨ 支持表达式: function fn(a = 10, b = a * 2) 等高级用法</p>
+        `);
+    })();
+
+    // 剩余参数
+    (function restParams() {
+        function sumAll(...numbers) {
+            return numbers.reduce((acc, n) => acc + n, 0);
+        }
+        const result = sumAll(2, 4, 6, 8);
+        renderEffect("#rest-params-demo", `
+            <p>➕ sumAll(2,4,6,8) = ${result}</p>
+            <p>🎯 剩余参数收集任意数量参数为数组 [2,4,6,8] 求和。</p>
+        `);
+    })();
+
+    // 函数参数解构
+    (function paramDestructure() {
+        function printUser({ name, age = 20, city = "未知" }) {
+            return `${name} · ${age}岁 · 来自${city}`;
+        }
+        const user1 = printUser({ name: "林青", age: 28 });
+        const user2 = printUser({ name: "苏小冉", city: "姑苏" });
+        renderEffect("#param-dest-demo", `
+            <p>👤 printUser({ name: "林青", age: 28 }) → ${user1}</p>
+            <p>🏙️ printUser({ name: "苏小冉", city: "姑苏" }) → ${user2}</p>
+            <p>📦 直接解构 + 默认值，优雅处理函数入参。</p>
+        `);
+    })();
+
+    // 属性简写 & 方法简写
+    (function shorthand() {
+        const name = "陈瑶";
+        const age = 26;
+        const user = { name, age };
+        const obj = {
+            sayHi() { return "Hi there!"; }
+        };
+        renderEffect("#shorthand-demo", `
+            <p>📘 属性简写: ${JSON.stringify(user)}</p>
+            <p>💬 方法简写: obj.sayHi() → "${obj.sayHi()}"</p>
+            <p>✨ 对象字面量更简洁，减少冗余代码。</p>
+        `);
+    })();
+
+    // 计算属性名
+    (function computedProps() {
+        const key = "dynamicKey";
+        const rand = Math.random().toFixed(3);
+        const obj = {
+            [key]: "动态值",
+            [`prefix_${rand}`]: 42,
+            ["normal"]: "普通键"
+        };
+        renderEffect("#computed-demo", `
+            <p>✨ 动态 key: ${key} → "${obj[key]}"</p>
+            <p>🔢 带表达式的键: prefix_${rand} → ${obj[`prefix_${rand}`]}</p>
+            <p>📌 灵活构建对象，适用于变量属性名场景。</p>
+        `);
+    })();
+
+    // Object.assign
+    (function assignDemo() {
+        const target = { a: 1 };
+        const source = { b: 2, c: 3 };
+        const result = Object.assign(target, source);
+        renderEffect("#assign-demo", `
+            <p>🔗 合并后 target: ${JSON.stringify(target)}</p>
+            <p>📎 返回结果与 target 相同: result === target → ${result === target}</p>
+            <p>⚠️ 浅拷贝，嵌套对象会共享引用。</p>
+        `);
+    })();
+
+    // 对象扩展运算符 (spread)
+    (function spreadObj() {
+        const base = { x: 1, y: 2 };
+        const extra = { y: 99, z: 3 };
+        const merged = { ...base, ...extra };
+        const clone = { ...base };
+        renderEffect("#spread-obj-demo", `
+            <p>📦 合并结果: ${JSON.stringify(merged)}</p>
+            <p>🔹 克隆对象: ${JSON.stringify(clone)} (独立新对象)</p>
+            <p>🎯 后属性覆盖前属性，适合不可变更新。</p>
+        `);
+    })();
+
+    // Object.is 演示
+    (function objectIsDemo() {
+        const isNaN = Object.is(NaN, NaN);
+        const isZero = Object.is(+0, -0);
+        const isStrict = Object.is(5, "5");
+        renderEffect("#object-is-demo", `
+            <p>⚖️ Object.is(NaN, NaN) = ${isNaN}  (=== 返回 false)</p>
+            <p>⚖️ Object.is(+0, -0) = ${isZero}   (=== 返回 true)</p>
+            <p>⚖️ Object.is(5, "5") = ${isStrict}  (类型不同)</p>
+            <p>✅ 更精确的相等判断。</p>
+        `);
+    })();
+
+    // 可选链 & 空值合并
+    (function optionalChain() {
+        const emptyUser = null;
+        const safeName = emptyUser?.profile?.name ?? "匿名访客";
+        const countZero = 0;
+        const orResult = countZero || 100;
+        const nullishResult = countZero ?? 100;
+        renderEffect("#optional-demo", `
+            <p>🛡️ 可选链结果: ${safeName} (未报错)</p>
+            <p>🎯 countZero || 100 = ${orResult}</p>
+            <p>🎯 countZero ?? 100 = ${nullishResult}</p>
+            <p>🔍 ?? 仅当 null/undefined 取默认值，0 和 '' 视为有效。</p>
+        `);
+    })();
+</script>
+</body>
+</html>

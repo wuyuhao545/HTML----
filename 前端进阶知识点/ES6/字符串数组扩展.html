@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ES6+ 扩展 | 字符串 & 数组 · 现代特性全览</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📜 字符串 & 数组 · ES6+ 扩展革命</h1>
+        <p>模板字面量 · 标签模板 · 扩展运算符 · 剩余参数 · 数组新方法</p>
+        <div class="subnote">✨ 更智能的字符串处理 · 更强大的数组操作</div>
+    </div>
+
+    <!-- ========= 一、字符串增强 ========= -->
+    <section class="section">
+        <h2 class="section-title">📝 字符串 · 模板字面量 & 标签函数</h2>
+        <div class="card-grid">
+            <!-- 模板字符串：插值与表达式 -->
+            <div class="card">
+                <div class="card-header"><code>模板字符串 · 插值与表达式</code> <span class="badge">原生多行</span></div>
+                <div class="card-code">const user = "林悦";<br>const score = 87;<br>const message = `考生 ${user} 得分: ${score + 3} 分，${score >= 80 ? "优秀" : "加油"}`;<br>console.log(message);</div>
+                <div class="card-desc">💡 反引号内支持任意 JS 表达式，自动拼接，告别繁琐字符串连接。</div>
+                <div class="card-effect" id="template-demo"></div>
+            </div>
+            <!-- 多行字符串保留格式 -->
+            <div class="card">
+                <div class="card-header"><code>多行字符串 · 保留缩进/换行</code></div>
+                <div class="card-code">const poem = `<br>  半亩方塘一鉴开，<br>  天光云影共徘徊。<br>  问渠那得清如许？<br>  为有源头活水来。`;</div>
+                <div class="card-desc">📜 无需 \n 拼接，保留原始格式，诗歌/模板更直观。</div>
+                <div class="card-effect" id="multiline-demo"></div>
+            </div>
+            <!-- 标签模板函数 -->
+            <div class="card">
+                <div class="card-header"><code>标签模板 · 自定义解析</code> <span class="badge">高级过滤</span></div>
+                <div class="card-code">function currency(strings, ...values) {<br>  return strings.reduce((acc, str, i) => `${acc}${str}<b>¥${values[i]?.toFixed(2) || ''}</b>`, '');<br>}<br>const price = 2999.9;<br>const discount = 0.8;<br>currency`总价: ${price} 折扣后: ${price * discount}`;</div>
+                <div class="card-desc">🏷️ 标签函数可格式化、转义或国际化，处理模板字符串的原始内容。</div>
+                <div class="card-effect" id="tag-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 二、数组扩展：扩展运算符 & 剩余参数 & 解构 ========= -->
+    <section class="section">
+        <h2 class="section-title">🔁 数组 · 扩展运算符(...) & 剩余参数 & 解构赋值</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>扩展运算符 · 数组展开/合并</code></div>
+                <div class="card-code">const arrA = [1, 2, 3];<br>const arrB = [4, 5, 6];<br>const merged = [...arrA, ...arrB];<br>const copy = [...arrA];<br>Math.max(...arrA);</div>
+                <div class="card-desc">🧬 浅拷贝、合并数组、函数传参极简写法，替代 apply。</div>
+                <div class="card-effect" id="spread-array-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>剩余参数 · 收集不定参数</code></div>
+                <div class="card-code">function sumAll(...numbers) {<br>  return numbers.reduce((sum, n) => sum + n, 0);<br>}<br>sumAll(5, 10, 15, 20);</div>
+                <div class="card-desc">➕ 代替 arguments，得到真数组，灵活处理任意数量参数。</div>
+                <div class="card-effect" id="rest-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>数组解构 · 快速取值 & 默认值</code></div>
+                <div class="card-code">const colors = ["红", "绿"];<br>const [primary, secondary = "蓝", ...others] = colors;<br>console.log(primary, secondary, others);</div>
+                <div class="card-desc">🎨 交换变量、跳过元素、剩余模式，数据提取更灵活。</div>
+                <div class="card-effect" id="array-dest-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 三、数组实例新方法 (ES6+) ========= -->
+    <section class="section">
+        <h2 class="section-title">⚙️ 数组新方法 · find/findIndex/includes/flat 等</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>Array.prototype.find / findIndex</code></div>
+                <div class="card-code">const users = [<br>  { id: 1, name: "子轩" },<br>  { id: 2, name: "一诺" }<br>];<br>const target = users.find(u => u.id === 2);<br>const idx = users.findIndex(u => u.name === "子轩");</div>
+                <div class="card-desc">🔍 返回第一个满足条件的元素/索引，比 filter 更精准。</div>
+                <div class="card-effect" id="find-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Array.prototype.includes</code> 包含判断</div>
+                <div class="card-code">const fruits = ["🍎", "🍊", "🍇"];<br>console.log(fruits.includes("🍊"));  // true<br>console.log(fruits.includes("🍉"));  // false</div>
+                <div class="card-desc">✅ 直观判断数组是否包含某元素，替代 indexOf !== -1。</div>
+                <div class="card-effect" id="includes-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>flat / flatMap · 扁平化 & 映射展平</code> <span class="badge">ES2019</span></div>
+                <div class="card-code">const nested = [1, [2, 3], [4, [5, 6]]];<br>const flatOnce = nested.flat(1);<br>const flatDeep = nested.flat(2);<br>const phrases = ["hello world", "good morning"];<br>const words = phrases.flatMap(p => p.split(" "));</div>
+                <div class="card-desc">🌀 flat 按深度展平，flatMap 映射后自动扁平化一层。</div>
+                <div class="card-effect" id="flat-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= 四、扩展：Array.from / of 及更多实用特性 ========= -->
+    <section class="section">
+        <h2 class="section-title">🏭 数组构造增强 · from / of & 迭代器扩展</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>Array.from</code> 类数组转数组</div>
+                <div class="card-code">const nodeList = document.querySelectorAll("div"); // 伪数组<br>const arrFromNode = Array.from(nodeList);<br>Array.from("ES6", char => char + "✨");<br>// 生成数字序列</div>
+                <div class="card-desc">🔁 将类数组、可迭代对象转为数组，支持 map 函数。</div>
+                <div class="card-effect" id="array-from-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Array.of</code> 避免 Array() 陷阱</div>
+                <div class="card-code">const arr1 = Array.of(7);       // [7]<br>const arr2 = Array(7);           // 7个空槽位<br>const arr3 = Array.of(1,2,3);    // [1,2,3]</div>
+                <div class="card-desc">📦 无论参数个数，始终创建包含所有参数的数组，行为一致。</div>
+                <div class="card-effect" id="array-of-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>数组空位 & 迭代扩展</code> 概念演示</div>
+                <div class="card-code">const arr = [1, , 3];   // 稀疏数组<br>// forEach 跳过空位，但 ES6 方法将空位视为 undefined<br>const newArr = Array.from(arr, x => x ?? "填充");</div>
+                <div class="card-desc">🧹 ES6 方法统一处理空位为 undefined，更安全。</div>
+                <div class="card-effect" id="sparse-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        🚀 字符串模板 + 数组新API 让 JavaScript 更高效 · 现代开发必备技能
+    </footer>
+</div>
+
+<script>
+    // 通用渲染函数
+    function renderEffect(selector, contentOrFn) {
+        const el = document.querySelector(selector);
+        if (el) {
+            if (typeof contentOrFn === 'function') {
+                el.innerHTML = contentOrFn();
+            } else {
+                el.innerHTML = contentOrFn;
+            }
+        }
+    }
+
+    // ---------- 1. 模板字符串插值 ----------
+    (function templateDemo() {
+        const user = "林悦";
+        const score = 87;
+        const message = `考生 ${user} 得分: ${score + 3} 分，${score >= 80 ? "优秀" : "加油"}`;
+        renderEffect("#template-demo", `
+            <p>✨ 插值结果: <strong>${message}</strong></p>
+            <p>📐 支持运算、三元表达式: <code>score+3</code> = ${score+3}</p>
+            <p>🎯 反引号内任意 JS 代码皆可运行</p>
+        `);
+    })();
+
+    // 多行字符串
+    (function multiline() {
+        const poem = `  半亩方塘一鉴开，
+  天光云影共徘徊。
+  问渠那得清如许？
+  为有源头活水来。`;
+        renderEffect("#multiline-demo", `
+            <pre style="background:#eef3ed; padding:0.6rem; border-radius: 16px; margin:0; font-family: monospace; font-size:0.85rem;">${poem}</pre>
+            <p style="margin-top:6px;">📜 自动保留换行和缩进，无需转义 \\n</p>
+        `);
+    })();
+
+    // 标签模板演示 (currency 格式化)
+    (function tagTemplate() {
+        function currency(strings, ...values) {
+            return strings.reduce((acc, str, i) => {
+                let val = values[i];
+                if (val !== undefined) {
+                    val = `¥${Number(val).toFixed(2)}`;
+                } else {
+                    val = '';
+                }
+                return `${acc}${str}<mark style="background:#cae3d8; padding:0 4px; border-radius:6px;">${val}</mark>`;
+            }, '');
+        }
+        const price = 2999.9;
+        const discount = 0.8;
+        const finalPrice = price * discount;
+        const result = currency`总价: ${price} 折扣后: ${finalPrice} (含税)`;
+        renderEffect("#tag-demo", `
+            <div>🏷️ 标签模板输出: ${result}</div>
+            <div>💡 可用于货币、高亮、安全过滤等场景。</div>
+        `);
+    })();
+
+    // 扩展运算符 数组合并/拷贝
+    (function spreadArray() {
+        const arrA = [1, 2, 3];
+        const arrB = [4, 5, 6];
+        const merged = [...arrA, ...arrB];
+        const copy = [...arrA];
+        const maxVal = Math.max(...arrA);
+        renderEffect("#spread-array-demo", `
+            <p>🧩 合并数组: [${merged.join(', ')}]</p>
+            <p>📋 浅拷贝: [${copy.join(', ')}]</p>
+            <p>📈 展开传参: Math.max(...arrA) = ${maxVal}</p>
+        `);
+    })();
+
+    // 剩余参数 sumAll
+    (function restParams() {
+        function sumAll(...numbers) {
+            return numbers.reduce((acc, n) => acc + n, 0);
+        }
+        const result = sumAll(5, 10, 15, 20);
+        renderEffect("#rest-demo", `
+            <p>➕ sumAll(5,10,15,20) = <strong>${result}</strong></p>
+            <p>🎯 剩余参数收集任意参数为数组: [5,10,15,20] → 求和</p>
+        `);
+    })();
+
+    // 数组解构
+    (function arrayDest() {
+        const colors = ["红", "绿"];
+        const [primary, secondary = "蓝", ...others] = colors;
+        renderEffect("#array-dest-demo", `
+            <p>🎨 primary = "${primary}" , secondary = "${secondary}" , others = [${others}]</p>
+            <p>🔄 支持默认值、剩余模式，交换变量: [a,b] = [b,a] 优雅实现</p>
+        `);
+    })();
+
+    // find / findIndex
+    (function findMethods() {
+        const users = [
+            { id: 1, name: "子轩" },
+            { id: 2, name: "一诺" }
+        ];
+        const target = users.find(u => u.id === 2);
+        const idx = users.findIndex(u => u.name === "子轩");
+        renderEffect("#find-demo", `
+            <p>🔍 find id=2 → ${target ? target.name : '未找到'}</p>
+            <p>📌 findIndex name="子轩" → 索引 ${idx}</p>
+            <p>✅ 精准查找，无需手动遍历。</p>
+        `);
+    })();
+
+    // includes 方法
+    (function includesDemo() {
+        const fruits = ["🍎", "🍊", "🍇"];
+        const hasOrange = fruits.includes("🍊");
+        const hasWatermelon = fruits.includes("🍉");
+        renderEffect("#includes-demo", `
+            <p>🍊 是否包含橘子? ${hasOrange ? '✅ 是' : '❌ 否'}</p>
+            <p>🍉 是否包含西瓜? ${hasWatermelon ? '✅ 是' : '❌ 否'}</p>
+            <p>✨ includes 语义清晰，可判断 NaN (比 indexOf 更强)</p>
+        `);
+    })();
+
+    // flat / flatMap
+    (function flatMapDemo() {
+        const nested = [1, [2, 3], [4, [5, 6]]];
+        const flatOnce = nested.flat(1);
+        const flatDeep = nested.flat(2);
+        const phrases = ["hello world", "good morning"];
+        const words = phrases.flatMap(p => p.split(" "));
+        renderEffect("#flat-demo", `
+            <p>🌀 flat(1): [${flatOnce.join(', ')}]</p>
+            <p>🌀 flat(2) 完全扁平: [${flatDeep.join(', ')}]</p>
+            <p>📦 flatMap 映射+展平: ${words.join(' · ')}</p>
+        `);
+    })();
+
+    // Array.from 演示 (生成序列 + 转换)
+    (function arrayFromDemo() {
+        // 生成数字序列 1~5
+        const seq = Array.from({ length: 5 }, (_, i) => i + 1);
+        const strToArr = Array.from("ES6", char => `${char}✨`);
+        // 伪数组模拟 (类数组对象)
+        const arrayLike = { 0: 'a', 1: 'b', length: 2 };
+        const realArr = Array.from(arrayLike);
+        renderEffect("#array-from-demo", `
+            <p>🔢 生成序列 1~5: [${seq.join(', ')}]</p>
+            <p>🔤 字符串转数组并映射: ${strToArr.join(' ')}</p>
+            <p>📄 类数组转真数组: [${realArr.join(', ')}]</p>
+        `);
+    })();
+
+    // Array.of 演示
+    (function arrayOfDemo() {
+        const arrSingle = Array.of(7);
+        const arrConstructor = Array(7);
+        const multi = Array.of(1,2,3);
+        renderEffect("#array-of-demo", `
+            <p>📦 Array.of(7) → [${arrSingle}]  (长度为1，元素为7)</p>
+            <p>⚠️ Array(7) → 长度为7的空位数组: [${arrConstructor.length}个空槽]</p>
+            <p>✅ Array.of(1,2,3) → [${multi.join(', ')}]  统一行为</p>
+        `);
+    })();
+
+    // 稀疏数组与空位处理
+    (function sparseArrayDemo() {
+        const sparse = [1, , 3];
+        // 使用 Array.from 将空位转为 undefined 并填充默认值
+        const filled = Array.from(sparse, x => x ?? "填充值");
+        // 对比 forEach 跳过空位
+        let forEachResult = [];
+        sparse.forEach(v => forEachResult.push(v));
+        renderEffect("#sparse-demo", `
+            <p>🧩 稀疏数组: [1, 空, 3]</p>
+            <p>🔄 forEach 跳过空位 → 得到 [${forEachResult}]</p>
+            <p>✨ Array.from 处理空位: [${filled.join(', ')}] (空位 → 填充值)</p>
+            <p>💡 ES6 方法统一将空位视为 undefined，更可靠。</p>
+        `);
+    })();
+</script>
+</body>
+</html>

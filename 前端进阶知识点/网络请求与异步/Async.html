@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async/Await · 同步风格异步编程</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #f7fafd 0%, #ecf3f8 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            color: #1a2c3e;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 2.8rem;
+            padding: 2rem 1.5rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 48px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #1f6d49, #2b8c6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section { margin-bottom: 3rem; }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.4rem;
+            padding-left: 0.8rem;
+            border-left: 6px solid #2b8c6e;
+            color: #1f5e45;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px -8px rgba(0, 40, 30, 0.1);
+            border: 1px solid rgba(43, 140, 110, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            background: #effaf4;
+            padding: 1rem 1.4rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-bottom: 2px solid #d0e6dc;
+            color: #1a5e48;
+            font-family: monospace;
+        }
+        .badge {
+            background: #2b8c6e;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            margin-left: 0.6rem;
+        }
+        .card-code {
+            background: #1e2e28;
+            color: #d9f2e6;
+            padding: 1rem 1.2rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .card-desc {
+            padding: 0.8rem 1.2rem 0.4rem;
+            font-size: 0.9rem;
+            color: #2c6a58;
+            background: #fefefc;
+        }
+        .card-effect {
+            padding: 1rem 1.2rem;
+            background: #f9fffc;
+            border-top: 1px solid #e0efea;
+            min-height: 100px;
+        }
+        .btn-trigger {
+            background: #2b8c6e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-trigger:hover { background: #1f6d49; }
+        pre {
+            background: #eef5f0;
+            padding: 8px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: #4f7b6a;
+            border-top: 1px solid #cde2d8;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⏳ Async/Await · 同步风格异步编程</h1>
+        <p>async/await 语法 · try/catch 错误处理 · 并发控制 · 取消请求</p>
+    </div>
+
+    <section class="section">
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>async/await 基本用法</code><span class="badge">try/catch</span></div>
+                <div class="card-code">
+                    async function fetchUser() {<br>
+                    &nbsp;&nbsp;try {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;const res = await fetch('https://jsonplaceholder.typicode.com/users/2');<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;const user = await res.json();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.log(user.name);<br>
+                    &nbsp;&nbsp;} catch (err) { console.error(err); }<br>
+                    }
+                </div>
+                <div class="card-desc">🎯 使用 await 等待 Promise，try/catch 捕获错误。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="asyncBtn">👤 获取用户信息</button>
+                    <div id="asyncResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>并发请求 · Promise.all</code><span class="badge">性能优化</span></div>
+                <div class="card-code">
+                    async function getAll() {<br>
+                    &nbsp;&nbsp;const [posts, users] = await Promise.all([<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;fetch('/posts/1').then(r=>r.json()),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;fetch('/users/1').then(r=>r.json())<br>
+                    &nbsp;&nbsp;]);<br>
+                    &nbsp;&nbsp;console.log(posts, users);<br>
+                    }
+                </div>
+                <div class="card-desc">⚡ 同时发起多个请求，等待全部完成。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="allBtn">🚀 并发请求</button>
+                    <div id="allResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>AbortController · 取消请求</code><span class="badge">中断控制</span></div>
+                <div class="card-code">
+                    const controller = new AbortController();<br>
+                    fetch(url, { signal: controller.signal });<br>
+                    controller.abort(); // 取消请求
+                </div>
+                <div class="card-desc">✋ 用于搜索框防抖、组件卸载时取消未完成的请求。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="abortStartBtn">⏳ 开始请求 (2秒后自动取消)</button>
+                    <div id="abortResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>💡 async/await 是目前最推荐的异步方案，代码清晰，易于维护。</footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#eef5f0';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:8px; padding:8px;">${content}</pre>`;
+        }
+    }
+
+    // async/await 基本示例
+    document.getElementById('asyncBtn').addEventListener('click', async () => {
+        showResult('asyncResult', '⏳ 加载用户数据...');
+        try {
+            const res = await fetch('https://jsonplaceholder.typicode.com/users/2');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const user = await res.json();
+            showResult('asyncResult', `👤 用户信息\n姓名: ${user.name}\n邮箱: ${user.email}\n城市: ${user.address.city}`);
+        } catch (err) {
+            showResult('asyncResult', `❌ 错误: ${err.message}`, true);
+        }
+    });
+
+    // Promise.all 并发
+    document.getElementById('allBtn').addEventListener('click', async () => {
+        showResult('allResult', '⚡ 并发请求中...');
+        try {
+            const [post, user] = await Promise.all([
+                fetch('https://jsonplaceholder.typicode.com/posts/1').then(r => r.json()),
+                fetch('https://jsonplaceholder.typicode.com/users/1').then(r => r.json())
+            ]);
+            showResult('allResult', `✅ 并发成功\n文章标题: ${post.title}\n作者: ${user.name}`);
+        } catch (err) {
+            showResult('allResult', `❌ 并发失败: ${err.message}`, true);
+        }
+    });
+
+    // AbortController 取消请求
+    let abortController = null;
+    document.getElementById('abortStartBtn').addEventListener('click', () => {
+        if (abortController) abortController.abort();
+        abortController = new AbortController();
+        const signal = abortController.signal;
+        showResult('abortResult', '⏳ 开始请求，2秒后将自动取消...');
+        fetch('https://jsonplaceholder.typicode.com/posts/1', { signal })
+            .then(res => res.json())
+            .then(data => showResult('abortResult', `✅ 请求完成 (未被取消)\n标题: ${data.title}`))
+            .catch(err => {
+                if (err.name === 'AbortError') showResult('abortResult', '🚫 请求已被取消 (AbortController)', true);
+                else showResult('abortResult', `❌ 其他错误: ${err.message}`, true);
+            });
+        setTimeout(() => {
+            if (abortController) {
+                abortController.abort();
+                abortController = null;
+            }
+        }, 2000);
+    });
+</script>
+</body>
+</html>

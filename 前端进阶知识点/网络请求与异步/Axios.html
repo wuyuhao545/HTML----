@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios · 现代化HTTP客户端</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #f7fafd 0%, #ecf3f8 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            color: #1a2c3e;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 2.8rem;
+            padding: 2rem 1.5rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 48px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #5a2e8e, #7b4bb0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section { margin-bottom: 3rem; }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.4rem;
+            padding-left: 0.8rem;
+            border-left: 6px solid #7b4bb0;
+            color: #5a2e8e;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(123, 75, 176, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            background: #f3edfc;
+            padding: 1rem 1.4rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-bottom: 2px solid #e4d5f5;
+            color: #5a2e8e;
+            font-family: monospace;
+        }
+        .badge {
+            background: #7b4bb0;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            margin-left: 0.6rem;
+        }
+        .card-code {
+            background: #2d2a3a;
+            color: #e4d5f5;
+            padding: 1rem 1.2rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .card-desc {
+            padding: 0.8rem 1.2rem 0.4rem;
+            font-size: 0.9rem;
+            color: #4a3a6e;
+            background: #fefcff;
+        }
+        .card-effect {
+            padding: 1rem 1.2rem;
+            background: #fbfaff;
+            border-top: 1px solid #e9e2f5;
+            min-height: 100px;
+        }
+        .btn-trigger {
+            background: #7b4bb0;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-trigger:hover { background: #5a2e8e; }
+        pre {
+            background: #f1edf9;
+            padding: 8px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: #6a5a8a;
+            border-top: 1px solid #e4d5f5;
+        }
+    </style>
+    <!-- 引入 Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 Axios · 现代化HTTP客户端</h1>
+        <p>Promise 风格 · 请求/响应拦截器 · 取消请求 · 并发控制</p>
+    </div>
+
+    <section class="section">
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>GET 请求</code><span class="badge">基础用法</span></div>
+                <div class="card-code">
+                    axios.get('https://jsonplaceholder.typicode.com/posts/1')<br>
+                    &nbsp;&nbsp;.then(response => console.log(response.data))<br>
+                    &nbsp;&nbsp;.catch(error => console.error(error));
+                </div>
+                <div class="card-desc">✨ Axios 自动解析 JSON，响应数据在 data 字段中。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="axiosGetBtn">🔍 发送GET请求</button>
+                    <div id="axiosGetResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>POST 请求</code><span class="badge">发送数据</span></div>
+                <div class="card-code">
+                    axios.post('https://jsonplaceholder.typicode.com/posts', {<br>
+                    &nbsp;&nbsp;title: 'Axios', body: '测试', userId: 1<br>
+                    }).then(res => console.log(res.data));
+                </div>
+                <div class="card-desc">📨 自动序列化 JSON，简化 POST 流程。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="axiosPostBtn">✉️ 发送POST请求</button>
+                    <div id="axiosPostResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>并发请求</code><span class="badge">Promise.all</span></div>
+                <div class="card-code">
+                    Promise.all([<br>
+                    &nbsp;&nbsp;axios.get('/posts/1'),<br>
+                    &nbsp;&nbsp;axios.get('/users/1')<br>
+                    ]).then(([post, user]) => {<br>
+                    &nbsp;&nbsp;console.log(post.data, user.data);<br>
+                    });
+                </div>
+                <div class="card-desc">⚡ 同时发起多个请求，等待全部完成。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="axiosAllBtn">🚀 并发请求</button>
+                    <div id="axiosAllResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>请求拦截器</code><span class="badge">添加Token</span></div>
+                <div class="card-code">
+                    axios.interceptors.request.use(config => {<br>
+                    &nbsp;&nbsp;config.headers.Authorization = 'Bearer token';<br>
+                    &nbsp;&nbsp;return config;<br>
+                    });
+                </div>
+                <div class="card-desc">🔐 全局添加认证头、loading 状态等。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="interceptorBtn">🛡️ 演示拦截器</button>
+                    <div id="interceptorResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>取消请求</code><span class="badge">AbortController</span></div>
+                <div class="card-code">
+                    const controller = new AbortController();<br>
+                    axios.get('/api', { signal: controller.signal });<br>
+                    controller.abort(); // 取消请求
+                </div>
+                <div class="card-desc">✋ 用于搜索防抖、组件卸载时取消未完成请求。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="cancelBtn">⏳ 发起请求 (2秒后取消)</button>
+                    <div id="cancelResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>创建实例 & 全局配置</code><span class="badge">baseURL</span></div>
+                <div class="card-code">
+                    const instance = axios.create({<br>
+                    &nbsp;&nbsp;baseURL: 'https://api.example.com',<br>
+                    &nbsp;&nbsp;timeout: 5000<br>
+                    });<br>
+                    instance.get('/users');
+                </div>
+                <div class="card-desc">📦 针对不同服务配置独立的实例。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="instanceBtn">🏭 调用实例请求</button>
+                    <div id="instanceResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>💡 Axios 是目前最流行的 HTTP 客户端，支持浏览器和 Node.js，推荐用于现代前端项目。</footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#f1edf9';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:8px; padding:8px;">${content}</pre>`;
+        }
+    }
+
+    // GET 请求
+    document.getElementById('axiosGetBtn').addEventListener('click', () => {
+        showResult('axiosGetResult', '⏳ 请求中...');
+        axios.get('https://jsonplaceholder.typicode.com/posts/1')
+            .then(res => {
+                showResult('axiosGetResult', `✅ 获取成功\n标题: ${res.data.title}\n正文: ${res.data.body}`);
+            })
+            .catch(err => {
+                showResult('axiosGetResult', `❌ 错误: ${err.message}`, true);
+            });
+    });
+
+    // POST 请求
+    document.getElementById('axiosPostBtn').addEventListener('click', () => {
+        showResult('axiosPostResult', '📤 发送中...');
+        axios.post('https://jsonplaceholder.typicode.com/posts', {
+            title: 'Axios', body: '测试内容', userId: 1
+        })
+        .then(res => {
+            showResult('axiosPostResult', `✅ 创建成功 ID: ${res.data.id}\n标题: ${res.data.title}`);
+        })
+        .catch(err => {
+            showResult('axiosPostResult', `❌ 错误: ${err.message}`, true);
+        });
+    });
+
+    // 并发请求
+    document.getElementById('axiosAllBtn').addEventListener('click', () => {
+        showResult('axiosAllResult', '⚡ 并发请求中...');
+        Promise.all([
+            axios.get('https://jsonplaceholder.typicode.com/posts/1'),
+            axios.get('https://jsonplaceholder.typicode.com/users/1')
+        ])
+        .then(([postRes, userRes]) => {
+            showResult('axiosAllResult', `✅ 并发成功\n文章标题: ${postRes.data.title}\n作者: ${userRes.data.name}`);
+        })
+        .catch(err => {
+            showResult('axiosAllResult', `❌ 错误: ${err.message}`, true);
+        });
+    });
+
+    // 拦截器演示
+    let interceptorId = null;
+    document.getElementById('interceptorBtn').addEventListener('click', () => {
+        // 移除之前的拦截器避免重复
+        if (interceptorId !== null) {
+            axios.interceptors.request.eject(interceptorId);
+        }
+        interceptorId = axios.interceptors.request.use(config => {
+            config.headers['X-Demo-Header'] = 'Interceptor-Test';
+            showResult('interceptorResult', '📡 拦截器已添加，请求头将包含 X-Demo-Header');
+            return config;
+        });
+        axios.get('https://jsonplaceholder.typicode.com/posts/1')
+            .then(res => {
+                showResult('interceptorResult', `✅ 请求成功，拦截器已生效\n标题: ${res.data.title}`);
+            })
+            .catch(err => {
+                showResult('interceptorResult', `❌ 错误: ${err.message}`, true);
+            });
+    });
+
+    // 取消请求演示
+    let cancelController = null;
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        if (cancelController) cancelController.abort();
+        cancelController = new AbortController();
+        showResult('cancelResult', '⏳ 开始请求，2秒后将自动取消...');
+        axios.get('https://jsonplaceholder.typicode.com/posts/1', {
+            signal: cancelController.signal
+        })
+        .then(res => {
+            showResult('cancelResult', `✅ 请求完成 (未被取消)\n标题: ${res.data.title}`);
+        })
+        .catch(err => {
+            if (axios.isCancel(err) || err.code === 'ERR_CANCELED') {
+                showResult('cancelResult', '🚫 请求已被取消', true);
+            } else {
+                showResult('cancelResult', `❌ 错误: ${err.message}`, true);
+            }
+        });
+        setTimeout(() => {
+            if (cancelController) {
+                cancelController.abort();
+                cancelController = null;
+            }
+        }, 2000);
+    });
+
+    // 实例演示
+    const instance = axios.create({
+        baseURL: 'https://jsonplaceholder.typicode.com',
+        timeout: 5000
+    });
+    document.getElementById('instanceBtn').addEventListener('click', () => {
+        showResult('instanceResult', '🏭 调用实例请求...');
+        instance.get('/posts/2')
+            .then(res => {
+                showResult('instanceResult', `✅ 实例请求成功\n标题: ${res.data.title}`);
+            })
+            .catch(err => {
+                showResult('instanceResult', `❌ 错误: ${err.message}`, true);
+            });
+    });
+</script>
+</body>
+</html>

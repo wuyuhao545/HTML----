@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 封装 · 回调式网络请求</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #f0f5fa 0%, #e9eef3 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            color: #1a2c3e;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 2.8rem;
+            padding: 2rem 1.5rem;
+            background: rgba(255,255,255,0.75);
+            border-radius: 48px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #1e4b6e, #2c7da0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section { margin-bottom: 3rem; }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.4rem;
+            padding-left: 0.8rem;
+            border-left: 6px solid #2c7da0;
+            color: #1e4b6e;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: #ffffffdd;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px -8px rgba(0, 32, 48, 0.12);
+            border: 1px solid rgba(44, 125, 160, 0.18);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            background: #eef3fc;
+            padding: 1rem 1.4rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #cbdde9;
+            color: #1a4b6e;
+            font-family: monospace;
+        }
+        .badge {
+            background: #2c7da0;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 40px;
+            margin-left: 0.6rem;
+        }
+        .card-code {
+            background: #1e2a36;
+            color: #e3f0f5;
+            padding: 1rem 1.2rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .card-desc {
+            padding: 1rem 1.2rem 0.6rem;
+            font-size: 0.9rem;
+            color: #2c5a6e;
+            background: #fafdff;
+        }
+        .card-effect {
+            padding: 1rem 1.2rem;
+            background: #f7fbfe;
+            border-top: 1px solid #e2edf2;
+            min-height: 100px;
+        }
+        .btn-trigger {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-trigger:hover { background: #1e5a78; }
+        pre {
+            background: #eef2ff;
+            padding: 8px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: #4a6f88;
+            border-top: 1px solid #cbdde9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 Ajax 封装 · 回调式网络请求</h1>
+        <p>通用 ajax 函数 · 回调处理 · 并发请求示例</p>
+    </div>
+
+    <section class="section">
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>ajax 函数封装</code><span class="badge">GET / POST</span></div>
+                <div class="card-code">
+                    function ajax({ method, url, data, success, error }) {<br>
+                    &nbsp;&nbsp;const xhr = new XMLHttpRequest();<br>
+                    &nbsp;&nbsp;xhr.open(method, url);<br>
+                    &nbsp;&nbsp;if (method === 'POST') xhr.setRequestHeader('Content-Type', 'application/json');<br>
+                    &nbsp;&nbsp;xhr.onload = () => {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;if (xhr.status >= 200 && xhr.status < 300) success(JSON.parse(xhr.responseText));<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;else error(xhr.status);<br>
+                    &nbsp;&nbsp;};<br>
+                    &nbsp;&nbsp;xhr.onerror = () => error('网络错误');<br>
+                    &nbsp;&nbsp;xhr.send(data ? JSON.stringify(data) : null);<br>
+                    }
+                </div>
+                <div class="card-desc">📦 统一封装 XHR，简化调用。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="ajaxGetBtn">🔍 调用封装GET</button>
+                    <div id="ajaxGetResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>POST 请求</code><span class="badge">发送数据</span></div>
+                <div class="card-code">
+                    ajax({<br>
+                    &nbsp;&nbsp;method: 'POST',<br>
+                    &nbsp;&nbsp;url: 'https://jsonplaceholder.typicode.com/posts',<br>
+                    &nbsp;&nbsp;data: { title: 'Ajax封装', body: '测试', userId: 1 },<br>
+                    &nbsp;&nbsp;success: res => console.log(res),<br>
+                    &nbsp;&nbsp;error: err => console.error(err)<br>
+                    });
+                </div>
+                <div class="card-desc">📨 使用封装后的 POST 请求。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="ajaxPostBtn">✉️ 发送POST</button>
+                    <div id="ajaxPostResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>并发请求（回调嵌套）</code><span class="badge">模拟并发</span></div>
+                <div class="card-code">
+                    // 通过嵌套回调实现并发<br>
+                    ajax({ url: '/posts/1', success: post => {<br>
+                    &nbsp;&nbsp;ajax({ url: '/users/1', success: user => {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.log(post, user);<br>
+                    &nbsp;&nbsp;}});<br>
+                    }});
+                </div>
+                <div class="card-desc">⚡ 传统方式下并发请求会导致嵌套加深。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="nestedBtn">📡 嵌套并发请求</button>
+                    <div id="nestedResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>💡 Ajax 封装使得代码复用性更高，但回调方式仍难以应对复杂场景。</footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#eef2ff';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:8px; padding:8px;">${content}</pre>`;
+        }
+    }
+
+    // 封装 ajax 函数
+    function ajax({ method, url, data, success, error }) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        if (method === 'POST') xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                success(JSON.parse(xhr.responseText));
+            } else {
+                error(xhr.status);
+            }
+        };
+        xhr.onerror = () => error('网络错误');
+        xhr.send(data ? JSON.stringify(data) : null);
+    }
+
+    // GET 封装调用
+    document.getElementById('ajaxGetBtn').addEventListener('click', () => {
+        showResult('ajaxGetResult', '⏳ 请求中...');
+        ajax({
+            method: 'GET',
+            url: 'https://jsonplaceholder.typicode.com/posts/3',
+            success: (data) => {
+                showResult('ajaxGetResult', `✅ 获取成功\n标题: ${data.title}\n正文预览: ${data.body.slice(0, 60)}...`);
+            },
+            error: (err) => {
+                showResult('ajaxGetResult', `❌ 错误: ${err}`, true);
+            }
+        });
+    });
+
+    // POST 封装调用
+    document.getElementById('ajaxPostBtn').addEventListener('click', () => {
+        showResult('ajaxPostResult', '📤 发送中...');
+        ajax({
+            method: 'POST',
+            url: 'https://jsonplaceholder.typicode.com/posts',
+            data: { title: 'Ajax封装', body: '测试内容', userId: 1 },
+            success: (data) => {
+                showResult('ajaxPostResult', `✅ 创建成功 ID: ${data.id}\n标题: ${data.title}`);
+            },
+            error: (err) => {
+                showResult('ajaxPostResult', `❌ 错误: ${err}`, true);
+            }
+        });
+    });
+
+    // 嵌套并发示例（回调地狱）
+    document.getElementById('nestedBtn').addEventListener('click', () => {
+        showResult('nestedResult', '⏳ 执行嵌套请求...');
+        ajax({
+            method: 'GET',
+            url: 'https://jsonplaceholder.typicode.com/posts/1',
+            success: (post) => {
+                ajax({
+                    method: 'GET',
+                    url: 'https://jsonplaceholder.typicode.com/users/1',
+                    success: (user) => {
+                        showResult('nestedResult', `✅ 并发完成\n文章标题: ${post.title}\n作者: ${user.name}`);
+                    },
+                    error: (err) => showResult('nestedResult', `❌ 获取用户失败: ${err}`, true)
+                });
+            },
+            error: (err) => showResult('nestedResult', `❌ 获取文章失败: ${err}`, true)
+        });
+    });
+</script>
+</body>
+</html>

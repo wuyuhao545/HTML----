@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 JavaScript 构造函数 · Object 方法 · prototype 原型链</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📘 JavaScript 构造函数 · 原型链</h1>
+            <p>内置构造函数 | Object 核心方法 | prototype 原型机制</p>
+        </div>
+
+        <!-- ========== 第一部分：常用内置构造函数 ========== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fa-solid fa-cubes"></i> 常用内置构造函数</h2>
+            <div class="card-grid">
+                <!-- Object -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-object-group"></i> Object</div>
+                    <div class="card-code">new Object() → { }</div>
+                    <div class="card-effect">
+                        <script>
+                            let obj = new Object();
+                            obj.name = "示例对象";
+                            document.write(`<p>obj = ${JSON.stringify(obj)}</p>`);
+                            document.write(`<p>typeof obj = ${typeof obj}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Array -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-list"></i> Array</div>
+                    <div class="card-code">new Array(1,2,3) 或 [ ]</div>
+                    <div class="card-effect">
+                        <script>
+                            let arr = new Array(3, 6, 9);
+                            document.write(`<p>arr = [${arr}] , length = ${arr.length}</p>`);
+                            document.write(`<p>arr[1] = ${arr[1]}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- String -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-keyboard"></i> String</div>
+                    <div class="card-code">new String("hello")</div>
+                    <div class="card-effect">
+                        <script>
+                            let strObj = new String("JavaScript");
+                            document.write(`<p>strObj = ${strObj}</p>`);
+                            document.write(`<p>typeof strObj = ${typeof strObj}</p>`);
+                            document.write(`<p>strObj.toUpperCase() = ${strObj.toUpperCase()}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Number -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-hashtag"></i> Number</div>
+                    <div class="card-code">new Number(3.1415)</div>
+                    <div class="card-effect">
+                        <script>
+                            let num = new Number(123.456);
+                            document.write(`<p>num = ${num}</p>`);
+                            document.write(`<p>num.toFixed(2) = ${num.toFixed(2)}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Boolean -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-toggle-on"></i> Boolean</div>
+                    <div class="card-code">new Boolean(false)</div>
+                    <div class="card-effect">
+                        <script>
+                            let bool = new Boolean(0);
+                            document.write(`<p>bool = ${bool}</p>`);
+                            document.write(`<p>!!bool = ${!!bool}</p>`); // 对象永远是true
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Date -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-calendar"></i> Date</div>
+                    <div class="card-code">new Date()</div>
+                    <div class="card-effect">
+                        <script>
+                            let now = new Date();
+                            document.write(`<p>当前时间: ${now.toLocaleString()}</p>`);
+                            document.write(`<p>getFullYear: ${now.getFullYear()}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- RegExp -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-rectangle-code"></i> RegExp</div>
+                    <div class="card-code">new RegExp("\\d+")</div>
+                    <div class="card-effect">
+                        <script>
+                            let reg = new RegExp("\\d+", "g");
+                            let testStr = "order123 price456";
+                            document.write(`<p>正则测试: ${testStr.match(reg)}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-map"></i> Map</div>
+                    <div class="card-code">new Map()</div>
+                    <div class="card-effect">
+                        <script>
+                            let map = new Map();
+                            map.set('name', '张三');
+                            map.set('age', 25);
+                            document.write(`<p>map size = ${map.size}</p>`);
+                            document.write(`<p>name = ${map.get('name')}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Set -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-cubes"></i> Set</div>
+                    <div class="card-code">new Set([1,2,2,3])</div>
+                    <div class="card-effect">
+                        <script>
+                            let set = new Set([1,2,2,3,4,4]);
+                            document.write(`<p>Set内容: ${[...set]}</p>`);
+                            document.write(`<p>size = ${set.size}</p>`);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 第二部分：Object 内置方法 ========== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fa-regular fa-object-ungroup"></i> Object 静态方法</h2>
+            <div class="card-grid">
+                <!-- keys / values / entries -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-eye"></i> Object.keys() / values() / entries()</div>
+                    <div class="card-code">
+                        const user = { id: 1, name: "Alice", role: "admin" };
+                        Object.keys(user) → ["id","name","role"]
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            const user = { id: 1, name: "Alice", role: "admin" };
+                            document.write(`<p>对象: ${JSON.stringify(user)}</p>`);
+                            document.write(`<p>keys: ${Object.keys(user)}</p>`);
+                            document.write(`<p>values: ${Object.values(user)}</p>`);
+                            document.write(`<p>entries: ${JSON.stringify(Object.entries(user))}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- assign 浅拷贝 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-copy"></i> Object.assign()</div>
+                    <div class="card-code">Object.assign(target, ...sources)</div>
+                    <div class="card-effect">
+                        <script>
+                            let target = { a: 1 };
+                            let src = { b: 2, c: 3 };
+                            let result = Object.assign(target, src);
+                            document.write(`<p>target: ${JSON.stringify(target)}</p>`);
+                            document.write(`<p>返回对象: ${JSON.stringify(result)}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- create 原型继承 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-code-branch"></i> Object.create()</div>
+                    <div class="card-code">Object.create(proto, propertiesObject)</div>
+                    <div class="card-effect">
+                        <script>
+                            let personProto = { greet() { return `Hello, ${this.name}`; } };
+                            let me = Object.create(personProto);
+                            me.name = "小明";
+                            document.write(`<p>me.greet() = ${me.greet()}</p>`);
+                            document.write(`<p>原型链: ${me.__proto__ === personProto}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- defineProperty -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-gear"></i> Object.defineProperty()</div>
+                    <div class="card-code">定义可枚举/不可枚举属性</div>
+                    <div class="card-effect">
+                        <script>
+                            let car = {};
+                            Object.defineProperty(car, 'brand', {
+                                value: 'Tesla',
+                                writable: false,
+                                enumerable: true
+                            });
+                            car.brand = 'BMW';  // 无法修改 (writable:false)
+                            document.write(`<p>car.brand = ${car.brand}</p>`);
+                            document.write(`<p>属性描述符: ${JSON.stringify(Object.getOwnPropertyDescriptor(car,'brand'))}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- freeze 冻结对象 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-snowflake"></i> Object.freeze()</div>
+                    <div class="card-code">Object.freeze(obj) → 不可扩展、不可配置</div>
+                    <div class="card-effect">
+                        <script>
+                            let config = { version: "1.0" };
+                            Object.freeze(config);
+                            config.version = "2.0";  // 静默失败（严格模式报错）
+                            document.write(`<p>冻结后 version = ${config.version}</p>`);
+                            document.write(`<p>isFrozen = ${Object.isFrozen(config)}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- hasOwnProperty -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-clipboard"></i> hasOwnProperty()</div>
+                    <div class="card-code">obj.hasOwnProperty("prop")</div>
+                    <div class="card-effect">
+                        <script>
+                            let book = { title: "JS高级程序设计" };
+                            document.write(`<p>hasOwnProperty('title'): ${book.hasOwnProperty('title')}</p>`);
+                            document.write(`<p>hasOwnProperty('toString'): ${book.hasOwnProperty('toString')}</p>`);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 第三部分：prototype 原型链使用 ========== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fa-solid fa-chain"></i> prototype 原型链 · 方法与继承</h2>
+            <div class="card-grid">
+                <!-- 基本原型方法添加 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-plus"></i> 向原型添加方法</div>
+                    <div class="card-code">
+function Animal(name) { this.name = name; }<br>
+Animal.prototype.speak = function() { return `${this.name}叫唤`; };
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            function Animal(name) { this.name = name; }
+                            Animal.prototype.speak = function() { return `${this.name} 发出声音`; };
+                            let dog = new Animal("旺财");
+                            document.write(`<p>dog.speak() → ${dog.speak()}</p>`);
+                            document.write(`<p>dog.__proto__ === Animal.prototype: ${dog.__proto__ === Animal.prototype}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 原型链继承 (经典组合继承示例) -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-solid fa-diagram-project"></i> 原型链继承</div>
+                    <div class="card-code">
+function Person(name) { this.name = name; }<br>
+Person.prototype.sayHi = function() { return `Hi, I'm ${this.name}`; };<br>
+function Student(name, grade) { Person.call(this, name); this.grade = grade; }<br>
+Student.prototype = Object.create(Person.prototype);<br>
+Student.prototype.constructor = Student;
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            function Person(name) { this.name = name; }
+                            Person.prototype.sayHi = function() { return `你好，我是 ${this.name}`; };
+                            function Student(name, grade) {
+                                Person.call(this, name);
+                                this.grade = grade;
+                            }
+                            Student.prototype = Object.create(Person.prototype);
+                            Student.prototype.constructor = Student;
+                            Student.prototype.study = function() { return `${this.name} 正在学习年级 ${this.grade}`; };
+
+                            let stu = new Student("李华", 6);
+                            document.write(`<p>stu.sayHi() = ${stu.sayHi()}</p>`);
+                            document.write(`<p>stu.study() = ${stu.study()}</p>`);
+                            document.write(`<p>instanceof Person: ${stu instanceof Person}</p>`);
+                            document.write(`<p>constructor: ${stu.constructor.name}</p>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 直接操作 prototype 添加内置方法（不推荐但演示） -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-message"></i> 扩展内置原型 (示例)</div>
+                    <div class="card-code">
+Array.prototype.last = function() { return this[this.length-1]; };
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            if (!Array.prototype.last) {
+                                Array.prototype.last = function() { return this[this.length-1]; };
+                            }
+                            let nums = [10, 20, 30, 40];
+                            document.write(`<p>nums = [${nums}]</p>`);
+                            document.write(`<p>nums.last() = ${nums.last()}</p>`);
+                            document.write(`<span class="badge">⚠️ 扩展原生原型需谨慎</span>`);
+                        </script>
+                    </div>
+                </div>
+
+                <!-- 使用 Object.getPrototypeOf 查看原型 -->
+                <div class="card">
+                    <div class="card-header"><i class="fa-regular fa-eye"></i> 查看原型链</div>
+                    <div class="card-code">
+Object.getPrototypeOf(obj)<br>
+obj instanceof Constructor
+                    </div>
+                    <div class="card-effect">
+                        <script>
+                            let arr = [1,2,3];
+                            let protoOfArr = Object.getPrototypeOf(arr);
+                            document.write(`<p>数组原型 === Array.prototype: ${protoOfArr === Array.prototype}</p>`);
+                            document.write(`<p>arr 是 Array 实例: ${arr instanceof Array}</p>`);
+                            let plain = {};
+                            document.write(`<p>plain 原型链顶层: ${Object.getPrototypeOf(plain) === Object.prototype}</p>`);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 综合示例：动态演示 prototype 添加方法 & 构造函数实例化 -->
+        <section class="section">
+            <h2 class="section-title"><i class="fa-regular fa-flask"></i> 综合互动 · 动态原型演示</h2>
+            <div class="card" style="grid-column:1/-1;">
+                <div class="card-header">
+                    <i class="fa-regular fa-computer"></i> 动态创建对象 & 原型方法
+                </div>
+                <div class="card-code">
+                    // 自定义构造函数 Book
+                    function Book(title, author) { this.title = title; this.author = author; }
+                    Book.prototype.getInfo = function() { return `《${this.title}》 - ${this.author}`; };
+                </div>
+                <div class="card-effect" id="dynamicDemo">
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                        <input type="text" id="bookTitle" placeholder="书名" value="JavaScript高级程序设计">
+                        <input type="text" id="bookAuthor" placeholder="作者" value="Nicholas C. Zakas">
+                        <button id="createBookBtn">创建图书实例</button>
+                    </div>
+                    <div id="bookResult" style="margin-top: 1rem; font-weight: 500;">等待创建...</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            📚 构造函数 + prototype 是 JavaScript 面向对象的核心 · Object 静态方法提供强大的对象操作能力<br>
+            💡 所有示例均为实时执行，展示内置构造函数与原型链的真实用法
+        </footer>
+    </div>
+
+    <script>
+        // 综合演示：Book 构造函数 + 原型方法
+        function Book(title, author) {
+            this.title = title;
+            this.author = author;
+        }
+        Book.prototype.getInfo = function() {
+            return `📖 《${this.title}》 作者：${this.author}`;
+        };
+
+        // 绑定按钮事件
+        const btn = document.getElementById('createBookBtn');
+        const titleInput = document.getElementById('bookTitle');
+        const authorInput = document.getElementById('bookAuthor');
+        const resultDiv = document.getElementById('bookResult');
+
+        if (btn) {
+            btn.addEventListener('click', () => {
+                let title = titleInput.value.trim() || "未知书名";
+                let author = authorInput.value.trim() || "佚名";
+                let newBook = new Book(title, author);
+                resultDiv.innerHTML = `
+                    <p style="background:#eef2ff; padding:0.6rem; border-radius:1rem;">
+                        ✅ 实例化成功<br>
+                        📌 实例: ${JSON.stringify(newBook)}<br>
+                        🔗 原型方法调用: ${newBook.getInfo()}<br>
+                        🧬 实例的 constructor: ${newBook.constructor.name}<br>
+                        🧬 instanceof Book: ${newBook instanceof Book}
+                    </p>
+                `;
+            });
+        }
+
+        // 为第一个原型示例增加一点额外说明（可选）
+        console.log("页面加载完成，所有内置构造函数和原型演示已就绪");
+    </script>
+</body>
+</html>

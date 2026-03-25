@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP/HTTPS 协议 · 深入理解</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #e9eef4 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            color: #1e2f3e;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 2.8rem;
+            padding: 2rem 1.5rem;
+            background: rgba(255,255,255,0.85);
+            border-radius: 48px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #1f6390, #2b8c9e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section { margin-bottom: 3rem; }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.4rem;
+            padding-left: 0.8rem;
+            border-left: 6px solid #2b8c9e;
+            color: #1f6390;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.8rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(43, 140, 158, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            background: #eef7fa;
+            padding: 1rem 1.4rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-bottom: 2px solid #d9eaf0;
+            color: #1f6390;
+            font-family: monospace;
+        }
+        .badge {
+            background: #2b8c9e;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            margin-left: 0.6rem;
+        }
+        .card-code {
+            background: #1e2e36;
+            color: #d9f0f5;
+            padding: 1rem 1.2rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .card-desc {
+            padding: 0.8rem 1.2rem 0.4rem;
+            font-size: 0.9rem;
+            color: #2e6a7a;
+            background: #fefeff;
+        }
+        .card-effect {
+            padding: 1rem 1.2rem;
+            background: #fafdff;
+            border-top: 1px solid #e0eff5;
+            min-height: 100px;
+        }
+        .btn-trigger {
+            background: #2b8c9e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-trigger:hover { background: #1f6d7e; }
+        pre {
+            background: #eef5f8;
+            padding: 8px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        .status-badge {
+            display: inline-block;
+            background: #eef2f5;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: #5f8a9a;
+            border-top: 1px solid #d0e2ea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🌐 HTTP/HTTPS 协议 · 核心知识</h1>
+        <p>请求方法 · 状态码 · 报文结构 · HTTPS 加密原理</p>
+    </div>
+
+    <!-- 基础概念 -->
+    <section class="section">
+        <h2 class="section-title">📖 协议基础</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>HTTP 请求方法</code><span class="badge">RESTful 核心</span></div>
+                <div class="card-code">
+                    GET     → 获取资源<br>
+                    POST    → 创建资源<br>
+                    PUT     → 完整更新<br>
+                    PATCH   → 部分更新<br>
+                    DELETE  → 删除资源
+                </div>
+                <div class="card-desc">🔹 每种方法对应不同的语义，遵循幂等性设计。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="methodsBtn">📚 查看方法说明</button>
+                    <div id="methodsResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>常见状态码</code><span class="badge">1xx-5xx</span></div>
+                <div class="card-code">
+                    200 OK<br>
+                    201 Created<br>
+                    301 Moved Permanently<br>
+                    400 Bad Request<br>
+                    401 Unauthorized<br>
+                    403 Forbidden<br>
+                    404 Not Found<br>
+                    500 Internal Server Error
+                </div>
+                <div class="card-desc">🔢 状态码表明请求结果，分为信息、成功、重定向、客户端错误、服务器错误。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="statusBtn">🔍 模拟状态码测试</button>
+                    <div id="statusResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>HTTP 报文结构</code><span class="badge">请求/响应</span></div>
+                <div class="card-code">
+                    请求行: POST /api/users HTTP/1.1<br>
+                    请求头: Host: example.com<br>
+                    请求体: { "name": "Alice" }<br>
+                    ---<br>
+                    状态行: HTTP/1.1 200 OK<br>
+                    响应头: Content-Type: application/json<br>
+                    响应体: { "id": 1 }
+                </div>
+                <div class="card-desc">📨 报文包含起始行、头部字段、空行和主体。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="messageBtn">📄 查看示例报文</button>
+                    <div id="messageResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HTTPS 与安全 -->
+    <section class="section">
+        <h2 class="section-title">🔒 HTTPS · 安全传输</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>HTTPS 加密流程</code><span class="badge">SSL/TLS</span></div>
+                <div class="card-code">
+                    1. 客户端发起 HTTPS 请求<br>
+                    2. 服务器返回数字证书<br>
+                    3. 客户端验证证书<br>
+                    4. 生成随机对称密钥<br>
+                    5. 用公钥加密对称密钥发送给服务器<br>
+                    6. 服务器用私钥解密，之后使用对称加密通信
+                </div>
+                <div class="card-desc">🔐 通过混合加密（非对称+对称）保证数据机密性和完整性。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="httpsBtn">🔐 查看HTTPS握手演示</button>
+                    <div id="httpsResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>HTTP vs HTTPS</code><span class="badge">安全性对比</span></div>
+                <div class="card-code">
+                    HTTP : 明文传输，易被窃听/篡改<br>
+                    HTTPS: 加密传输，防窃听、防篡改、防冒充
+                </div>
+                <div class="card-desc">⚡ 现代网站全面推荐使用 HTTPS，提升安全性和用户信任。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="compareBtn">📊 对比展示</button>
+                    <div id="compareResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>证书与CA</code><span class="badge">数字证书</span></div>
+                <div class="card-code">
+                    证书包含：域名、公钥、颁发机构、有效期等<br>
+                    由 CA 签发，用于验证服务器身份
+                </div>
+                <div class="card-desc">📜 浏览器内置受信任 CA 根证书，确保通信方身份真实。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="certBtn">📜 模拟证书验证</button>
+                    <div id="certResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>💡 HTTP 协议是 Web 的基石，HTTPS 为其提供了安全保障，深入理解对开发调试至关重要。</footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#eef5f8';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:8px; padding:8px;">${content}</pre>`;
+        }
+    }
+
+    // 方法说明
+    document.getElementById('methodsBtn').addEventListener('click', () => {
+        showResult('methodsResult', `
+            📌 GET     → 幂等，安全，用于获取资源
+            📌 POST    → 非幂等，用于创建资源
+            📌 PUT     → 幂等，完整更新资源
+            📌 PATCH   → 非幂等，部分更新
+            📌 DELETE  → 幂等，删除资源
+        `);
+    });
+
+    // 状态码模拟
+    document.getElementById('statusBtn').addEventListener('click', () => {
+        showResult('statusResult', '📡 模拟请求不同状态码...');
+        // 模拟不同请求的状态码演示
+        const statuses = [
+            { code: 200, text: '✅ 200 OK - 请求成功' },
+            { code: 404, text: '❌ 404 Not Found - 资源不存在' },
+            { code: 500, text: '⚠️ 500 Internal Server Error - 服务器内部错误' }
+        ];
+        let html = '';
+        statuses.forEach(s => {
+            html += `<span class="status-badge">${s.code}</span> ${s.text}<br>`;
+        });
+        showResult('statusResult', html);
+    });
+
+    // 报文结构
+    document.getElementById('messageBtn').addEventListener('click', () => {
+        showResult('messageResult', `
+            【HTTP 请求报文】
+            POST /api/users HTTP/1.1
+            Host: jsonplaceholder.typicode.com
+            Content-Type: application/json
+            Content-Length: 32
+
+            {"name":"Alice","age":25}
+
+            【HTTP 响应报文】
+            HTTP/1.1 201 Created
+            Content-Type: application/json
+            Content-Length: 45
+
+            {"id":101,"name":"Alice","age":25}
+        `);
+    });
+
+    // HTTPS 握手流程
+    document.getElementById('httpsBtn').addEventListener('click', () => {
+        showResult('httpsResult', `
+            🔐 HTTPS 握手简化流程：
+            1️⃣ 客户端发送 ClientHello（支持加密套件）
+            2️⃣ 服务器返回 ServerHello + 证书
+            3️⃣ 客户端验证证书，生成预主密钥
+            4️⃣ 用公钥加密预主密钥发给服务器
+            5️⃣ 双方计算会话密钥
+            6️⃣ 开始对称加密通信
+        `);
+    });
+
+    // HTTP vs HTTPS
+    document.getElementById('compareBtn').addEventListener('click', () => {
+        showResult('compareResult', `
+            【HTTP】  端口 80，明文传输，无加密，易被中间人攻击
+            【HTTPS】 端口 443，SSL/TLS 加密，防窃听、防篡改、身份验证
+            ✅ HTTPS 已成为现代 Web 标准，搜索引擎也给予更高权重。
+        `);
+    });
+
+    // 证书模拟
+    document.getElementById('certBtn').addEventListener('click', () => {
+        showResult('certResult', `
+            📜 数字证书包含信息：
+            - 域名：example.com
+            - 公钥：MIIB...
+            - 颁发者：Let's Encrypt
+            - 有效期：2025-01-01 至 2026-01-01
+            - 数字签名：CA 私钥加密
+            ✅ 浏览器验证证书链，确保通信方可信。
+        `);
+    });
+</script>
+</body>
+</html>

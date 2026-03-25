@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回调异步处理 · 传统模式</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📞 回调函数异步处理 · 传统模式</h1>
+        <p>回调地狱 · 定时器 · 基于回调的异步请求</p>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">🔄 回调基础演示</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>setTimeout 回调</code><span class="badge">异步延迟</span></div>
+                <div class="card-code">
+                    console.log("开始");<br>
+                    setTimeout(() => {<br>
+                    &nbsp;&nbsp;console.log("2秒后执行");<br>
+                    }, 2000);<br>
+                    console.log("结束");
+                </div>
+                <div class="card-desc">⏰ 异步回调不阻塞主线程，延迟执行。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="timeoutBtn">⏱️ 模拟延迟回调</button>
+                    <div id="timeoutResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>回调地狱示例</code><span class="badge">嵌套回调</span></div>
+                <div class="card-code">
+                    setTimeout(() => {<br>
+                    &nbsp;&nbsp;console.log("第1步");<br>
+                    &nbsp;&nbsp;setTimeout(() => {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.log("第2步");<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;setTimeout(() => {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log("第3步");<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}, 500);<br>
+                    &nbsp;&nbsp;}, 500);<br>
+                    }, 500);
+                </div>
+                <div class="card-desc">📦 多层嵌套导致代码难以维护，被称为“回调地狱”。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="callbackHellBtn">🔥 演示回调地狱</button>
+                    <div id="hellResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>回调式异步请求</code><span class="badge">模拟XHR回调</span></div>
+                <div class="card-code">
+                    function fetchData(callback) {<br>
+                    &nbsp;&nbsp;setTimeout(() => {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;callback({ id: 1, name: "回调数据" });<br>
+                    &nbsp;&nbsp;}, 1000);<br>
+                    }<br>
+                    fetchData(data => console.log(data));
+                </div>
+                <div class="card-desc">📨 将异步结果通过回调函数返回。</div>
+                <div class="card-effect">
+                    <button class="btn-trigger" id="callbackReqBtn">📡 回调式请求</button>
+                    <div id="callbackReqResult" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>💡 回调函数是最早的异步解决方案，但易产生“回调地狱”，后续被Promise和async/await取代。</footer>
+</div>
+
+<script>
+    function showResult(elementId, content, isError = false) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            const bg = isError ? '#ffe6e6' : '#eef2ff';
+            el.innerHTML = `<pre style="margin:0; background:${bg}; border-radius:8px; padding:8px;">${content}</pre>`;
+        }
+    }
+    document.getElementById('timeoutBtn').addEventListener('click', () => {
+        showResult('timeoutResult', '⏳ 开始延迟...');
+        setTimeout(() => {
+            showResult('timeoutResult', '✅ 2秒后回调执行');
+        }, 2000);
+    });
+    document.getElementById('callbackHellBtn').addEventListener('click', () => {
+        showResult('hellResult', '🔥 执行回调地狱嵌套...');
+        setTimeout(() => {
+            setTimeout(() => {
+                setTimeout(() => {
+                    showResult('hellResult', '✅ 完成三层嵌套回调');
+                }, 500);
+                showResult('hellResult', '第2层回调已触发');
+            }, 500);
+            showResult('hellResult', '第1层回调已触发');
+        }, 500);
+    });
+    document.getElementById('callbackReqBtn').addEventListener('click', () => {
+        function fetchData(callback) {
+            setTimeout(() => {
+                callback({ id: 1, name: "回调数据", time: new Date().toLocaleTimeString() });
+            }, 1000);
+        }
+        showResult('callbackReqResult', '⏳ 模拟请求中...');
+        fetchData(data => {
+            showResult('callbackReqResult', `✅ 收到数据: ${JSON.stringify(data)}`);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ES6 新特性：let/const 与 对象解构赋值</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📦 ES6 核心先锋 · let/const & 对象解构赋值</h1>
+        <p>块级作用域 · 常量绑定 · 优雅提取对象属性</p>
+        <div class="subnote">✨ 聚焦现代 JavaScript 两大基石 | 清晰演示 + 运行效果</div>
+    </div>
+
+    <!-- 第一部分：let 与 const 块级作用域 -->
+    <section class="section">
+        <h2 class="section-title">🔒 块级王者 · let / const 与暂时性死区</h2>
+        <div class="card-grid">
+            <!-- let 块级隔离卡片 -->
+            <div class="card">
+                <div class="card-header"><code>let</code> · 块级作用域隔离 <span class="badge">无变量提升污染</span></div>
+                <div class="card-code">let message = "全局/外部";<br>if (true) {<br>  let message = "内部块级";<br>  console.log("内部:", message);<br>}<br>console.log("外部:", message);</div>
+                <div class="card-desc">✅ <strong>let</strong> 声明的变量只在当前代码块内生效，避免全局污染，提升代码健壮性。</div>
+                <div class="card-effect" id="let-demo"></div>
+            </div>
+            <!-- const 常量不可变绑定 -->
+            <div class="card">
+                <div class="card-header"><code>const</code> · 只读引用 <span class="badge">对象属性可变</span></div>
+                <div class="card-code">const PI = 3.14159;<br>// PI = 3.14; ❌ 报错<br>const user = { name: "Alex" };<br>user.name = "Jordan";  // ✅ 对象属性可修改</div>
+                <div class="card-desc">🔒 const 保证变量指向的地址不变，但对象/数组内部属性可以自由修改。</div>
+                <div class="card-effect" id="const-demo"></div>
+            </div>
+            <!-- 暂时性死区 TDZ -->
+            <div class="card">
+                <div class="card-header"><code>暂时性死区 (TDZ)</code> · 安全机制</div>
+                <div class="card-code">// console.log(value); // ❌ ReferenceError<br>let value = "ES6 安全宣言";<br>console.log("访问成功:", value);</div>
+                <div class="card-desc">⚡ 在声明之前访问 let/const 变量会触发 ReferenceError，避免旧的提升陷阱。</div>
+                <div class="card-effect" id="tdz-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第二部分：对象解构赋值（重命名 / 默认值 / 嵌套解构 & 函数参数解构） -->
+    <section class="section">
+        <h2 class="section-title">🎁 对象解构赋值 · 重命名 & 嵌套萃取 & 参数对象解构</h2>
+        <div class="card-grid">
+            <!-- 对象解构 + 重命名 / 默认值 -->
+            <div class="card">
+                <div class="card-header"><code>对象解构 & 重命名 & 默认值</code></div>
+                <div class="card-code">const employee = {<br>  id: 1024,<br>  fullName: "欧阳静",<br>  department: "技术研发"<br>};<br>const { fullName: userName, department, level = "P5" } = employee;<br>console.log(userName, department, level);</div>
+                <div class="card-desc">🏷️ 提取属性同时重命名，轻松设置默认值，代码清晰优雅。</div>
+                <div class="card-effect" id="object-dest-demo"></div>
+            </div>
+            <!-- 嵌套解构 + 函数参数解构 -->
+            <div class="card">
+                <div class="card-header"><code>嵌套解构 & 函数参数解构</code> 深度提取</div>
+                <div class="card-code">const apiResponse = {<br>  status: 200,<br>  data: {<br>    user: { id: 556, nickname: "深潜者", posts: [12,33] }<br>  }<br>};<br>const { data: { user: { id: userId, nickname } } } = apiResponse;<br>function introduce({ name, age = 24, city = "未知" }) {<br>  return `${name} · ${age}岁 · 来自${city}`;<br>}</div>
+                <div class="card-desc">🧩 深层数据一次性解构，函数参数直接解析对象，减少样板代码。</div>
+                <div class="card-effect" id="nested-dest-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        💡 let / const 彻底解决变量作用域隐患 · 对象解构让属性访问更直观 — ES6 开启现代 JavaScript 新纪元
+    </footer>
+</div>
+
+<script>
+    // 通用渲染函数：将内容安全填入指定元素
+    function renderEffect(selector, contentOrFn) {
+        const el = document.querySelector(selector);
+        if (el) {
+            if (typeof contentOrFn === 'function') {
+                el.innerHTML = contentOrFn();
+            } else {
+                el.innerHTML = contentOrFn;
+            }
+        }
+    }
+
+    // ---------- 1. let 块级作用域演示 ----------
+    (function letScopeDemo() {
+        let outerMessage = "📌 外部作用域: 我是全局/函数级 let";
+        if (true) {
+            let outerMessage = "🔹 内部块级: 仅仅在 if 块内有效";
+            // 内部变量仅在块级生效，不会影响外部
+            window._internalLetValue = outerMessage;
+        }
+        // 展示清晰的块级隔离效果
+        renderEffect("#let-demo", `
+            <p>🔸 <strong>外部变量值:</strong> ${outerMessage}</p>
+            <p>🔹 <strong>if 块内 let 变量</strong> 与外部分离，未造成污染 ✅</p>
+            <p>✨ 使用 <code>let</code> 替代 <code>var</code> 避免变量提升与意外覆盖。</p>
+        `);
+    })();
+
+    // ---------- 2. const 常量演示（绑定不可变，对象属性可变） ----------
+    (function constDemo() {
+        const PI = 3.1415926;
+        // PI = 3.14;   // 取消注释会报错
+        const userProfile = { name: "初始用户", role: "admin" };
+        userProfile.name = "林青璇";      // ✅ 允许修改对象属性
+        userProfile.level = "资深专家";    // ✅ 允许添加新属性
+        
+        renderEffect("#const-demo", `
+            <p>🔒 <strong>const PI</strong> = ${PI} (常量原始值不可重新赋值)</p>
+            <p>📦 对象属性修改后: name = "${userProfile.name}", role = "${userProfile.role}", level = "${userProfile.level}"</p>
+            <p>✅ const 保证变量指向不变，对象内容灵活可控。</p>
+        `);
+    })();
+
+    // ---------- 3. 暂时性死区 (TDZ) 演示 ----------
+    (function tdzDemo() {
+        // 模拟说明：如果在声明前访问会报ReferenceError，此处采用安全方式展示概念及正确访问
+        let safeVariable = "✨ TDZ 演示：声明前不可访问，声明后正常使用";
+        // 展示实际没有错误的正确流程
+        renderEffect("#tdz-demo", `
+            <p>⚠️ <strong>暂时性死区</strong>：在 <code>let</code> 或 <code>const</code> 声明之前，变量处于TDZ，访问会报错。</p>
+            <p>✅ 正确示例：声明后访问 → "${safeVariable}"</p>
+            <pre style="background:#e4edf2; margin-top:6px;">// ❌ console.log(myVar);  // ReferenceError
+let myVar = "安全通过";</pre>
+            <p>🎯 这种设计消除了提升带来的隐患。</p>
+        `);
+    })();
+
+    // ---------- 4. 对象解构 & 重命名 & 默认值演示 ----------
+    (function objectDestructure() {
+        const employeeData = {
+            id: 1024,
+            fullName: "欧阳静",
+            department: "技术研发",
+            // level 故意缺失，用于测试默认值
+        };
+        // 解构赋值：重命名 fullName -> userName, 提取 department, 设置 level 默认值 'P5'
+        const { fullName: userName, department, level = "P5" } = employeeData;
+        
+        renderEffect("#object-dest-demo", `
+            <p>📌 原始对象: { id: 1024, fullName: "欧阳静", department: "技术研发" }</p>
+            <p>🔹 解构重命名: <strong>userName</strong> = ${userName}</p>
+            <p>🏢 department = ${department} &nbsp;&nbsp;| ⭐ level 默认值 = ${level}</p>
+            <p>✨ 对象解构 + 重命名 + 默认值一气呵成，代码更语义化。</p>
+        `);
+    })();
+
+    // ---------- 5. 嵌套解构 & 函数参数对象解构演示 ----------
+    (function nestedAndParamDestructure() {
+        // 深层嵌套数据
+        const apiResponse = {
+            status: 200,
+            data: {
+                user: {
+                    id: 556,
+                    nickname: "深潜者",
+                    posts: [12, 33, 98]
+                }
+            }
+        };
+        // 深层解构：提取 user 中的 id 并重命名为 userId，同时提取 nickname
+        const { data: { user: { id: userId, nickname } } } = apiResponse;
+        
+        // 函数参数对象解构：传入对象，直接解构 name, age 默认值, city 默认值
+        function introduce({ name, age = 24, city = "赛博都会" }) {
+            return `${name} · ${age}岁 · 来自${city}`;
+        }
+        
+        // 测试参数解构函数
+        const personA = { name: "林深", age: 28 };
+        const personB = { name: "叶灵均", city: "云间城" };
+        const resultA = introduce(personA);
+        const resultB = introduce(personB);
+        // 额外展示无参数情况（提供空对象避免报错）
+        const resultC = introduce({ name: "访客" });
+        
+        renderEffect("#nested-dest-demo", `
+            <p>📡 嵌套解构结果: <strong>userId</strong> = ${userId} , <strong>nickname</strong> = "${nickname}"</p>
+            <p>🎯 函数参数解构:<br> 
+               → introduce({ name:"林深", age:28 }) => ${resultA}<br>
+               → introduce({ name:"叶灵均", city:"云间城" }) => ${resultB}<br>
+               → introduce({ name:"访客" }) => ${resultC}
+            </p>
+            <p>🧩 深层属性安全提取，函数参数直接接收对象，默认值优雅降级。</p>
+        `);
+    })();
+</script>
+</body>
+</html>

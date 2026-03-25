@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ES6 Set 数据结构 | 集合的魔力</title>
+    <link rel="stylesheet" href="../../CSS/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🌀 Set · 集合数据结构</h1>
+        <p>唯一值存储 · 高效查找 · 迭代与集合运算</p>
+        <div class="subnote">✨ ES6 新增数据结构，元素不可重复，遍历顺序即插入顺序</div>
+    </div>
+
+    <!-- 基础操作 -->
+    <section class="section">
+        <h2 class="section-title">📌 Set 基础操作 · 增删查改</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>创建 Set & 添加元素</code> <span class="badge">add / has</span></div>
+                <div class="card-code">const set = new Set();<br>set.add(1);<br>set.add(2);<br>set.add(2);  // 重复无效<br>set.add('hello');<br>console.log(set.size); // 3</div>
+                <div class="card-desc">📌 add 返回 Set 对象本身，支持链式调用。Set 中 NaN 相等，+0 与 -0 被视为相同。</div>
+                <div class="card-effect" id="basic-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>删除 & 清空</code> delete / clear</div>
+                <div class="card-code">set.delete(2);   // 返回布尔值<br>set.clear();     // 清空所有元素</div>
+                <div class="card-desc">🗑️ delete 删除指定值，clear 清空集合。</div>
+                <div class="card-effect" id="delete-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>size & has 检查</code> 大小与存在性</div>
+                <div class="card-code">const fruits = new Set(['🍎', '🍊']);<br>console.log(fruits.size);       // 2<br>console.log(fruits.has('🍎'));  // true</div>
+                <div class="card-desc">🔍 has 方法快速判断值是否存在，时间复杂度 O(1)。</div>
+                <div class="card-effect" id="size-has-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 遍历与迭代 -->
+    <section class="section">
+        <h2 class="section-title">🔄 Set 遍历 · 迭代方法</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>forEach 遍历</code> 与数组类似</div>
+                <div class="card-code">const colors = new Set(['红', '绿', '蓝']);<br>colors.forEach((value, key, set) => {<br>  console.log(value); // 红 绿 蓝<br>});</div>
+                <div class="card-desc">📋 forEach 的回调参数 value 和 key 相同，保持与 Map 一致。</div>
+                <div class="card-effect" id="foreach-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>for...of 迭代</code> 直接获取值</div>
+                <div class="card-code">for (let item of colors) {<br>  console.log(item);<br>}</div>
+                <div class="card-desc">🌀 Set 是可迭代对象，支持 for...of 和扩展运算符。</div>
+                <div class="card-effect" id="forof-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>keys() / values() / entries()</code> 迭代器</div>
+                <div class="card-code">const it = set.values();<br>// keys() 同 values()，entries() 返回 [value,value]</div>
+                <div class="card-desc">📎 这些方法返回迭代器对象，便于配合 for...of 或手动遍历。</div>
+                <div class="card-effect" id="iterators-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数组与 Set 互转及应用 -->
+    <section class="section">
+        <h2 class="section-title">🔄 数组 ↔ Set 互转 & 经典去重</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>数组去重 · 经典用法</code> <span class="badge">性能优秀</span></div>
+                <div class="card-code">const arr = [1, 2, 2, 3, 4, 4, 5];<br>const unique = [...new Set(arr)];<br>// unique → [1,2,3,4,5]</div>
+                <div class="card-desc">🚀 利用 Set 唯一性快速去重，扩展运算符转回数组。</div>
+                <div class="card-effect" id="unique-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>Set 转数组 & 数组转 Set</code></div>
+                <div class="card-code">const setFromArr = new Set([1,2,3]);<br>const arrFromSet = Array.from(setFromArr);<br>// 或 [...set]</div>
+                <div class="card-desc">📦 灵活转换，适用于不同场景需求。</div>
+                <div class="card-effect" id="convert-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>字符串去重</code> 字符唯一化</div>
+                <div class="card-code">const str = "abracadabra";<br>const uniqueChars = [...new Set(str)].join('');<br>// "abrcd"</div>
+                <div class="card-desc">🔤 Set 同样可用于字符串字符去重。</div>
+                <div class="card-effect" id="string-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 集合运算（高级） -->
+    <section class="section">
+        <h2 class="section-title">🧮 集合运算 · 并集 / 交集 / 差集</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>并集 Union</code> A ∪ B</div>
+                <div class="card-code">const a = new Set([1,2,3]);<br>const b = new Set([3,4,5]);<br>const union = new Set([...a, ...b]);</div>
+                <div class="card-desc">➕ 合并两个 Set 去重。</div>
+                <div class="card-effect" id="union-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>交集 Intersection</code> A ∩ B</div>
+                <div class="card-code">const intersection = new Set([...a].filter(x => b.has(x)));</div>
+                <div class="card-desc">🔗 筛选同时存在于两个集合的元素。</div>
+                <div class="card-effect" id="intersection-demo"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><code>差集 Difference</code> A \ B</div>
+                <div class="card-code">const difference = new Set([...a].filter(x => !b.has(x)));</div>
+                <div class="card-desc">➖ 在 A 中但不在 B 中的元素。</div>
+                <div class="card-effect" id="difference-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WeakSet 简介 -->
+    <section class="section">
+        <h2 class="section-title">🗑️ WeakSet · 弱引用集合</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header"><code>WeakSet 特性</code> 只存储对象</div>
+                <div class="card-code">const ws = new WeakSet();<br>let obj = {};<br>ws.add(obj);<br>// obj = null; 之后对象可被垃圾回收</div>
+                <div class="card-desc">🧹 成员只能是对象，弱引用不影响垃圾回收，不可遍历。</div>
+                <div class="card-effect" id="weakset-demo"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        💡 Set 是高效且强大的数据结构，适用于去重、集合运算、管理唯一值等场景。
+    </footer>
+</div>
+
+<script>
+    // 通用渲染函数
+    function renderEffect(selector, contentOrFn) {
+        const el = document.querySelector(selector);
+        if (el) {
+            if (typeof contentOrFn === 'function') {
+                el.innerHTML = contentOrFn();
+            } else {
+                el.innerHTML = contentOrFn;
+            }
+        }
+    }
+
+    // ---------- 基础操作演示 ----------
+    (function basicDemo() {
+        const set = new Set();
+        set.add(1);
+        set.add(2);
+        set.add(2);  // 重复无效
+        set.add('hello');
+        const size = set.size;
+        renderEffect("#basic-demo", `
+            <p>🔹 创建 Set 并添加 1, 2, 2, 'hello'</p>
+            <p>📊 最终 size = ${size} (重复的 2 只保留一次)</p>
+            <p>✅ Set 内元素: ${[...set].join(', ')}</p>
+            <p>💡 支持链式: set.add(3).add(4)</p>
+        `);
+    })();
+
+    (function deleteDemo() {
+        const set = new Set([1, 2, 3, 4]);
+        const deleted = set.delete(2);    // true
+        const notDeleted = set.delete(99); // false
+        const sizeBeforeClear = set.size;
+        set.clear();
+        const sizeAfterClear = set.size;
+        renderEffect("#delete-demo", `
+            <p>🗑️ 初始 Set: [1,2,3,4]</p>
+            <p>delete(2) 返回 ${deleted}，剩余元素: [${[...set]}]</p>
+            <p>delete(99) 返回 ${notDeleted}</p>
+            <p>clear() 前 size = ${sizeBeforeClear} → 清空后 size = ${sizeAfterClear}</p>
+        `);
+    })();
+
+    (function sizeHasDemo() {
+        const fruits = new Set(['🍎', '🍊']);
+        const size = fruits.size;
+        const hasApple = fruits.has('🍎');
+        const hasBanana = fruits.has('🍌');
+        renderEffect("#size-has-demo", `
+            <p>🍎 Set 内容: [${[...fruits].join(', ')}]</p>
+            <p>📏 size = ${size}</p>
+            <p>🔍 has('🍎') → ${hasApple}</p>
+            <p>🔍 has('🍌') → ${hasBanana}</p>
+        `);
+    })();
+
+    // ---------- 遍历演示 ----------
+    (function forEachDemo() {
+        const colors = new Set(['红', '绿', '蓝']);
+        let result = '';
+        colors.forEach((value, key, set) => {
+            result += `${value} `;
+        });
+        renderEffect("#foreach-demo", `
+            <p>🎨 Set: 红, 绿, 蓝</p>
+            <p>📋 forEach 输出: ${result.trim()}</p>
+            <p>💡 回调参数 value 与 key 相同。</p>
+        `);
+    })();
+
+    (function forOfDemo() {
+        const colors = new Set(['红', '绿', '蓝']);
+        let items = [];
+        for (let item of colors) {
+            items.push(item);
+        }
+        renderEffect("#forof-demo", `
+            <p>🌀 for...of 遍历结果: ${items.join(' · ')}</p>
+            <p>✅ Set 是可迭代对象，可直接用于扩展运算符。</p>
+        `);
+    })();
+
+    (function iteratorsDemo() {
+        const set = new Set(['a', 'b', 'c']);
+        const values = [...set.values()];
+        const keys = [...set.keys()];      // 与 values 相同
+        const entries = [...set.entries()]; // 返回 [value,value] 对
+        renderEffect("#iterators-demo", `
+            <p>📎 values(): [${values.join(', ')}]</p>
+            <p>📎 keys(): [${keys.join(', ')}]</p>
+            <p>📎 entries(): [${entries.map(e => `[${e[0]},${e[1]}]`).join(', ')}]</p>
+        `);
+    })();
+
+    // ---------- 数组与Set互转 ----------
+    (function uniqueDemo() {
+        const arr = [1, 2, 2, 3, 4, 4, 5];
+        const unique = [...new Set(arr)];
+        renderEffect("#unique-demo", `
+            <p>📦 原始数组: [${arr.join(', ')}]</p>
+            <p>✨ 去重后: [${unique.join(', ')}]</p>
+            <p>🚀 经典一行去重: [...new Set(arr)]</p>
+        `);
+    })();
+
+    (function convertDemo() {
+        const arr = [1, 2, 3];
+        const setFromArr = new Set(arr);
+        const arrFromSet = Array.from(setFromArr);
+        const arrFromSpread = [...setFromArr];
+        renderEffect("#convert-demo", `
+            <p>🔁 数组 → Set: ${JSON.stringify([...setFromArr])}</p>
+            <p>🔁 Set → 数组 (Array.from): [${arrFromSet}]</p>
+            <p>🔁 Set → 数组 (扩展运算符): [${arrFromSpread}]</p>
+        `);
+    })();
+
+    (function stringDemo() {
+        const str = "abracadabra";
+        const uniqueChars = [...new Set(str)].join('');
+        renderEffect("#string-demo", `
+            <p>📝 原字符串: "${str}"</p>
+            <p>✨ 字符去重后: "${uniqueChars}"</p>
+            <p>🔤 利用 Set 快速得到唯一字符。</p>
+        `);
+    })();
+
+    // ---------- 集合运算 ----------
+    (function unionDemo() {
+        const a = new Set([1, 2, 3]);
+        const b = new Set([3, 4, 5]);
+        const union = new Set([...a, ...b]);
+        renderEffect("#union-demo", `
+            <p>🔹 A = {1,2,3} &nbsp; B = {3,4,5}</p>
+            <p>➕ 并集 A ∪ B = {${[...union].join(', ')}}</p>
+        `);
+    })();
+
+    (function intersectionDemo() {
+        const a = new Set([1, 2, 3]);
+        const b = new Set([3, 4, 5]);
+        const intersection = new Set([...a].filter(x => b.has(x)));
+        renderEffect("#intersection-demo", `
+            <p>🔹 A = {1,2,3} &nbsp; B = {3,4,5}</p>
+            <p>🔗 交集 A ∩ B = {${[...intersection].join(', ')}}</p>
+        `);
+    })();
+
+    (function differenceDemo() {
+        const a = new Set([1, 2, 3]);
+        const b = new Set([3, 4, 5]);
+        const difference = new Set([...a].filter(x => !b.has(x)));
+        renderEffect("#difference-demo", `
+            <p>🔹 A = {1,2,3} &nbsp; B = {3,4,5}</p>
+            <p>➖ 差集 A \\ B = {${[...difference].join(', ')}}</p>
+        `);
+    })();
+
+    // ---------- WeakSet 演示 ----------
+    (function weakSetDemo() {
+        // 仅展示概念，实际无法遍历，使用示例说明
+        let obj = { data: "important" };
+        const ws = new WeakSet();
+        ws.add(obj);
+        const hasObj = ws.has(obj);
+        // 模拟置空后垃圾回收不可见
+        renderEffect("#weakset-demo", `
+            <p>🧹 WeakSet 只能存储对象，弱引用不影响垃圾回收。</p>
+            <p>✅ 添加对象后 ws.has(obj) = ${hasObj}</p>
+            <p>⚠️ 不可遍历、无 size 属性，常用于辅助存储/避免内存泄漏。</p>
+        `);
+    })();
+</script>
+</body>
+</html>

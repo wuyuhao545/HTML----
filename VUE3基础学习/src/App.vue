@@ -1,5 +1,10 @@
 <template>
+
 </template>
 
-<script setup lang="js">
+<script>
+
 </script>
+
+<style>
+</style>

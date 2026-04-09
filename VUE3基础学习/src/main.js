@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import watcher from './components/WatchVue.vue'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.component("VueWatcher", watcher)
+
+app.mount('#app')

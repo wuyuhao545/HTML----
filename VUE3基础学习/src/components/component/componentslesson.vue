@@ -25,11 +25,11 @@
 </template>
 
 <script setup>
-import AppHeader from '../components/componentslesson/AppHeader.vue'
-import AppMain from '../components/componentslesson/AppMain.vue'
-import AppAside from '../components/componentslesson/AppAside.vue'
-import AppFooter from '../components/componentslesson/AppFooter.vue'
-import AppArticle from '../components/componentslesson/AppArticle.vue'
+import AppHeader from './AppHeader.vue'
+import AppMain from './AppMain.vue'
+import AppAside from './AppAside.vue'
+import AppFooter from './AppFooter.vue'
+import AppArticle from './AppArticle.vue'
 </script>
 
 <style>

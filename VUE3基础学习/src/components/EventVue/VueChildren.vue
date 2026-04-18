@@ -5,6 +5,7 @@
 <p>{{ okr }}</p>
 <p>{{ age }}</p>
 <p v-for="(item,index) of names" :key=index>{{ item }}</p>
+<p>{{ message2}} {{ globeData }}</p>
 </template>
 
 <script>
@@ -29,6 +30,7 @@ export default{
     names:{
       type:Array
     }
-  }
+  },
+  inject:["message2","globeData"]
 }
 </script>

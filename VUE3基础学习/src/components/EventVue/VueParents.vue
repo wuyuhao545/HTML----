@@ -10,11 +10,17 @@ data(){
     return{
       message:"动态数据",
       age:"20",
-      names:["21","22","23"]
+      names:["21","22","23"],
+      message2:"我是祖宗"
     }
 },
   components:{
     child
+  },
+  provide(){
+    return{
+      message2:this.message2
+    }
   }
 }
 

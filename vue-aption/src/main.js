@@ -10,3 +10,9 @@ app.mount('#app')
 app.component("VueWatcher", watcher)
 app.provide("globeData","我是全局数据")
 import watcher from './components/WatchVue.vue'
+//全局定义的自定义vue方法,用来改变文字颜色
+app.directive("color",{
+    mounted:(element)=>{
+        element.style.color = "blue"
+    }
+})

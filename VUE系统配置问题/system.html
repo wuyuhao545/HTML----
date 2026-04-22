@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue的一些系统配置导致的问题记录</title>
+</head>
+<body>
+    <div>
+      <h1>ESLint问题defineProps is not defined</h1>
+      <p>问题原因：ESLint在进行代码检查时，无法识别Vue 3中defineProps这类“编译器宏”，把它们当成了未定义的变量。这些宏是 Vue 的“语法糖”，在script setup中无需导入就能直接使用</p>
+      <p>解决方案：</p>
+      <p>在 ESLint 配置中添加编译器宏环境创建
+      配置文件：在你的项目根目录下（即和 package.json 同级的位置），新建一个名为 .eslintrc.js 的文件
+      写入配置：将以下内容复制到文件中。这段代码核心是 env 下的 "vue/setup-compiler-macros": true 配置
+      module.exports = {
+      env: {
+          browser: true,
+          node: true,
+          // 关键配置：告诉 ESLint 识别 Vue 3 的编译器宏
+          'vue/setup-compiler-macros': true,
+      },
+      }</p>
+      <p>如果你是通过 @vue/cli 创建的项目，ESLint 的配置可能不直接写在根目录的.eslintrc.js 中，而是写在 package.json 的 eslintConfig 字段里。在这种情况下，你需要：打开 package.json 文件，找到 "eslintConfig" 字段。在 "env" 配置下添加 "vue/setup-compiler-macros": true。</p>
+    </div>
+    <div>
+        <h2>错误The template requires child element</h2>
+        <p>问题原因：</p>
+        <p>它要求Vue单文件组件的template必须有且仅有一个根元素。你的模板里直接写了两个并列的标签h3和p，没有外层包裹元素，因此触发了错误。</p>
+        <p>解决方法：用div或template（Vue 3 中template可作为包裹容器但不渲染额外DOM）把两个元素包起来</p>
+    </div>
+</body>
+</html>

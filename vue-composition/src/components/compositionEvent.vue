@@ -6,7 +6,9 @@
 <script setup>
 import {ref} from "vue"
 const count = ref(0);
-function addCountHandle(){
+
+function addCountHandle(e){
     count.value++;
+    console.log(e)
 }
 </script>
